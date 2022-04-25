@@ -1,0 +1,40 @@
+﻿<!-- Request Maintenace Modal -->
+@model RequestMaintenanceViewModel
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="myModalLabel35"> Request Maintenance form </h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-controller="Request" asp-action="MakeRequestMaintainance" method="post">
+                <div class="modal-body">
+                    <fieldset class="form-group floating-label-form-group">
+                        <label> Vehicle Registeration No. </label>
+                        <input type="text" class="form-control" asp-for="RegistrationNumber" placeholder="Vehicle Registration No.">
+                        <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+                    </fieldset>
+                    <fieldset class="form-group floating-label-form-group">
+                        <label> Maintenance Cost</label>
+                        <input type="text" class="form-control" asp-for="MaintenanceCost" placeholder="Maintenance Cost">
+                        <span asp-validation-for="MaintenanceCost" class="text-danger"></span>
+                    </fieldset>
+                    <fieldset class="form-group floating-label-form-group">
+                        <label>Maintencace Description</label>
+                        <textarea class="form-control" rows="3" asp-for="MaintenanceDescription" placeholder="Maintenance Description"></textarea>
+                        <span asp-validation-for="MaintenanceDescription" class="text-danger"></span>
+                    </fieldset>
+                    <fieldset class="form-group floating-label-form-group">
+                        <label> Maintained By</label>
+                        <input type="text" class="form-control" asp-for="MaintainedBy" placeholder="Maintained By">
+                        <span asp-validation-for="MaintainedBy" class="text-danger"></span>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <input type="reset" class="btn btn-outline-secondary btn-lg" data-dismiss="modal"
+                           value="close">
+                    <input type="submit" class="btn btn-outline-primary btn-lg" value="Request Maintenance">
+                </div>
+            </form>
+        </div>
+    

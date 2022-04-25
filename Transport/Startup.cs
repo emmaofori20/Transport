@@ -12,6 +12,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Transport.Data;
+using Transport.Models.Data;
+using Transport.Repositories;
+using Transport.Repositories.IRepository;
+using Transport.Services;
+using Transport.Services.IServices;
 
 namespace Transport
 {
@@ -30,11 +35,24 @@ namespace Transport
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<TransportDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+            services.AddMemoryCache();
+            //Adding the repositories
+            services.AddTransient<IVehicleMaintenanceRequestRepository, VehicleMaintenanceRequestRepository>();
+            services.AddTransient<IVehicleMaintenanceRequestStatusRepository, VehicleMaintenanceRequestStatusRepository>();
+            services.AddTransient<IVehicleMaintenanceSparePart, VehicleMaintenanceSparePartRepository>();
+            //Adding Services
+            services.AddScoped<IRequestService, RequestService>();
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

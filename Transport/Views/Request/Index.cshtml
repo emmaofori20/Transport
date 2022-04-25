@@ -17,8 +17,19 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownBreadcrumbButton">
                     <a class="dropdown-item"><i class="la la-calendar-check-o"></i> Routine Maintenance </a>
-                    <a class="dropdown-item" href="#"><i class="la la-cart-plus"></i> Request Maintenance</a>
+                    <a class="dropdown-item" data-toggle="modal"
+                       data-target="#bootstrap"><i class="la la-cart-plus"></i> Request Maintenance</a>
                 </div>
+                @* Request Maintenance Partial View *@
+                <div class="modal fade text-left" id="bootstrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel35"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <partial name="_RequestMaintenancePartial">
+                    </div>
+
+                </div>
+                @* Request Maintenance Partial View *@
+
             </div>
         </div>
     </div>
