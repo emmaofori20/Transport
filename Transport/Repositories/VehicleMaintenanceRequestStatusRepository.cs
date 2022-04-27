@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +14,14 @@ namespace Transport.Repositories.IRepository
         public VehicleMaintenanceRequestStatusRepository(TransportDbContext context)
         {
             _context = context;
+        }
+
+        public VehicleMaintenanceRequestStatus GetVehicleMaintenanceRequestStatus(int RequestId)
+        {
+           var result= _context.VehicleMaintenanceRequestStatuses.Include(x => x.MaintainanceStatus)
+                        .OrderBy(x=>x.CreatedOn)
+                        .FirstOrDefault(x=>x.VehicleMaintenanceRequestId == RequestId);
+           return result;
         }
 
         public void PendingVehicleMaintenanceRequestStatus( int vehicleMaintenanceRequestId)

@@ -166,15 +166,15 @@
                     <a asp-action="Index" asp-controller="Vehicle"><i class="la la-bus"></i><span class="menu-title" data-i18n="nav.templates.main">Vehicle</span></a>
                 </li>
                 <li class=" nav-item">
-                    <a ><i class="la la-medkit"></i><span class="menu-title" data-i18n="nav.dash.main">Maintenance</span></a>
+                    <a><i class="la la-medkit"></i><span class="menu-title" data-i18n="nav.dash.main">Maintenance</span></a>
                     <ul class="menu-content">
                         <li>
-                            <a class="menu-item" asp-action="Index" asp-controller="Request" >Request</a>
+                            <a class="menu-item" asp-action="Index" asp-controller="Request">Request</a>
                         </li>
                         <li>
-                            <a asp-action="Index" asp-controller="Invoice" class="menu-item"  >Invoices</a>
+                            <a asp-action="Index" asp-controller="Invoice" class="menu-item">Invoices</a>
                         </li>
-                        
+
                     </ul>
                 </li>
                 <li class=" nav-item">
@@ -195,6 +195,7 @@
             @RenderBody()
         </div>
 
+
     </div>
 
 
@@ -205,7 +206,6 @@
     <script src="~/app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
     <!-- BEGIN VENDOR JS-->
     <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/menu/menu-types/vertical-menu-modern.css">
-
     <!-- BEGIN MODERN JS-->
     <script src="~/app-assets/js/core/app-menu.js" type="text/javascript"></script>
     <script src="~/app-assets/js/core/app.js" type="text/javascript"></script>
@@ -213,6 +213,14 @@
     <!-- END MODERN JS-->
     <!-- BEGIN PAGE LEVEL JS-->
     <script src="~/app-assets/js/scripts/pages/dashboard-sales.js" type="text/javascript"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+    @if (IsSectionDefined("Scripts"))
+    {
+        @RenderSection("Scripts", required: false)
+    }
+
+   @*@await RenderSectionAsync("Scripts", required: false)*@
+
+
 </body>
 </html>

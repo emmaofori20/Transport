@@ -7,7 +7,7 @@ namespace Transport.Models.Data
 {
     public partial class VehicleMaintenanceSparepart
     {
-        public string VehicleMaitenanceSparepartId { get; set; }
+        public int VehicleMaitenanceSparepartId { get; set; }
         public int VehicleMaintenanceRequestId { get; set; }
         public string NameOfPart { get; set; }
         public int Quantity { get; set; }
@@ -15,6 +15,7 @@ namespace Transport.Models.Data
         public string CreatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public string UpdatedBy { get; set; }
+        public decimal Amount { get; set; }
 
         public virtual VehicleMaintenanceRequest VehicleMaintenanceRequest { get; set; }
     }

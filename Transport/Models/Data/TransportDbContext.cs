@@ -36,7 +36,7 @@ namespace Transport.Models.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -416,17 +416,11 @@ namespace Transport.Models.Data
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
-                entity.Property(e => e.MaintainedBy)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .IsFixedLength(true);
+                entity.Property(e => e.MaintainedBy).HasMaxLength(255);
 
-                entity.Property(e => e.MainteinanceCost).HasColumnType("decimal(10, 0)");
+                entity.Property(e => e.MainteinanceCost).HasColumnType("decimal(18, 9)");
 
-                entity.Property(e => e.MaintenanceDescription)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .IsFixedLength(true);
+                entity.Property(e => e.MaintenanceDescription).HasMaxLength(255);
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(255);
 
@@ -478,10 +472,7 @@ namespace Transport.Models.Data
 
                 entity.ToTable("VehicleMaintenanceSparepart");
 
-                entity.Property(e => e.VehicleMaitenanceSparepartId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .IsFixedLength(true);
+                entity.Property(e => e.Amount).HasColumnType("money");
 
                 entity.Property(e => e.CreatedBy)
                     .IsRequired()

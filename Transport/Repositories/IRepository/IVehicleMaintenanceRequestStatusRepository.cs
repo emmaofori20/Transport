@@ -9,5 +9,7 @@ namespace Transport.Repositories.IRepository
     public interface IVehicleMaintenanceRequestStatusRepository
     {
         public void PendingVehicleMaintenanceRequestStatus(int  vehicleMaintenanceRequestId );
+
+        public VehicleMaintenanceRequestStatus GetVehicleMaintenanceRequestStatus(int RequestId);
     }
 }

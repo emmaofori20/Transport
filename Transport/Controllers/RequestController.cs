@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Transport.Models;
 using Transport.Services.IServices;
 using Transport.ViewModels;
 
@@ -18,21 +19,56 @@ namespace Transport.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            try
+            {
+                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
+                var data = new RequestVehicleViewModel
+                {
+                    VehicleMaintenanceRequests = results,
+                };
+                return View(data);
+
+            }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+          
         }
 
         [HttpPost]
-        public IActionResult MakeRequestMaintainance(RequestMaintenanceViewModel model)
+        public IActionResult MakeRequestMaintainance(RequestVehicleViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                //Making a Request Maintnace
-                var result = requestService.MakeRequestMaintenance(model);
-                return RedirectToAction("RequestSparePart", new { Id = result.VehicleMaintenanceRequestId });
+                if (ModelState.IsValid)
+                {
+                    //Making a Request Maintnace
+                    var result = requestService.MakeRequestMaintenance(model.requestMaintenance);
+                    return RedirectToAction("RequestSparePart", new { Id = result.VehicleMaintenanceRequestId });
 
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+
+                }
             }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+         
 
-            return RedirectToAction("Index");
+
 
         }
 
@@ -49,13 +85,65 @@ namespace Transport.Controllers
 
             try
             {
-                requestService.AddRequestSparePart(model, Id);
+                if (ModelState.IsValid)
+                {
+                    //returns true after method is completed
+                   requestService.AddRequestSparePart(model, Id);
+                    //return Json(Url.Action("RequestSparePartDetails", "Request"));
+                    return RedirectToAction("RequestSparePartDetails", new { ListId = Id});
+                }
+                
+               return View(model);
             }
             catch (Exception err)
             {
-               var error = err.Message;
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+
             }
-            return View();
+        }
+
+        public IActionResult RequestSparePartDetails(int ListId)
+        {
+            try
+            {
+                ViewData["RequestListId"] = ListId;
+                var results = requestService.VehicleMaintenanceRequestDetails(ListId);
+                return View(results);
+            }
+            catch ( Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+
+            }
+
+           
+        }
+
+        public IActionResult DeleteRequestMaintenance(int RequestId)
+        {
+            try
+            {
+                requestService.DeleteVehicleRequestMaintenance(RequestId);
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error",error);
+
+            }
         }
     }
 }

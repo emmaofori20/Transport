@@ -10,5 +10,11 @@ namespace Transport.Repositories.IRepository
    public interface IVehicleMaintenanceRequestRepository
     {
         public VehicleMaintenanceRequest VehicleMaintenanceRequest(RequestMaintenanceViewModel model);
+
+        public VehicleMaintenanceRequest GetMaintenanceRequest(int RequestId);
+
+        public List<VehicleMaintenanceRequest> GetAllMaintenanceRequest();
+
+        public void DeleteVehicleRequestMaintenance(int RequestId);
     }
 }

@@ -47,7 +47,7 @@ namespace Transport
             //Adding the repositories
             services.AddTransient<IVehicleMaintenanceRequestRepository, VehicleMaintenanceRequestRepository>();
             services.AddTransient<IVehicleMaintenanceRequestStatusRepository, VehicleMaintenanceRequestStatusRepository>();
-            services.AddTransient<IVehicleMaintenanceSparePart, VehicleMaintenanceSparePartRepository>();
+            services.AddTransient<IVehicleMaintenanceSparePartRepository, VehicleMaintenanceSparePartRepository>();
             //Adding Services
             services.AddScoped<IRequestService, RequestService>();
 
