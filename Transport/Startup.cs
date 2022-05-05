@@ -50,6 +50,7 @@ namespace Transport
             services.AddTransient<IVehicleMaintenanceSparePartRepository, VehicleMaintenanceSparePartRepository>();
             //Adding Services
             services.AddScoped<IRequestService, RequestService>();
+            services.AddScoped<IInvoiceService, InvoiceService>();
 
 
 

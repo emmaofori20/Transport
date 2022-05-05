@@ -18,5 +18,7 @@ namespace Transport.Services.IServices
         public List<VehicleMaintenanceRequestsViewModel> GetAllVehicleMaintenanceRequest();
 
         public void DeleteVehicleRequestMaintenance(int RequestId);
+
+        public void EdiVehicleRequestMaintenance(int RequestId);
     }
 }

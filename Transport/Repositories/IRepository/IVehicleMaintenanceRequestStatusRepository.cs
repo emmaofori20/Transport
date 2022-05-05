@@ -11,5 +11,11 @@ namespace Transport.Repositories.IRepository
         public void PendingVehicleMaintenanceRequestStatus(int  vehicleMaintenanceRequestId );
 
         public VehicleMaintenanceRequestStatus GetVehicleMaintenanceRequestStatus(int RequestId);
+
+        //Just adding a new insertion
+        public void ApproveVehicleMaintenance(int RequestId);
+
+        //Removing/Unapproing a RequestMaintenance
+        public void UnApproveVehicleMaintenance(int RequestId);
     }
 }

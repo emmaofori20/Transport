@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace Transport.Models.Data
 {
-    public partial class MaintainanceStatus
+    public partial class MaintenanceStatus
     {
-        public MaintainanceStatus()
+        public MaintenanceStatus()
         {
             VehicleMaintenanceRequestStatuses = new HashSet<VehicleMaintenanceRequestStatus>();
         }
 
-        public int MaintainanceStatusId { get; set; }
+        public int MaintenanceStatusId { get; set; }
         public string StatusName { get; set; }
         public DateTime CreatedOn { get; set; }
         public string CreatedBy { get; set; }

@@ -21,6 +21,7 @@ namespace Transport.Controllers
         {
             try
             {
+
                 List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
                 var data = new RequestVehicleViewModel
                 {
@@ -131,7 +132,7 @@ namespace Transport.Controllers
         {
             try
             {
-                requestService.DeleteVehicleRequestMaintenance(RequestId);
+               // requestService.DeleteVehicleRequestMaintenance(RequestId);
                 return RedirectToAction("Index");
 
             }
@@ -143,6 +144,47 @@ namespace Transport.Controllers
                 };
                 return View("Error",error);
 
+            }
+        }
+
+        public IActionResult EditRequestMaintenance(int RequestId)
+        {
+            try
+            {
+                ViewData["EditRequestListId"] = RequestId;
+                var results = requestService.VehicleMaintenanceRequestDetails(RequestId);
+                return View(results);
+
+            }
+            catch (Exception err)
+            {
+
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult EditRequestMaintenance(VehicleMaintenanceRequestDetailsViewModel model,int RequestId)
+        {
+            try
+            {
+                //ViewData["EditRequestListId"] = RequestId;
+               // var results = requestService.VehicleMaintenanceRequestDetails(RequestId);
+                return View();
+
+            }
+            catch (Exception err)
+            {
+
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
             }
         }
     }

@@ -1,0 +1,130 @@
+﻿@model RequestVehicleViewModel
+<link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/datatables.min.css">
+
+
+                    @if (@Model.VehicleMaintenanceRequests.Count > 1)
+                    {
+                        <div class="card-content">
+                            <div class="card-body">
+                                <!-- Invoices List table -->
+                                <div class="table-responsive">
+                                    <table id="invoices-list" class=" table table-striped table-bordered zero-configuration ">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <input type="checkbox" class="input-chk-all">
+                                                </th>
+                                                <th>Date</th>
+                                                <th>Invoice #</th>
+                                                <th>Maintained By</th>
+                                                <th>Status</th>
+                                                <th>Amount</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- PAID -->
+                                            @for (int i = 0; i < @Model.VehicleMaintenanceRequests.Count; i++)
+                                            {
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" class="input-chk">
+                                                </td>
+                                                <td>@Model.VehicleMaintenanceRequests[i].Date</td>
+                                                <td>
+                                                    <a class="text-bold-600">
+                                                        INV-@Model.VehicleMaintenanceRequests[i].RequestId-@Model.VehicleMaintenanceRequests[i].spareParts
+                                                    </a>
+                                                </td>
+                                                <td>@Model.VehicleMaintenanceRequests[i].MaintainedBy</td>
+                                                @if (@Model.VehicleMaintenanceRequests[i].Status == "Approved")
+                                                {
+                                                    <td>
+                                                        <span class="badge badge-default badge-success badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
+                                                    </td>
+                                                }
+                                                else if (@Model.VehicleMaintenanceRequests[i].Status == "Completed")
+                                                {
+                                                    <td>
+                                                        <span class="badge badge-default badge-light badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <span class="badge badge-default badge-danger badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
+                                                    </td>
+                                                }
+                                                
+                                                <td>Ghc @Model.VehicleMaintenanceRequests[i].MaintenanceCost</td>
+                                                <td>
+                                                    <span class="dropdown">
+                                                        <button id="btnSearchDrop2" type="button" data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="true" class="btn btn-primary dropdown-toggle dropdown-menu-right">
+                                                            <i class="ft-settings"></i>
+                                                        </button>
+                                                        <span aria-labelledby="btnSearchDrop2" class="dropdown-menu mt-1 dropdown-menu-right">
+                                                            <a asp-action="RequestSparePartDetails" asp-controller="Request" asp-route-ListId="@Model.VehicleMaintenanceRequests[i].RequestId" class="dropdown-item">
+                                                                <i class="la la-eye"></i> View Request
+                                                            </a>
+
+                                                            @if (@Model.VehicleMaintenanceRequests[i].Status == "Approved")
+                                                            {
+                                                                //No button displayed
+                                                            }
+                                                            else
+                                                            {
+                                                                <a asp-action="EditRequestMaintenance" asp-controller="Request" asp-route-RequestId="@Model.VehicleMaintenanceRequests[i].RequestId" class="dropdown-item">
+                                                                    <i class="la la-pencil"></i> Edit Request
+                                                                </a>
+                                                            }
+
+                                                            <button onclick="return ConfirmDelete(this)" type="button" id="confirm-color" class="dropdown-item">
+                                                                <i class="la la-trash"></i> Delete Request
+                                                            </button>
+                                                        </span>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            }
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>
+                                                    <input type="checkbox" class="input-chk-all">
+                                                </th>
+                                                <th>Date</th>
+                                                <th>Invoice #</th>
+                                                <th>Maintained By</th>
+                                                <th>Status</th>
+                                                <th>Amount</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <!--/ Invoices table -->
+                            </div>
+                        </div>
+
+
+                    }
+                    else
+                    {
+                        <div class="card-content">
+                            <div class="card-body">
+                                <!-- Invoices List table if Empty -->
+                                <div class="table-responsive">
+                                    <h4>No records Available</h4>
+                                </div>
+                                <!--/ Invoices table if empty-->
+                            </div>
+                        </div>
+                    }
+
+
+<script>
+     $(document).ready(function () {
+        $('#invoices-list').DataTable();
+    });
+</script>

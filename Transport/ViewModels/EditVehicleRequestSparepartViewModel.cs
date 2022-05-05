@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 
 namespace Transport.ViewModels
 {
-    public class RequestVehicleViewModel
+    public class EditVehicleRequestSparepartViewModel
     {
-
         public RequestMaintenanceViewModel requestMaintenance { get; set; }
 
-        public List< VehicleMaintenanceRequestsViewModel> VehicleMaintenanceRequests { get; set; }
+        public List<VehicleMaintananceSparepartViewModel> VehicleMaintenanceSparepart { get; set; }
+
+        public int RequestId { get; set; }
     }
 }

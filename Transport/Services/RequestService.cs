@@ -69,14 +69,14 @@ namespace Transport.Services
             //Preparing the List
             var Details = new VehicleMaintenanceRequestDetailsViewModel
             {
-                MaintainedBy= requestMaintenance.MaintainedBy,
-                MaintenanceCost = requestMaintenance.MainteinanceCost,
                 MaintenanceDescription = requestMaintenance.MaintenanceDescription,
                 RegistrationNumber = requestMaintenance.VehicleId,//later change to string
-                Status = requestStatus.MaintainanceStatus.StatusName,
+                Status = requestStatus.MaintenanceStatus.StatusName,
                 Date = requestMaintenance.CreatedOn,
                 RequestId= requestMaintenance.VehicleMaintenanceRequestId,
-                spareParts = _spareParts
+                spareParts = _spareParts,
+                MaintainedBy = requestMaintenance.CreatedBy
+                
             };
 
             return Details;
@@ -94,19 +94,20 @@ namespace Transport.Services
                 //Preparing the List
                 var singleRequestDetals = new VehicleMaintenanceRequestsViewModel
                 {
-                    MaintainedBy = AllvehicleMaintenanceRequest[i].MaintainedBy,
-                    MaintenanceCost = AllvehicleMaintenanceRequest[i].MainteinanceCost,
                     RegistrationNumber = AllvehicleMaintenanceRequest[i].VehicleId  ,//later change to string                    
-                   /* Status = AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestStatuses
-                                            .OrderBy(x => x.CreatedOn)
+                    Status = AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestStatuses
+                                            .OrderByDescending(x => x.CreatedOn)
                                             .FirstOrDefault(x => x.VehicleMaintenanceRequestId == AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId)
-                                            .MaintainanceStatus.StatusName,*/// getting status name
+                                            .MaintenanceStatus.StatusName,// getting status name
                     spareParts = AllvehicleMaintenanceRequest[i].VehicleMaintenanceSpareparts
                                             .Where(x=>x.VehicleMaintenanceRequestId == AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId)
                                             .Count(),//getting total list of spareprt to display number
                     RequestId = AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId,
-                    Date = AllvehicleMaintenanceRequest[i].CreatedOn
-                    
+                    Date = AllvehicleMaintenanceRequest[i].CreatedOn,
+                    MaintainedBy = AllvehicleMaintenanceRequest[i].CreatedBy,
+                    MaintenanceCost = AllvehicleMaintenanceRequest[i].VehicleMaintenanceSpareparts
+                    .Where(x => x.VehicleMaintenanceRequestId == AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId)
+                    .Sum(c=>c.Amount*c.Quantity)
                 };
 
                 AllRequestList.Add(singleRequestDetals);
@@ -121,6 +122,11 @@ namespace Transport.Services
         public void DeleteVehicleRequestMaintenance(int RequestId)
         {
             vehicleMaintenanceRequestRepository.DeleteVehicleRequestMaintenance(RequestId);
+        }
+
+        public void EdiVehicleRequestMaintenance(int RequestId)
+        {
+
         }
     }
 }

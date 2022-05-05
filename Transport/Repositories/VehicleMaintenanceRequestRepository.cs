@@ -20,7 +20,9 @@ namespace Transport.Repositories
 
         public VehicleMaintenanceRequest GetMaintenanceRequest(int RequestId)
         {
-            return _context.VehicleMaintenanceRequests.Where(x => x.VehicleMaintenanceRequestId == RequestId).FirstOrDefault();
+            return _context.VehicleMaintenanceRequests
+                .Where(x => x.VehicleMaintenanceRequestId == RequestId)
+                .FirstOrDefault();
         }
 
         public List<VehicleMaintenanceRequest> GetAllMaintenanceRequest()
@@ -28,7 +30,7 @@ namespace Transport.Repositories
             return _context.VehicleMaintenanceRequests
                 .Include(x=>x.VehicleMaintenanceSpareparts)
                 .Include(x => x.VehicleMaintenanceRequestStatuses)
-                .ThenInclude(x => x.MaintainanceStatus)
+                .ThenInclude(x => x.MaintenanceStatus)
                 .ToList();
         }
 
@@ -37,8 +39,6 @@ namespace Transport.Repositories
             //Saving/adding Request Maintenance Data into the database
             VehicleMaintenanceRequest vehicleMaintenanceRequest = new VehicleMaintenanceRequest
             {
-                MaintainedBy = model.MaintainedBy,
-                MainteinanceCost = (decimal)model.MaintenanceCost,
                 VehicleId = 1,
                 MaintenanceDescription = model.MaintenanceDescription,
                 CreatedBy = "AdminTest",

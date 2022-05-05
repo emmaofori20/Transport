@@ -14,21 +14,21 @@
                         <input type="text" class="form-control" asp-for="requestMaintenance.RegistrationNumber" placeholder="Vehicle Registration No.">
                         <span asp-validation-for="requestMaintenance.RegistrationNumber" class="text-danger"></span>
                     </fieldset>
-                    <fieldset class="form-group floating-label-form-group">
+                    @*<fieldset class="form-group floating-label-form-group">
                         <label> Maintenance Cost</label>
                         <input type="text" class="form-control" asp-for="requestMaintenance.MaintenanceCost" placeholder="Maintenance Cost">
                         <span asp-validation-for="requestMaintenance.MaintenanceCost" class="text-danger"></span>
-                    </fieldset>
+                    </fieldset>*@
                     <fieldset class="form-group floating-label-form-group">
                         <label>Maintencace Description</label>
                         <textarea class="form-control" rows="3" asp-for="requestMaintenance.MaintenanceDescription" placeholder="Maintenance Description"></textarea>
                         <span asp-validation-for="requestMaintenance.MaintenanceDescription" class="text-danger"></span>
                     </fieldset>
-                    <fieldset class="form-group floating-label-form-group">
+                    @*<fieldset class="form-group floating-label-form-group">
                         <label> Maintained By</label>
                         <input type="text" class="form-control" asp-for="requestMaintenance.MaintainedBy" placeholder="Maintained By">
                         <span asp-validation-for="requestMaintenance.MaintainedBy" class="text-danger"></span>
-                    </fieldset>
+                    </fieldset>*@
                 </div>
                 <div class="modal-footer">
                     <input type="reset" class="btn btn-outline-secondary btn-lg" data-dismiss="modal"
