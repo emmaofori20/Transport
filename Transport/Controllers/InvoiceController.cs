@@ -4,84 +4,161 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Transport.Models;
+using Transport.Services.IServices;
+using Transport.ViewModels;
 
 namespace Transport.Controllers
 {
     public class InvoiceController : Controller
     {
+        public IRequestService requestService;
+        private readonly IInvoiceService invoiceService;
+
+        public InvoiceController(IRequestService _requestService, IInvoiceService invoiceService)
+        {
+            requestService = _requestService;
+            this.invoiceService = invoiceService;
+        }
         // GET: MaintenanceController
         public ActionResult Index()
         {
-            return View();
+            List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
+            var data = new RequestVehicleViewModel
+            {
+                VehicleMaintenanceRequests = results,
+            };
+            return View(data);
         }
 
-        // GET: MaintenanceController/Details/5
-        public ActionResult Details(int id)
+
+        public PartialViewResult AllRequestMaintenance()
         {
-            return View();
-        }
 
-        // GET: MaintenanceController/Create
-        public ActionResult Create()
+            try
+            {
+                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
+                var data = new RequestVehicleViewModel
+                {
+                    VehicleMaintenanceRequests = results,
+                };
+                return PartialView("_AllVehicleRequestPartialView",data);
+
+            }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return PartialView();
+            }
+        } 
+        
+        public PartialViewResult AllRoutineMaintenance()
         {
-            return View();
+
+            try
+            {
+                
+                return PartialView();
+
+            }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return PartialView();
+            }
         }
 
-        // POST: MaintenanceController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public PartialViewResult PendingVehicleRequest()
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
+                var PendingVehicleRequest = new RequestVehicleViewModel
+                {
+                    VehicleMaintenanceRequests = results.Where(x=>x.Status == "Pending").ToList(),
+                };
+                return PartialView("_PendingVehicleRequestPartialView", PendingVehicleRequest);
             }
-            catch
+            catch (Exception err)
             {
-                return View();
+
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+
+                return PartialView();
+
             }
         }
 
-        // GET: MaintenanceController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: MaintenanceController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: MaintenanceController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: MaintenanceController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        //Gets all Approved list for all Approved vehicles
+        public PartialViewResult GetApproveRequestMaintenance()
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
+                var ApprovedVehicleRequest = new RequestVehicleViewModel
+                {
+                    VehicleMaintenanceRequests = results.Where(x => x.Status == "Approved").ToList(),
+                };
+                return PartialView("_ApprovedVehicleRequestPartialView", ApprovedVehicleRequest);
             }
-            catch
+            catch (Exception err)
             {
-                return View();
+
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+
+                return PartialView();
+
             }
+        }
+
+
+        //Sets a list to approved
+        public void ApproveRequestMaintenance(int RequestId)
+        {
+            try
+            {
+                invoiceService.ApproveInvoice(RequestId);
+            }
+            catch (Exception err)
+            {
+
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+
+            }
+        }
+
+        //Unapproving a request List 
+        public void UnApproveMaintenance(int RequestId)
+        {
+            try
+            {
+                invoiceService.UnApprovedInvoice(RequestId);
+            }
+            catch (Exception err)
+            {
+
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+
+            }
+
         }
     }
 }

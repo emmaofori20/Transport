@@ -1,5 +1,5 @@
 ﻿<!-- Request Maintenace Modal -->
-@model RequestMaintenanceViewModel
+@model RequestVehicleViewModel
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title" id="myModalLabel35"> Request Maintenance form </h3>
@@ -11,24 +11,24 @@
                 <div class="modal-body">
                     <fieldset class="form-group floating-label-form-group">
                         <label> Vehicle Registeration No. </label>
-                        <input type="text" class="form-control" asp-for="RegistrationNumber" placeholder="Vehicle Registration No.">
-                        <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+                        <input type="text" class="form-control" asp-for="requestMaintenance.RegistrationNumber" placeholder="Vehicle Registration No.">
+                        <span asp-validation-for="requestMaintenance.RegistrationNumber" class="text-danger"></span>
                     </fieldset>
-                    <fieldset class="form-group floating-label-form-group">
+                    @*<fieldset class="form-group floating-label-form-group">
                         <label> Maintenance Cost</label>
-                        <input type="text" class="form-control" asp-for="MaintenanceCost" placeholder="Maintenance Cost">
-                        <span asp-validation-for="MaintenanceCost" class="text-danger"></span>
-                    </fieldset>
+                        <input type="text" class="form-control" asp-for="requestMaintenance.MaintenanceCost" placeholder="Maintenance Cost">
+                        <span asp-validation-for="requestMaintenance.MaintenanceCost" class="text-danger"></span>
+                    </fieldset>*@
                     <fieldset class="form-group floating-label-form-group">
                         <label>Maintencace Description</label>
-                        <textarea class="form-control" rows="3" asp-for="MaintenanceDescription" placeholder="Maintenance Description"></textarea>
-                        <span asp-validation-for="MaintenanceDescription" class="text-danger"></span>
+                        <textarea class="form-control" rows="3" asp-for="requestMaintenance.MaintenanceDescription" placeholder="Maintenance Description"></textarea>
+                        <span asp-validation-for="requestMaintenance.MaintenanceDescription" class="text-danger"></span>
                     </fieldset>
-                    <fieldset class="form-group floating-label-form-group">
+                    @*<fieldset class="form-group floating-label-form-group">
                         <label> Maintained By</label>
-                        <input type="text" class="form-control" asp-for="MaintainedBy" placeholder="Maintained By">
-                        <span asp-validation-for="MaintainedBy" class="text-danger"></span>
-                    </fieldset>
+                        <input type="text" class="form-control" asp-for="requestMaintenance.MaintainedBy" placeholder="Maintained By">
+                        <span asp-validation-for="requestMaintenance.MaintainedBy" class="text-danger"></span>
+                    </fieldset>*@
                 </div>
                 <div class="modal-footer">
                     <input type="reset" class="btn btn-outline-secondary btn-lg" data-dismiss="modal"

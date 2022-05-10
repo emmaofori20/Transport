@@ -12,5 +12,13 @@ namespace Transport.Services.IServices
         public VehicleMaintenanceRequest MakeRequestMaintenance( RequestMaintenanceViewModel model);
 
         public void AddRequestSparePart(List<VehicleMaintananceSparepartViewModel> model, int SparePartListId);
+
+        public VehicleMaintenanceRequestDetailsViewModel VehicleMaintenanceRequestDetails(int ListId);
+
+        public List<VehicleMaintenanceRequestsViewModel> GetAllVehicleMaintenanceRequest();
+
+        public void DeleteVehicleRequestMaintenance(int RequestId);
+
+        public void EdiVehicleRequestMaintenance(int RequestId);
     }
 }

@@ -23,7 +23,7 @@
                             <div class="repeater-default">
                                     <div data-repeater-list id="List">
                                         <div data-repeater-item>
-                                            <div class="form row" style="background-color:blue;">
+                                            <div class="form row" >
                                                 <div class="form-group mb-1 col-sm-12 col-md-2">
                                                     <label>Spare Part</label>
                                                     <br>
@@ -33,6 +33,11 @@
                                                     <label for="pass">Quantity</label>
                                                     <br>
                                                     <input type="number" data-id="id" asp-for="Quantity" class="form-control" min="1">
+                                                </div>
+                                                <div class="form-group mb-1 col-sm-12 col-md-2">
+                                                    <label for="pass">Amount</label>
+                                                    <br>
+                                                    <input type="number" data-id="id" asp-for="Amount"  class="form-control"  placeholder="Enter Amount">
                                                 </div>
                                                 <div class="form-group col-sm-12 col-md-2 text-center mt-2">
                                                     <button type="button" class="btn btn-danger" data-repeater-delete> <i class="ft-x"></i> Delete</button>
@@ -84,26 +89,27 @@
         let inputs = document.querySelectorAll('input');
         let test = document.getElementsByClassName('form-control');
         console.log(test)
-
+        debugger;
         for (var i = 0; i < test.length; i++) {
             let obj = {};
             let sparename;
-            let quantity
+            let quantity;
+            let amount;
 
             if (test[i].getAttribute('id') == "SparePartName" ) {
                 sparename = test[i].value;
-                quantity = test[i + 1].value;
-                i++;
+                quantity = test[i+1].value;
+                amount = test[i+2].value;
+                i = i+2;
             } else {
 
             }
-            obj = { "SparePartName" : sparename, "Quantity" : quantity };
+            obj = { "SparePartName" : sparename, "Quantity" : quantity, "Amount":amount };
             List.push(obj);
             
         }
 
         console.log('the list',List);
-        debugger;
         $.ajax({
             url: '/Request/RequestSparePart',
             dataType: 'html',
@@ -111,25 +117,14 @@
             data: { 'model': List, 'Id': ListId},
             success: function (res) {
                 console.log('Sucess');
+                window.location.href = `/Request/RequestSparePartDetails?ListId=${ListId}`;
             },
             error: function (err) {
                 console.log(err, "err");
             }
         })
 
-        $.ajax({
-            url: '<%: Url.Action("SaveComments")%>',
-            data: { 'id': selectedId, 'comments': comments },
-            type: "post",
-            cache: false,
-            success: function (savingStatus) {
-                $("#hdnOrigComments").val($('#txtComments').val());
-                $('#lblCommentsNotification').text(savingStatus);
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                $('#lblCommentsNotification').text("Error encountered while saving the comments.");
-            }
-        });
+   
 
 
      

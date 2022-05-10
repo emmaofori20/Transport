@@ -13,7 +13,7 @@ namespace Transport.ViewModels
         [Required]
         public string MaintenanceDescription { get; set; }
         [Required]
-        public int MaintenanceCost { get; set; }
+        public double MaintenanceCost { get; set; }
         public string MaintainedBy { get; set; }
     }
 }

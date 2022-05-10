@@ -12,5 +12,7 @@ namespace Transport.ViewModels
         public int Quantity { get; set; }
         [Required]
         public string SparePartName { get; set; }
+        [Required]
+        public double Amount { get; set; }
     }
 }

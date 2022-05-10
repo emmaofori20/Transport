@@ -8,7 +8,7 @@ using Transport.Repositories.IRepository;
 
 namespace Transport.Repositories
 {
-    public class VehicleMaintenanceSparePartRepository: IVehicleMaintenanceSparePart
+    public class VehicleMaintenanceSparePartRepository: IVehicleMaintenanceSparePartRepository
     {
         private readonly TransportDbContext _context;
 
@@ -25,12 +25,19 @@ namespace Transport.Repositories
                 Quantity =sparePart.Quantity,
                 NameOfPart = sparePart.SparePartName,
                 VehicleMaintenanceRequestId = ListId,
+                Amount = (decimal)sparePart.Amount,
                 CreatedBy= "Admin",
                 CreatedOn= DateTime.Now
             };
 
             _context.VehicleMaintenanceSpareparts.Add(vehicleMaintenanceSparepart);
+            _context.SaveChanges();
+        }
 
+        public List<VehicleMaintenanceSparepart> GetList(int Id)
+        {
+            var results = _context.VehicleMaintenanceSpareparts.Where(x => x.VehicleMaintenanceRequestId == Id).ToList();
+            return results;
         }
     }
 }
