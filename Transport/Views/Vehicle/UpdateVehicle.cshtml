@@ -1,0 +1,350 @@
+﻿@model UpdateVehicleViewModel
+
+@{
+    ViewBag.Title = "Update Vehicle";
+}
+<!-- BEGIN VENDOR CSS-->
+<link rel="stylesheet" type="text/css" href="~/app-assets/css/vendors.css">
+<link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/pickers/daterange/daterangepicker.css">
+<!-- END VENDOR CSS-->
+<!-- BEGIN MODERN CSS-->
+<link rel="stylesheet" type="text/css" href="~/app-assets/css/app.css">
+<!-- END MODERN CSS-->
+<!-- BEGIN Page Level CSS-->
+<link rel="stylesheet" type="text/css" href="~/app-assets/css/core/menu/menu-types/vertical-menu-modern.css">
+<link rel="stylesheet" type="text/css" href="~/app-assets/css/core/colors/palette-gradient.css">
+<link rel="stylesheet" type="text/css" href="~/app-assets/css/plugins/forms/wizard.css">
+<link rel="stylesheet" type="text/css" href="~/app-assets/css/plugins/pickers/daterange/daterange.css">
+<!-- END Page Level CSS-->
+<!-- BEGIN Custom CSS-->
+<link rel="stylesheet" type="text/css" href="~/assets/css/style.css">
+<!-- END Custom CSS-->
+
+<div>
+    <div class="content-header row">
+        <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
+            <h3 class="content-header-title mb-0 d-inline-block">Edit Vehicle</h3>
+
+        </div>
+    </div>
+    <!-- Form wizard with icon tabs section start -->
+    <section id="icon-tabs">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Registration Particulars</h4>
+                        <a class="heading-elements-toggle"><i class="la la-ellipsis-h font-medium-3"></i></a>
+
+                    </div>
+                    <div class="card-content collapse show">
+                        <div class="card-body">
+                            <form method="post" enctype="multipart/form-data" asp-action="UpdateVehicle" asp-controller="Vehicle" id="my_Form" class="icons-tab-steps wizard-circle">
+                                <!-- Step 1 -->
+                                <input type="hidden" asp-for="VehicleId" class="form-control" />
+                                <h6><i class="step-icon la la-home"></i>Step 1</h6>
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="@Model.RegistrationNumber">Vehicle Registration Number :</label>
+                                                <input type="text" class="form-control required" asp-for="RegistrationNumber">
+                                                <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="@Model.OldRegistrationNumber">Vehicle Registration Number(Old) :</label>
+                                                <input type="text" class="form-control" asp-for="OldRegistrationNumber">
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="@Model.Owner">Owner :</label>
+                                                <input type="text" class="form-control required" asp-for="@Model.Owner">
+                                                <span asp-validation-for="Owner" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="">Use of Vehicle :</label>
+                                                <select class="custom-select form-control required" asp-for="@Model.VehicleUseId" asp-items="@ViewBag.UseOfVehicle">
+                                                    <option value="" selected>Private/Commercial</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Postal Address :</label>
+                                                <input type="text" class="form-control required" asp-for="PostalAddress">
+                                                <span asp-validation-for="PostalAddress" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Residential Address :</label>
+                                                <input type="text" class="form-control" asp-for="ResidentialAddress">
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="@Model.CollegeId">College/Unit :</label>
+                                                <select class="custom-select form-control required" asp-for="@Model.CollegeId" asp-items="@ViewBag.Colleges">
+                                                    <option value="">Select College...</option>
+
+                                                </select>
+                                                <span asp-validation-for="CollegeId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Department/Unit :</label>
+                                                <select class="custom-select form-control required" asp-for="@Model.DepartmentId" asp-items="@ViewBag.Departments">
+                                                    <option value="">Select Department...</option>
+                                                </select>
+                                                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Step 2 -->
+                                <h6><i class="step-icon la la-pencil"></i>Step 2</h6>
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="@Model.MakeId">Make of Vehicle :</label>
+                                                <select class="custom-select form-control required" asp-for="@Model.MakeId" asp-items="@ViewBag.Makes">
+                                                    <option value="">Select Make...</option>
+                                                </select>
+                                                <span asp-validation-for="MakeId" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="@Model.Model">Model of Vehicle :</label>
+                                                <input class="form-control required" asp-for="@Model.Model">
+                                                <span asp-validation-for="Model" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Type :</label>
+                                                <input asp-for="@Model.VehicleType" type="text" class="form-control required">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Additional Description :</label>
+                                                <textarea asp-for="@Model.Description" class="form-control" placeholder="Brief description of vehicle..."></textarea>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Colour :</label>
+                                                <input type="text" class="form-control required" asp-for="Colour">
+                                                <span asp-validation-for="Colour" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="location2">Insurance Policy :</label>
+                                                <select class="custom-select form-control required" asp-for="@Model.InsuranceId" asp-items="@ViewBag.Insurances">
+                                                    <option value="">Select Policy...</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Policy Number :</label>
+                                                <input type="text" class="form-control required" asp-for="@Model.PolicyNumber">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Vehicle Status :</label>
+                                                <select class="custom-select form-control required" asp-for="@Model.StatusId" asp-items="@ViewBag.Statuses">
+                                                    <option value="">Select Status...</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Step 3 -->
+                                <h6><i class="step-icon la la-tv"></i>Step 3</h6>
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Chasis Number :</label>
+                                                <input type="text" class="form-control required" asp-for="ChasisNumber">
+                                                <span asp-validation-for="ChasisNumber" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Country of Origin :</label>
+                                                <input type="text" class="form-control required" asp-for="CountryOfOrigin">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Year of Manufacture :</label>
+                                                <input type="date" class="form-control" asp-for="YearOfManufacture">
+                                                <span asp-validation-for="YearOfManufacture" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Number of Axles :</label>
+                                                <input type="number" class="form-control" asp-for="NumberOfAxles" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="eventStatus2">Number of Wheels :</label>
+                                                <input type="number" class="form-control required" asp-for="NumberOfWheels" />
+                                                <span asp-validation-for="NumberOfWheels" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span class="font-weight-normal">Measurements (cm) :</span> <br /><br />
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <input type="number" class="form-control" asp-for="Length" placeholder="Length">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="number" class="form-control" asp-for="Width" placeholder="Width">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="number" class="form-control" asp-for="Height" placeholder="Height">
+                                                </div>
+                                            </div><br />
+                                            <span class="font-weight-normal">Sizes of Tyres :</span> <br />
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control required" asp-for="SizeOfFrontTyre" placeholder="Front">
+                                                    <span asp-validation-for="SizeOfFrontTyre" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" asp-for="SizeofMiddleTyre" placeholder="Middle">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control required" asp-for="SizeOfRearTyre" placeholder="Rear">
+                                                    <span asp-validation-for="SizeOfRearTyre" class="text-danger"></span>
+                                                </div>
+                                            </div><br />
+                                            <span class="font-weight-normal">Perm.Axle Load (kg) :</span> <br />
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" asp-for="FrontPermAxleLoad" placeholder="Front">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" asp-for="MiddlePermAxleLoad" placeholder="Middle">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" asp-for="RearPermAxleLoad" placeholder="Rear">
+                                                </div>
+                                            </div><br />
+                                            <span class="font-weight-normal">Weight (kg) :</span> <br />
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <input type="number" class="form-control" asp-for="NetVehicleWeight" placeholder="NVM">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="number" class="form-control" asp-for="GrossVehicleWeight" placeholder="GVM">
+                                                </div>
+                                            </div><br />
+                                            <span class="font-weight-normal">Perm. Capacity :</span> <br />
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <input type="number" class="form-control" asp-for="PermCapacityLoad" placeholder="Load(kg)">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control required" asp-for="NumberOfPersons" placeholder="Number of Persons">
+                                                    <span asp-validation-for="NumberOfPersons" class="text-danger"></span>
+                                                </div>
+                                            </div><br />
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Step 4 -->
+                                <h6><i class="step-icon la la-image"></i>Step 4</h6>
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="location2">Make of Engine :</label>
+                                                <select class="custom-select form-control required" asp-for="@Model.MakeId" asp-items="@ViewBag.Makes">
+                                                    <option value="">Select Make...</option>
+                                                </select>
+                                                <span asp-validation-for="MakeId" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Engine Number :</label>
+                                                <input type="text" class="form-control required" asp-for="EngineNumber">
+                                                <span asp-validation-for="EngineNumber" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Number of Cylinders :</label>
+                                                <input type="number" asp-for="NumberOfCylinders" class="form-control required" />
+                                                <span asp-validation-for="NumberOfCylinders" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="DateOfEntry">Date of Entry :</label>
+                                                <input type="date" class="form-control" asp-for="DateOfEntry">
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="EngineCapacity">CC :</label>
+                                                <input type="number" class="form-control required" asp-for="EngineCapacity">
+                                                <span asp-validation-for="EngineCapacity" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="HorsePower">Horse Power :</label>
+                                                <input type="number" class="form-control" asp-for="HorsePower">
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="FuelType">Fuel :</label>
+                                                <input type="text" class="form-control required" asp-for="FuelType">
+                                            </div>
+                                            <div class="upload__box">
+                                                <div class="upload__btn-box">
+                                                    <label class="upload__btn"></label>
+                                                    <p>Upload images</p>
+                                                    <input type="file" multiple="" data-max_length="20" class="upload__inputfile" asp-for="PhotoFiles">
+
+                                                </div>
+                                                <div class="upload__img-wrap"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Form wizard with icon tabs section end -->
+</div>
+
+
+@* Scripts *@
+<!-- BEGIN VENDOR JS-->
+<script src="~/app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
+<!-- BEGIN VENDOR JS-->
+<!-- BEGIN PAGE VENDOR JS-->
+<script src="~/app-assets/vendors/js/extensions/jquery.steps.min.js" type="text/javascript"></script>
+<script src="~/app-assets/vendors/js/pickers/dateTime/moment-with-locales.min.js"
+        type="text/javascript"></script>
+<script src="~/app-assets/vendors/js/pickers/daterange/daterangepicker.js"
+        type="text/javascript"></script>
+<script src="~/app-assets/vendors/js/forms/validation/jquery.validate.min.js"
+        type="text/javascript"></script>
+<!-- END PAGE VENDOR JS-->
+<!-- BEGIN PAGE LEVEL JS-->
+<script src="~/app-assets/js/scripts/forms/wizard-steps.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL JS-->

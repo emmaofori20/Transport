@@ -46,67 +46,7 @@ $(".steps").steps({
         finish: 'Submit'
     },
     onFinished: function (event, currentIndex) {
-        GetList();
-        function GetList() {
-            var EditForm = {}
-            var RequestId = document.getElementById('RequestId').value;
-            var RegistrationNumber = document.getElementById('RegistrationNumber').value;
-            var MaintenanceDescription = document.getElementById('projectinput8').value;
-            //var List = document.getElementById('List').childElementCount;
-            var numberOfInputs = $("#List .form.row .form-group input");
-
-            var List = [];
-            debugger;
-
-            //for loop..... please take care and overview
-            for (var i = 0; i < numberOfInputs.length; i++) {
-                let obj = {};
-                let sparename;
-                let quantity;
-                let amount;
-                if (numberOfInputs[i].getAttribute('id') == `spareParts_${i/3}__SparePartName`) {
-                    sparename = numberOfInputs[i].value;
-                    quantity = numberOfInputs[i + 1].value;
-                    amount = numberOfInputs[i + 2].value;
-                    i = i + 2;
-                } else {
-
-                }
-                obj = { "SparePartName": sparename, "Quantity": quantity, "Amount": amount };
-                List.push(obj);
-
-            }
-
-            EditForm = {
-                "RegistrationNumber": RegistrationNumber,
-                "MaintenanceDescription": MaintenanceDescription,
-                "RequestId": RequestId,
-                "spareParts": List
-            }
-
-            console.log('the final list', EditForm);
-
-            $.ajax({
-                url: '/Request/EditRequestMaintenance',
-                dataType: 'html',
-                method: 'post',
-                data: { 'model': EditForm, 'RequestId': RequestId },
-                success: function (res) {
-                    console.log('Sucess');
-                    window.location.href = `/Request/RequestSparePartDetails?ListId=${RequestId}`;
-                },
-                error: function (err) {
-                    console.log(err, "err");
-                }
-            })
-
-
-
-
-
-        }
-
-        //$("form").submit();
+        alert("Testing form submit");
     }
 });
 
@@ -167,7 +107,9 @@ $(".steps-validation").steps({
     },
     onFinished: function (event, currentIndex)
     {
+        $('#my_Form').submit();
         alert("Submitted!");
+        
     }
 });
 
