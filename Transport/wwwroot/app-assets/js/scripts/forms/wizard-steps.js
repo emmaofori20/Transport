@@ -32,7 +32,9 @@ $(".icons-tab-steps").steps({
         finish: 'Submit'
     },
     onFinished: function (event, currentIndex) {
+        
         alert("Form submitted.");
+        $('#my_Form').submit();
     }
 });
 
@@ -93,7 +95,9 @@ $(".steps-validation").steps({
     },
     onFinished: function (event, currentIndex)
     {
+        $('#my_Form').submit();
         alert("Submitted!");
+        
     }
 });
 

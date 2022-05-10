@@ -23,8 +23,6 @@ namespace Transport.Repositories
             //Saving/adding Request Maintenance Data into the database
             VehicleMaintenanceRequest vehicleMaintenanceRequest = new VehicleMaintenanceRequest
             {
-                MaintainedBy = model.MaintainedBy,
-                MainteinanceCost = model.MaintenanceCost,
                 VehicleId = 1,
                 MaintenanceDescription = model.MaintenanceDescription,
                 CreatedBy = "AdminTest",
