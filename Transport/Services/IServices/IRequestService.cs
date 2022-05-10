@@ -19,6 +19,6 @@ namespace Transport.Services.IServices
 
         public void DeleteVehicleRequestMaintenance(int RequestId);
 
-        public void EdiVehicleRequestMaintenance(int RequestId);
+        public void EdiVehicleRequestMaintenance(VehicleMaintenanceRequestDetailsViewModel model,int RequestId);
     }
 }

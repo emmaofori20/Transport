@@ -20,10 +20,11 @@
 
                     <div class="card-content collapse show">
                         <div class="card-body">
-                            <form asp-action="EditRequestMaintenance" asp-controller="Request" method="post" id="myForm" class="steps wizard-circle">
+                            <form id="myForm" class="steps wizard-circle">
                                 <!-- Step 1 -->
                                 <h6><i class="step-icon la la-home"></i> Step 1</h6>
                                 <fieldset>
+                                    <input id="RequestId" value="@ViewBag.EditRequestListId" hidden />
                                     <div class="form-group">
                                         <label>Vehicle Registration Number</label>
                                         <input class="form-control" placeholder="Vehicle Registration Number" asp-for="RegistrationNumber">
@@ -48,7 +49,8 @@
                                 <h6><i class="step-icon la la-pencil"></i>Step 2</h6>
                                 <fieldset>
                                     <div class="repeater-default">
-                                        <div data-repeater-list id="List">
+                                        <div data-repeater-list id="List" >
+                                            
                                             @if (Model.spareParts.Count >= 1)
                                             {
                                                 @for (int i = 0; i < Model.spareParts.Count; i++)

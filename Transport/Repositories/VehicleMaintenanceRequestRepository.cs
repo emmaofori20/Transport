@@ -72,5 +72,16 @@ namespace Transport.Repositories
             _context.Remove(VehicleMaintenanceRepuest);
             _context.SaveChanges();
         }
+
+        public void EditVehicleRequestMaintenance(int RequestId, RequestMaintenanceViewModel model)
+        {
+            VehicleMaintenanceRequest vehicleMaintenance= GetMaintenanceRequest(RequestId);
+            vehicleMaintenance.MaintenanceDescription = model.MaintenanceDescription;
+            vehicleMaintenance.UpdatedBy = "UpdatedAdmin";
+            vehicleMaintenance.UpdatedOn = DateTime.Now;
+
+            _context.VehicleMaintenanceRequests.Update(vehicleMaintenance);
+            _context.SaveChanges();
+        }
     }
 }

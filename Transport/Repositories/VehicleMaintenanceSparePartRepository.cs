@@ -34,6 +34,19 @@ namespace Transport.Repositories
             _context.SaveChanges();
         }
 
+        public void DeleteAllVehicleMaintenanceSparepart(int ListId)
+        {
+            //get all spare parts with that Id
+            var results= GetList(ListId);
+
+            foreach (var item in results)
+            {
+                _context.VehicleMaintenanceSpareparts.Remove(item);
+                _context.SaveChanges();
+
+            }
+        }
+
         public List<VehicleMaintenanceSparepart> GetList(int Id)
         {
             var results = _context.VehicleMaintenanceSpareparts.Where(x => x.VehicleMaintenanceRequestId == Id).ToList();

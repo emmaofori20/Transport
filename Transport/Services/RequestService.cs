@@ -124,8 +124,25 @@ namespace Transport.Services
             vehicleMaintenanceRequestRepository.DeleteVehicleRequestMaintenance(RequestId);
         }
 
-        public void EdiVehicleRequestMaintenance(int RequestId)
+        public void EdiVehicleRequestMaintenance(VehicleMaintenanceRequestDetailsViewModel model, int RequestId)
         {
+            //......UPDATE ON THE REQUEST........//
+            var RequestMaintenance = new RequestMaintenanceViewModel
+            {
+                MaintenanceDescription = model.MaintenanceDescription,
+                RegistrationNumber = "1",///change in the futre
+
+            };
+            vehicleMaintenanceRequestRepository.EditVehicleRequestMaintenance(RequestId, RequestMaintenance);
+            //......UPDATE ON THE REQUEST........//
+
+
+            ////////////UPDATE OF THE SPARE PART SECTION////////////
+            //Deleting all spareparts with the request ID
+            vehicleMaintenanceSparePartRepository.DeleteAllVehicleMaintenanceSparepart(RequestId);
+            //update/ addng new spareprts
+            AddRequestSparePart(model.spareParts, RequestId);
+            ////////////UPDATE OF THE SPARE PART SECTION////////////
 
         }
     }

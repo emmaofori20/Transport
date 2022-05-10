@@ -46,8 +46,8 @@
                         <div class="card-body">
                             <div class="list-group">
                                 <a id="MainPanel1" class="list-group-item active">All Requests</a>
-                                <a id="MainPanel2"  class="list-group-item list-group-item-action">Request Maintenance</a>
-                                <a id="MainPanel3"  class="list-group-item list-group-item-action">Routine Maintenance</a>
+                                <a id="MainPanel2" class="list-group-item list-group-item-action">Request Maintenance</a>
+                                <a id="MainPanel3" class="list-group-item list-group-item-action">Routine Maintenance</a>
                             </div>
                         </div>
                         <!-- Groups-->
@@ -56,12 +56,14 @@
                             <ul class="list-group">
                                 <li class="list-group-item" id="Pending">
                                     <span class="badge badge-primary badge-pill float-right" id="Pending">
-                                    @Model.VehicleMaintenanceRequests.Where(x=>x.Status == "Pending").Count()</span> 
+                                        @Model.VehicleMaintenanceRequests.Where(x => x.Status == "Pending").Count()
+                                    </span>
                                     <a> Pending Requests</a>
                                 </li>
                                 <li class="list-group-item" id="Approved">
                                     <span class="badge badge-info badge-pill float-right" id="Approved">
-                                    @Model.VehicleMaintenanceRequests.Where(x => x.Status == "Approved").Count()</span> 
+                                        @Model.VehicleMaintenanceRequests.Where(x => x.Status == "Approved").Count()
+                                    </span>
                                     <a> Approved Requests</a>
                                 </li>
                                 <li class="list-group-item">
@@ -83,7 +85,7 @@
 
 <script src="~/lib/jquery/jquery.min.js" type="text/javascript"></script>
 
-<script src="~/app-assets/vendors/js/vendors.min.js" type="text/javascript" defer ></script>
+<script src="~/app-assets/vendors/js/vendors.min.js" type="text/javascript" defer></script>
 <!-- BEGIN VENDOR JS-->
 <!-- BEGIN PAGE VENDOR JS-->
 <script src="~/app-assets/vendors/js/tables/jquery.dataTables.min.js" type="text/javascript" defer></script>
@@ -91,13 +93,15 @@
         type="text/javascript" defer></script>
 
 <script src="~/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"
-        type="text/javascript" defer ></script>
+        type="text/javascript" defer></script>
 <script src="~/app-assets/vendors/js/tables/datatable/dataTables.rowReorder.min.js"
         type="text/javascript" defer></script>
 <script src="~/app-assets/js/scripts/pages/users-contacts.js" type="text/javascript"></script>
 
 <!-- END PAGE VENDOR JS-->
+<script src="~/app-assets/vendors/js/extensions/sweetalert.min.js" type="text/javascript"></script>
 
+<script src="~/app-assets/js/scripts/extensions/sweet-alerts.js" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
         $('#users-contacts').DataTable();
@@ -227,7 +231,7 @@
 
 
     });
- 
+
 
 
 </script>

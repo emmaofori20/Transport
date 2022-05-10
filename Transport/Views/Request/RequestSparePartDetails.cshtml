@@ -33,9 +33,9 @@
                     <h2>INVOICE</h2>
                     <p class="pb-3"># INV-@Id-@Model.spareParts.Count</p>
                     @*<ul class="px-0 list-unstyled">
-                            <li>Maintenanance Cost</li>
-                            <li class="lead text-bold-800">Ghc @Model.MaintenanceCost</li>
-                        </ul>*@
+                    <li>Maintenanance Cost</li>
+                    <li class="lead text-bold-800">Ghc @Model.MaintenanceCost</li>
+                </ul>*@
                 </div>
             </div>
             <!--/ Invoice Company Details -->
@@ -119,23 +119,31 @@
             </div>
             <!--/ Invoice Footer -->
             <!--Upload Receipts or Images-->
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        
-                        <div class="card-content collapse show">
-                            <div class="card-body">
-                                <p class="card-text" style="text-align:center; font-size:23px">
-                                    Upload receipts or pictures of the spare parts
-                                </p>
-                                <form action="#" class="dropzone dropzone-area" id="dpz-multiple-files">
-                                    <div class="dz-message">Drop Files Here To Upload</div>
-                                </form>
+            @if (@Model.Status == "Pending")
+            {
+
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <p class="card-text" style="text-align:center; font-size:23px">
+                                        Upload receipts or pictures of the spare parts
+                                    </p>
+                                    <form action="#" class="dropzone dropzone-area" id="dpz-multiple-files">
+                                        <div class="dz-message">Drop Files Here To Upload</div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+            }
         </div>
     </section>
 </div>
