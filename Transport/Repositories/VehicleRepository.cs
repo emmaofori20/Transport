@@ -72,7 +72,7 @@ namespace Transport.Repositories
                 {
                     PhotoId = g.VehicleId,
                     PhotoName = g.PhotoName,
-                    PhotoURL = g.PhotoUrl
+                    PhotoFile = g.PhotoFile
                 }).ToList(),
             };
 
@@ -134,7 +134,7 @@ namespace Transport.Repositories
                     newVehicle.VehiclePhotos.Add(new VehiclePhoto()
                     {
                         PhotoName = file.PhotoName,
-                        PhotoUrl = file.PhotoUrl,
+                        PhotoFile = file.PhotoFile,
                     });
                 }
 
@@ -208,7 +208,7 @@ namespace Transport.Repositories
                 {
                     VehiclePhotoId = x.VehiclePhotoId,
                     PhotoName = x.PhotoName,
-                    PhotoUrl = x.PhotoUrl
+                    PhotoFile = x.PhotoFile
                 }).ToList()
             };
 
@@ -269,7 +269,7 @@ namespace Transport.Repositories
                     vehicle.VehiclePhotos.Add(new VehiclePhoto()
                     {
                         PhotoName = file.PhotoName,
-                        PhotoUrl = file.PhotoUrl
+                        PhotoFile = file.PhotoFile
                     });
                 }
             };

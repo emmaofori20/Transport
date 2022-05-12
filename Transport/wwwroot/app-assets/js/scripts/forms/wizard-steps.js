@@ -23,7 +23,7 @@ $(".number-tab-steps").steps({
 });
 
 // Wizard tabs with icons setup
-$(".icons-tab-steps").steps({
+$(".steps").steps({
     headerTag: "h6",
     bodyTag: "fieldset",
     transitionEffect: "fade",
@@ -36,7 +36,7 @@ $(".icons-tab-steps").steps({
     }
 });
 
-////////////From maintenance spareparts Edit ////////////////
+//from maintenance spareparts
 $(".steps").steps({
     headerTag: "h6",
     bodyTag: "fieldset",
@@ -46,11 +46,9 @@ $(".steps").steps({
         finish: 'Submit'
     },
     onFinished: function (event, currentIndex) {
-        alert("Testing form submit11");
+        alert("Testing form submit");
     }
 });
-////////////From maintenance spareparts Edit ////////////////
-
 
 // Vertical tabs form wizard setup
 $(".vertical-tab-steps").steps({
@@ -109,7 +107,6 @@ $(".steps-validation").steps({
     },
     onFinished: function (event, currentIndex)
     {
-        $('#my_Form').submit();
         alert("Submitted!");
         
     }

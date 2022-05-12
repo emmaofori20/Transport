@@ -9,7 +9,7 @@ namespace Transport.ViewModels
     {
         public int PhotoId { get; set; }
         public string PhotoName { get; set; }
-        public string PhotoURL { get; set; }
+        public byte[] PhotoFile { get; set; }
     }
 
 }

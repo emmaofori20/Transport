@@ -1,5 +1,6 @@
 ﻿@model VehicleDetailViewModel
 @{
+    
     ViewBag.Title = "Vehicle Details";
 }
 <div class="container">
@@ -30,7 +31,7 @@
 
         @*<img class="img-fluid rounded mb-4 full-width" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." />*@
 
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <div id="carouselExampleIndicators" class="carousel slide" style="text-align:center;" data-ride="carousel">
             <ol class="carousel-indicators">
                 @for (var i = 0; i < Model.VehiclePhotos.Count(); i++)
                 {
@@ -40,9 +41,10 @@
             <div class="carousel-inner">
                 @for (var i = 0; i < Model.VehiclePhotos.Count(); i++)
                 {
-                    <div class="@(i == 0 ? "carousel-item active" : "carousel-item")">
-                        <img class="d-block w-100" style="width:240px;height:240px;" src="@Model.VehiclePhotos[i].PhotoURL" alt="@Model.VehiclePhotos[i].PhotoName">
-                    </div>
+                <div  class="@(i == 0 ? "carousel-item active" : "carousel-item")">
+                    @*<img class="d-block w-100" style="width:240px;height:240px;" src="@Model.VehiclePhotos[i].PhotoURL" alt="@Model.VehiclePhotos[i].PhotoName">*@
+                    <img class="w-50" style="width: 300px; height: 500px;" src="data:image;base64,@Convert.ToBase64String(Model.VehiclePhotos[i].PhotoFile)" alt="@Model.VehiclePhotos[i].PhotoName" />
+                </div>
                 }
 
             </div>
@@ -55,11 +57,12 @@
                 <span class="sr-only">Next</span>
             </a>
         </div>
+        <br/>
         <h2 class="card-text font-weight-bold mb-2">REGISTRATION PARTICULARS</h2>
         <div class="card mb-4">
             <div class="card-body row m-1" style="flex-wrap:nowrap;">
                 <ul class="list-group col-sm-4">
-                    <li class="list-group-item"><span class="font-weight-bold">VEHICLE REGISTRATION NO. - </span>@Model.vehicle.RegistrationNumber</li>
+                    <li class="list-group-item"><span class="font-weight-bold">VEHICLE REGISTRATION NO.(OLD) - </span><br/>@Model.vehicle.OldRegistrationNumber</li>
                     <li class="list-group-item"><span class="font-weight-bold">OWNER - </span>@Model.vehicle.Owner</li>
                     <li class="list-group-item"><span class="font-weight-bold">POSTAL ADDRESS - </span>@Model.vehicle.PostalAddress</li>
                     <li class="list-group-item"><span class="font-weight-bold">RESIDENTIAL ADDRESS - </span>@Model.vehicle.ResidentialAddress</li>
@@ -85,3 +88,4 @@
         </div>
 
     </div>
+</div>
