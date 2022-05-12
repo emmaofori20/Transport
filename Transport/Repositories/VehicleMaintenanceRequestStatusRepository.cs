@@ -47,9 +47,10 @@ namespace Transport.Repositories.IRepository
             VehicleMaintenanceRequestStatus vehicleMaintenanceRequestStatus = new VehicleMaintenanceRequestStatus
             {
                 VehicleMaintenanceRequestId = vehicleMaintenanceRequestId,
-                MaintainanceStatusId = 3000,
                 CreatedBy="AdminTest",
-                CreatedOn=DateTime.Now
+                CreatedOn=DateTime.Now,
+                MaintenanceStatusId = 3000
+                
             };
 
             _context.VehicleMaintenanceRequestStatuses.Add(vehicleMaintenanceRequestStatus);

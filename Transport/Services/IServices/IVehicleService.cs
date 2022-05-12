@@ -7,7 +7,7 @@ namespace Transport.Services.IServices
 {
     public interface IVehicleService
     {
-        Task<List<VehicleListViewModel>> GetAllVehicles();
+        List<VehicleListViewModel> GetAllVehicles();
         Task<VehicleDetailViewModel> GetVehicleById(int Id);
         Task <int> AddNewVehicle(AddVehicleViewModel model);
         public AddVehicleViewModel setAllList();

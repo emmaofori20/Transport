@@ -12,6 +12,11 @@
                     <fieldset class="form-group floating-label-form-group">
                         <label> Vehicle Registeration No. </label>
                         <input type="text" class="form-control" asp-for="requestMaintenance.RegistrationNumber" placeholder="Vehicle Registration No.">
+                        <select asp-items="@Model.AllVehicles" asp-for="requestMaintenance.RegistrationNumber" class="form-control">
+
+                            <option value="none" selected="">Select item</option>
+
+                        </select>
                         <span asp-validation-for="requestMaintenance.RegistrationNumber" class="text-danger"></span>
                     </fieldset>
                     @*<fieldset class="form-group floating-label-form-group">

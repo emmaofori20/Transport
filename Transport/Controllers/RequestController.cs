@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +13,26 @@ namespace Transport.Controllers
     public class RequestController : Controller
     {
         public IRequestService requestService;
+        private readonly IVehicleService vehicleService;
+
         //CONSTRUCTOR
-        public RequestController(IRequestService _requestService)
+        public RequestController(IRequestService _requestService, IVehicleService vehicleService)
         {
             requestService = _requestService;
+            this.vehicleService = vehicleService;
         }
         public IActionResult Index()
         {
             try
             {
 
-                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
+                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest().Item1;
                 var data = new RequestVehicleViewModel
                 {
                     VehicleMaintenanceRequests = results,
+                    AllVehicles = new SelectList(requestService
+                                                    .GetAllVehicleMaintenanceRequest().Item2
+                                                    .Select(s=> new { VehicleId = s.VehicleId, RegistrationNumber = $"{s.RegistrationNumber}", ChasisNumber = $"{s.ChasisNumber}"}), "VehicleId", "RegistrationNumber", "ChasisNumber")
                 };
                 return View(data);
 

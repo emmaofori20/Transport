@@ -23,6 +23,8 @@ namespace Transport.Models.Data
         public virtual DbSet<Insurance> Insurances { get; set; }
         public virtual DbSet<MaintenanceStatus> MaintenanceStatuses { get; set; }
         public virtual DbSet<Make> Makes { get; set; }
+        public virtual DbSet<RoutineMaintenanceActivity> RoutineMaintenanceActivities { get; set; }
+        public virtual DbSet<RoutineMaintenanceList> RoutineMaintenanceLists { get; set; }
         public virtual DbSet<SparePart> SpareParts { get; set; }
         public virtual DbSet<SparePartQuantity> SparePartQuantities { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
@@ -39,7 +41,7 @@ namespace Transport.Models.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+           
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -189,6 +191,61 @@ namespace Transport.Models.Data
                 entity.Property(e => e.UpdatedBy).HasMaxLength(255);
 
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<RoutineMaintenanceActivity>(entity =>
+            {
+                entity.HasKey(e => e.RoutineMaintenanceActivityId)
+                    .HasName("PK34")
+                    .IsClustered(false);
+
+                entity.ToTable("RoutineMaintenanceActivity");
+
+                entity.Property(e => e.ActivityName).HasMaxLength(520);
+
+                entity.Property(e => e.CreatedBy).HasColumnType("datetime");
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<RoutineMaintenanceList>(entity =>
+            {
+                entity.HasKey(e => e.RoutineMaintenanceListId)
+                    .HasName("PK35")
+                    .IsClustered(false);
+
+                entity.ToTable("RoutineMaintenanceList");
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.HasOne(d => d.RoutineMaintenanceActivity)
+                    .WithMany(p => p.RoutineMaintenanceLists)
+                    .HasForeignKey(d => d.RoutineMaintenanceActivityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefRoutineMaintenanceActivity41");
+
+                entity.HasOne(d => d.SparePart)
+                    .WithMany(p => p.RoutineMaintenanceLists)
+                    .HasForeignKey(d => d.SparePartId)
+                    .HasConstraintName("RefSparePart42");
+
+                entity.HasOne(d => d.VehicleRoutineMaintenance)
+                    .WithMany(p => p.RoutineMaintenanceLists)
+                    .HasForeignKey(d => d.VehicleRoutineMaintenanceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefVehicleRoutineMaintenance40");
             });
 
             modelBuilder.Entity<SparePart>(entity =>
@@ -494,7 +551,7 @@ namespace Transport.Models.Data
 
                 entity.ToTable("VehicleMaintenanceSparepart");
 
-                entity.Property(e => e.Amount).HasColumnType("decimal(10, 8)");
+                entity.Property(e => e.Amount).HasColumnType("money");
 
                 entity.Property(e => e.CreatedBy)
                     .IsRequired()
@@ -527,14 +584,11 @@ namespace Transport.Models.Data
 
                 entity.ToTable("VehiclePhoto");
 
+                entity.Property(e => e.PhotoFile).IsRequired();
+
                 entity.Property(e => e.PhotoName)
                     .IsRequired()
                     .HasMaxLength(255);
-
-                entity.Property(e => e.PhotoUrl)
-                    .IsRequired()
-                    .HasMaxLength(255)
-                    .HasColumnName("PhotoURL");
 
                 entity.HasOne(d => d.Vehicle)
                     .WithMany(p => p.VehiclePhotos)
@@ -580,12 +634,6 @@ namespace Transport.Models.Data
 
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
 
-                entity.HasOne(d => d.SparePart)
-                    .WithMany(p => p.VehicleRoutineMaintenances)
-                    .HasForeignKey(d => d.SparePartId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefSparePart35");
-
                 entity.HasOne(d => d.Vehicle)
                     .WithMany(p => p.VehicleRoutineMaintenances)
                     .HasForeignKey(d => d.VehicleId)
@@ -606,15 +654,9 @@ namespace Transport.Models.Data
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
-                entity.Property(e => e.EndTime)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .IsFixedLength(true);
+                entity.Property(e => e.EndTime).HasColumnType("datetime");
 
-                entity.Property(e => e.StartTime)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .IsFixedLength(true);
+                entity.Property(e => e.StartTime).HasColumnType("datetime");
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(255);
 

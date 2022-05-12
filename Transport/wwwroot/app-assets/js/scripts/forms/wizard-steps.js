@@ -36,7 +36,7 @@ $(".icons-tab-steps").steps({
     }
 });
 
-//from maintenance spareparts
+////////////From maintenance spareparts Edit ////////////////
 $(".steps").steps({
     headerTag: "h6",
     bodyTag: "fieldset",
@@ -46,9 +46,11 @@ $(".steps").steps({
         finish: 'Submit'
     },
     onFinished: function (event, currentIndex) {
-        alert("Testing form submit");
+        alert("Testing form submit11");
     }
 });
+////////////From maintenance spareparts Edit ////////////////
+
 
 // Vertical tabs form wizard setup
 $(".vertical-tab-steps").steps({

@@ -9,8 +9,8 @@ namespace Transport.Models.Data
     {
         public SparePart()
         {
+            RoutineMaintenanceLists = new HashSet<RoutineMaintenanceList>();
             SparePartQuantities = new HashSet<SparePartQuantity>();
-            VehicleRoutineMaintenances = new HashSet<VehicleRoutineMaintenance>();
         }
 
         public int SparePartId { get; set; }
@@ -20,7 +20,7 @@ namespace Transport.Models.Data
         public DateTime? UpdatedOn { get; set; }
         public string UpdatedBy { get; set; }
 
+        public virtual ICollection<RoutineMaintenanceList> RoutineMaintenanceLists { get; set; }
         public virtual ICollection<SparePartQuantity> SparePartQuantities { get; set; }
-        public virtual ICollection<VehicleRoutineMaintenance> VehicleRoutineMaintenances { get; set; }
     }
 }

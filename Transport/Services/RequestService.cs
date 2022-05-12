@@ -14,14 +14,17 @@ namespace Transport.Services
         private readonly IVehicleMaintenanceRequestRepository vehicleMaintenanceRequestRepository;
         private readonly IVehicleMaintenanceRequestStatusRepository vehicleMaintenanceRequestStatusRepository;
         private readonly IVehicleMaintenanceSparePartRepository vehicleMaintenanceSparePartRepository;
+        private readonly IVehicleRepository vehicleRepository;
 
         public RequestService(IVehicleMaintenanceRequestRepository vehicleMaintenanceRequestRepository, 
                                IVehicleMaintenanceRequestStatusRepository vehicleMaintenanceRequestStatusRepository,
-                                IVehicleMaintenanceSparePartRepository vehicleMaintenanceSparePartRepository)
+                                IVehicleMaintenanceSparePartRepository vehicleMaintenanceSparePartRepository,
+                                IVehicleRepository vehicleRepository)
         {
             this.vehicleMaintenanceRequestRepository = vehicleMaintenanceRequestRepository;
             this.vehicleMaintenanceRequestStatusRepository = vehicleMaintenanceRequestStatusRepository;
             this.vehicleMaintenanceSparePartRepository = vehicleMaintenanceSparePartRepository;
+            this.vehicleRepository = vehicleRepository;
         }
 
         public VehicleMaintenanceRequest MakeRequestMaintenance(RequestMaintenanceViewModel model)
@@ -82,11 +85,13 @@ namespace Transport.Services
             return Details;
         }
 
-        public List<VehicleMaintenanceRequestsViewModel> GetAllVehicleMaintenanceRequest()
+        public (List<VehicleMaintenanceRequestsViewModel>, List<Vehicle>) GetAllVehicleMaintenanceRequest()
         {
             //get all request and store in list
             var AllvehicleMaintenanceRequest = vehicleMaintenanceRequestRepository.GetAllMaintenanceRequest();
             List<VehicleMaintenanceRequestsViewModel> AllRequestList = new List<VehicleMaintenanceRequestsViewModel>(); ;
+
+            //set a list of v
 
             for (int i = 0; i < AllvehicleMaintenanceRequest.Count; i++)
             {
@@ -115,8 +120,11 @@ namespace Transport.Services
                 
 
             }
+            //////GETTING ALL THE LIST OF THE VEHICLE TO SET INCASE A USER MAKES A REQUEST MAINTENANCE
+            var vehicleList = vehicleRepository.GetAllVehicles().Result.Item2;
+            //////GETTING ALL THE LIST OF THE VEHICLE TO SET INCASE A USER MAKES A REQUEST MAINTENANCE
 
-            return AllRequestList;
+            return (AllRequestList,vehicleList);
         }
 
         public void DeleteVehicleRequestMaintenance(int RequestId)

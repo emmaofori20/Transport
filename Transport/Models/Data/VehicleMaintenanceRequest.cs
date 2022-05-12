@@ -21,6 +21,7 @@ namespace Transport.Models.Data
         public string CreatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public string UpdatedBy { get; set; }
+        public bool? IsDeleted { get; set; }
 
         public virtual Vehicle Vehicle { get; set; }
         public virtual ICollection<VehicleMaintenanceRequestStatus> VehicleMaintenanceRequestStatuses { get; set; }

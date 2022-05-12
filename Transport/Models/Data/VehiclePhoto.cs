@@ -9,7 +9,7 @@ namespace Transport.Models.Data
     {
         public int VehiclePhotoId { get; set; }
         public string PhotoName { get; set; }
-        public string PhotoUrl { get; set; }
+        public byte[] PhotoFile { get; set; }
         public int VehicleId { get; set; }
 
         public virtual Vehicle Vehicle { get; set; }

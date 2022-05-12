@@ -23,7 +23,7 @@ namespace Transport.Controllers
         // GET: MaintenanceController
         public ActionResult Index()
         {
-            List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
+            List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest().Item1;
             var data = new RequestVehicleViewModel
             {
                 VehicleMaintenanceRequests = results,
@@ -37,7 +37,7 @@ namespace Transport.Controllers
 
             try
             {
-                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
+                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest().Item1;
                 var data = new RequestVehicleViewModel
                 {
                     VehicleMaintenanceRequests = results,
@@ -78,7 +78,7 @@ namespace Transport.Controllers
         {
             try
             {
-                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
+                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest().Item1;
                 var PendingVehicleRequest = new RequestVehicleViewModel
                 {
                     VehicleMaintenanceRequests = results.Where(x=>x.Status == "Pending").ToList(),
@@ -103,7 +103,7 @@ namespace Transport.Controllers
         {
             try
             {
-                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
+                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest().Item1;
                 var ApprovedVehicleRequest = new RequestVehicleViewModel
                 {
                     VehicleMaintenanceRequests = results.Where(x => x.Status == "Approved").ToList(),
