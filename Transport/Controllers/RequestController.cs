@@ -11,9 +11,9 @@ namespace Transport.Controllers
 {
     public class RequestController : Controller
     {
-        public  IRequestService requestService;
+        public IRequestService requestService;
         //CONSTRUCTOR
-        public RequestController( IRequestService _requestService)
+        public RequestController(IRequestService _requestService)
         {
             requestService = _requestService;
         }
@@ -38,7 +38,7 @@ namespace Transport.Controllers
                 };
                 return View("Error", error);
             }
-          
+
         }
 
         [HttpPost]
@@ -67,7 +67,7 @@ namespace Transport.Controllers
                 };
                 return View("Error", error);
             }
-         
+
 
 
 
@@ -76,12 +76,12 @@ namespace Transport.Controllers
         [HttpGet]
         public IActionResult RequestSparePart(int Id)
         {
-            ViewData["RequestSparePartId"] =Id;
+            ViewData["RequestSparePartId"] = Id;
             return View();
         }
 
         [HttpPost]
-        public IActionResult RequestSparePart(List<VehicleMaintananceSparepartViewModel> model,int Id)
+        public IActionResult RequestSparePart(List<VehicleMaintananceSparepartViewModel> model, int Id)
         {
 
             try
@@ -89,12 +89,12 @@ namespace Transport.Controllers
                 if (ModelState.IsValid)
                 {
                     //returns true after method is completed
-                   requestService.AddRequestSparePart(model, Id);
+                    requestService.AddRequestSparePart(model, Id);
                     //return Json(Url.Action("RequestSparePartDetails", "Request"));
-                    return RedirectToAction("RequestSparePartDetails", new { ListId = Id});
+                    return RedirectToAction("RequestSparePartDetails", new { ListId = Id });
                 }
-                
-               return View(model);
+
+                return View(model);
             }
             catch (Exception err)
             {
@@ -115,7 +115,7 @@ namespace Transport.Controllers
                 var results = requestService.VehicleMaintenanceRequestDetails(ListId);
                 return View(results);
             }
-            catch ( Exception err)
+            catch (Exception err)
             {
                 var error = new ErrorViewModel
                 {
@@ -125,14 +125,14 @@ namespace Transport.Controllers
 
             }
 
-           
+
         }
 
         public IActionResult DeleteRequestMaintenance(int RequestId)
         {
             try
             {
-               // requestService.DeleteVehicleRequestMaintenance(RequestId);
+                requestService.DeleteVehicleRequestMaintenance(RequestId);
                 return RedirectToAction("Index");
 
             }
@@ -142,7 +142,7 @@ namespace Transport.Controllers
                 {
                     RequestId = err.Message,
                 };
-                return View("Error",error);
+                return View("Error", error);
 
             }
         }
@@ -168,13 +168,20 @@ namespace Transport.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditRequestMaintenance(VehicleMaintenanceRequestDetailsViewModel model,int RequestId)
+        public IActionResult EditRequestMaintenance(VehicleMaintenanceRequestDetailsViewModel model, int RequestId)
         {
             try
             {
+                if (ModelState.IsValid)
+                {
+
+                    requestService.EdiVehicleRequestMaintenance(model, RequestId);
+
+                    return RedirectToAction("RequestSparePartDetails", new { ListId = RequestId });
+                }
                 //ViewData["EditRequestListId"] = RequestId;
-               // var results = requestService.VehicleMaintenanceRequestDetails(RequestId);
-                return View();
+                // var results = requestService.VehicleMaintenanceRequestDetails(RequestId);
+                return View(model);
 
             }
             catch (Exception err)
@@ -186,6 +193,12 @@ namespace Transport.Controllers
                 };
                 return View("Error", error);
             }
+        }
+
+        //for viewing history of a particular vehicle
+        public IActionResult VehicleRequestMaintanceHistory(int VehicleId)
+        {
+            return View();
         }
     }
 }

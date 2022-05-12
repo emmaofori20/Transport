@@ -18,12 +18,12 @@ $(".number-tab-steps").steps({
         finish: 'Submit'
     },
     onFinished: function (event, currentIndex) {
-        //alert("Form submitted.");
+        alert("Form submitted.");
     }
 });
 
 // Wizard tabs with icons setup
-$(".icons-tab-steps ").steps({
+$(".steps").steps({
     headerTag: "h6",
     bodyTag: "fieldset",
     transitionEffect: "fade",
@@ -32,8 +32,6 @@ $(".icons-tab-steps ").steps({
         finish: 'Submit'
     },
     onFinished: function (event, currentIndex) {
-        $('#my_Form').submit();
-
         alert("Form submitted.");
     }
 });
@@ -49,7 +47,7 @@ $(".vertical-tab-steps").steps({
         finish: 'Submit'
     },
     onFinished: function (event, currentIndex) {
-        //alert("Form submitted.");
+        alert("Form submitted.");
     }
 });
 

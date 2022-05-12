@@ -93,7 +93,9 @@ else
         </div>
     </div>
 }
+<script src="~/app-assets/vendors/js/extensions/sweetalert.min.js" type="text/javascript"></script>
 
+<script src="~/app-assets/js/scripts/extensions/sweet-alerts.js" type="text/javascript"></script>
 
 <script>
     $(document).ready(function () {
@@ -125,6 +127,7 @@ else
             },
             error: function (err) {
                 console.log('An error occured')
+                swal("Error!", "We could not access the server.", "error");
 
             }
         });
