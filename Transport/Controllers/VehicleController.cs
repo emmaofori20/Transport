@@ -55,7 +55,6 @@ namespace Transport.Controllers
         {
             try
             {
-
                 var result = await _vehicleService.GetVehicleById(Id);
                 return View(result);
             }
@@ -93,7 +92,7 @@ namespace Transport.Controllers
 
                 if (vehicleModel.PhotoFiles != null)
                 {
-                    string folder = "photos/vehicle/";
+                    //string folder = "photos/vehicle/";
 
                     vehicleModel.Photos = new List<VehiclePhoto>();
 
@@ -102,7 +101,7 @@ namespace Transport.Controllers
                         var photo = new VehiclePhoto()
                         {
                             PhotoName = file.FileName,
-                            PhotoUrl = await UploadImage(folder, file),
+                            PhotoFile = UploadImage(file),
                         };
 
                         vehicleModel.Photos.Add(photo);
@@ -168,17 +167,17 @@ namespace Transport.Controllers
 
                     if (UpdateModel.PhotoFiles != null)
                     {
-                        string folder = "photos/vehicle/";
+                    //string folder = "photos/vehicle/";
 
-                        UpdateModel.Photos = new List<VehiclePhoto>();
+                    UpdateModel.Photos = new List<VehiclePhoto>();
 
 
-                        foreach (var file in UpdateModel.PhotoFiles)
+                    foreach (var file in UpdateModel.PhotoFiles)
                         {
                             var gallery = new VehiclePhoto()
                             {
                                 PhotoName = file.FileName,
-                                PhotoUrl = await UploadImage(folder, file),
+                                PhotoFile = UploadImage(file),
                             };
 
                             UpdateModel.Photos.Add(gallery);
@@ -205,38 +204,49 @@ namespace Transport.Controllers
                 return View("Error", errorViewModel);
             }
 
-            return View();
+            
         }
 
-        // GET: VehicleController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: VehicleController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        //Delete A Vehicle
+        public IActionResult DeleteVehicle(int Id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _vehicleService.DeleteVehicle(Id);
+                return RedirectToAction("VehicleList");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
+                };
+
+                return View("Error", errorViewModel);
             }
+
         }
-        private async Task<string> UploadImage(string folderPath, IFormFile file)
+        //private async Task<string> UploadImage(string folderPath, IFormFile file)
+        //{
+        //    folderPath += Guid.NewGuid().ToString() + "_" + file.FileName;
+
+        //    string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folderPath);
+
+        //    await file.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+
+        //    return "/" + folderPath;
+        //}
+        private byte[] UploadImage(IFormFile formFile)
         {
-            folderPath += Guid.NewGuid().ToString() + "_" + file.FileName;
+            byte[] fileBytes;
 
-            string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folderPath);
+            using (var stream = new MemoryStream())
+            {
+                formFile.CopyTo(stream);
+                fileBytes = stream.ToArray();
+            }
 
-            await file.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-
-            return "/" + folderPath;
+            return fileBytes;
         }
     }
 }

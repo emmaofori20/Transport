@@ -10,8 +10,8 @@ namespace Transport.Models.Data
         public int VehicleTransportStaffId { get; set; }
         public int TransportStaffId { get; set; }
         public int VehicleId { get; set; }
-        public string StartTime { get; set; }
-        public string EndTime { get; set; }
+        public DateTime? StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public DateTime CreatedOn { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }

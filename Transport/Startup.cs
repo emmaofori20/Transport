@@ -45,11 +45,20 @@ namespace Transport
             services.AddControllersWithViews();
             services.AddMemoryCache();
             //Adding the repositories
-            services.AddTransient<IVehicleMaintenanceRequestRepository, VehicleMaintenanceRequestRepository>();
-            services.AddTransient<IVehicleMaintenanceRequestStatusRepository, VehicleMaintenanceRequestStatusRepository>();
-            services.AddTransient<IVehicleMaintenanceSparePart, VehicleMaintenanceSparePartRepository>();
+            //services.AddTransient<IVehicleMaintenanceRequestRepository, VehicleMaintenanceRequestRepository>();
+            //services.AddTransient<IVehicleMaintenanceRequestStatusRepository, VehicleMaintenanceRequestStatusRepository>();
+            services.AddTransient<IVehicleRepository,VehicleRepository>();
+            services.AddTransient<ICollegeRepository, CollegeRepository>();
+            services.AddTransient<IDepartmentRepository, DepartmentRepository>();
+            services.AddTransient<IInsuranceRepository, InsuranceRepository>();
+            services.AddTransient<IMakeRepository, MakeRepository>();
+            services.AddTransient<IVehicleStatusRepository, VehicleStatusRepository>();
+            services.AddTransient<IVehicleUseRepository, VehicleUseRepository>();
+
+            //services.AddTransient<IVehicleMaintenanceSparePart, VehicleMaintenanceSparePartRepository>();
             //Adding Services
-            services.AddScoped<IRequestService, RequestService>();
+            //services.AddScoped<IRequestService, RequestService>();
+            services.AddScoped<IVehicleService,VehicleService>();
 
 
 

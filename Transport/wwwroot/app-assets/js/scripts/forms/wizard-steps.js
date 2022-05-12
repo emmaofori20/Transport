@@ -23,7 +23,7 @@ $(".number-tab-steps").steps({
 });
 
 // Wizard tabs with icons setup
-$(".steps").steps({
+$(".icons-tab-steps ").steps({
     headerTag: "h6",
     bodyTag: "fieldset",
     transitionEffect: "fade",
@@ -32,6 +32,8 @@ $(".steps").steps({
         finish: 'Submit'
     },
     onFinished: function (event, currentIndex) {
+        $('#my_Form').submit();
+
         alert("Form submitted.");
     }
 });
@@ -93,7 +95,6 @@ $(".steps-validation").steps({
     },
     onFinished: function (event, currentIndex)
     {
-        $('#my_Form').submit();
         alert("Submitted!");
         
     }

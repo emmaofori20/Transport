@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="apple-touch-icon" href="~/app-assets/images/ico/apple-icon-120.png">
+    
     <link rel="shortcut icon" type="image/x-icon" href="~/app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Quicksand:300,400,500,700"
           rel="stylesheet">
@@ -166,7 +167,7 @@
                     <a asp-action="VehicleList" asp-controller="Vehicle"><i class="la la-bus"></i><span class="menu-title" data-i18n="nav.templates.main">Vehicle</span></a>
                 </li>
                 <li class=" nav-item">
-                    <a ><i class="la la-medkit"></i><span class="menu-title" data-i18n="nav.dash.main">Maintenance</span></a>
+                    <a><i class="la la-medkit"></i><span class="menu-title" data-i18n="nav.dash.main">Maintenance</span></a>
                     <ul class="menu-content">
                         <li>
                             <a class="menu-item" asp-action="Index" asp-controller="Request">Request</a>
@@ -199,7 +200,7 @@
     </div>
 
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/jquery-validate/jquery.validate.js"></script>
@@ -222,13 +223,13 @@
         }*@
 
     @await RenderSectionAsync("Scripts", required: false);
-<script>   
-    $(function () {
-        $('.nav-item a').click(function (e) {
-            $('.active').removeClass('active');
-        });
-    });</script>
-   
+    <script>
+        $(function () {
+            $('.nav-item a').click(function (e) {
+                $('.active').removeClass('active');
+            });
+        });</script>
+
 
 </body>
 </html>
