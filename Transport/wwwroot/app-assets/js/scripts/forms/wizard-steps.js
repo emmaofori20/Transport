@@ -22,8 +22,8 @@ $(".number-tab-steps").steps({
     }
 });
 
-// Wizard tabs with icons setup
-$(".steps").steps({
+ //Wizard tabs with icons setup
+$(".icon-tab-steps").steps({
     headerTag: "h6",
     bodyTag: "fieldset",
     transitionEffect: "fade",
@@ -46,7 +46,68 @@ $(".steps").steps({
         finish: 'Submit'
     },
     onFinished: function (event, currentIndex) {
-        alert("Testing form submit");
+
+        /////////////getting values//////////////////////
+        var RequestId = document.getElementById('RequestId').value;
+        var RegistrationNumber = $('form #select2').val();
+        //var MaintainedBy = $('form #MaintainedBy').val();
+        var MaintenanceDescription = $('form #projectinput8').val();
+        /////////////getting values//////////////////////
+
+        var SparePartList = [];// for holding spare parts
+        var FinalList = {}
+
+        var allSpareParts = $('#List input');
+        debugger;
+
+        for (var i = 0; i < allSpareParts.length; i++) {
+            let obj = {};
+            let sparename;
+            let quantity;
+            let amount;
+            console.log(allSpareParts[i])
+
+            if (allSpareParts[i].getAttribute("id") == `spareParts_${i / 3}__SparePartName` || allSpareParts[i].getAttribute("id") == "spareParts_0__SparePartName" ) {
+                sparename = allSpareParts[i].value;
+                quantity = allSpareParts[i + 1].value;
+                amount = allSpareParts[i + 2].value;
+                i = i + 2;
+            } else {
+
+            }
+
+            obj = { "SparePartName": sparename, "Quantity": quantity, "Amount": amount };
+            SparePartList.push(obj);
+        }
+
+        ////////////PREPARING FINAL LIST////////////////////
+        FinalList = {
+            "VehicleId": RegistrationNumber,
+            "MaintenanceDescription": MaintenanceDescription,
+            "RequestId":RequestId,
+            "spareParts": SparePartList
+        }
+        ////////////PREPARING FINAL LIST////////////////////
+
+        console.log("the final list", FinalList);
+        ///////////////Passing final data to the controller using ajax////////
+        $.ajax({
+            url: '/Request/EditRequestMaintenance',
+            dataType: 'html',
+            method: 'post',
+            data: { 'model': FinalList, 'RequestId': RequestId },
+            success: function (res) {
+                console.log('Success');
+                window.location.href = `/Request/RequestSparePartDetails?ListId=${RequestId}`;
+
+            },
+            error: function (err) {
+                console.log(err, "err");
+            }
+        })
+
+        ///////////////Passing final data to the controller using ajax////////
+
     }
 });
 

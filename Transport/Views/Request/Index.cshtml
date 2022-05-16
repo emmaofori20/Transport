@@ -25,7 +25,7 @@
                        data-target="#bootstrap"><i class="la la-cart-plus"></i> Request Maintenance</a>
                 </div>
                 @* Request Maintenance Partial View *@
-                <div class="modal fade text-left" id="bootstrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel35"
+                <div class="modal fade text-left" id="bootstrap" role="dialog" aria-labelledby="myModalLabel35"
                      aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <partial name="_RequestMaintenancePartial">
@@ -62,6 +62,7 @@
                                                 </th>
                                                 <th>Date</th>
                                                 <th>Invoice #</th>
+                                                <th>Vehicle No.</th>
                                                 <th>Maintained By</th>
                                                 <th>Status</th>
                                                 <th>Amount</th>
@@ -72,67 +73,78 @@
                                             <!-- PAID -->
                                             @for (int i = 0; i < @Model.VehicleMaintenanceRequests.Count; i++)
                                             {
-                                                <tr>
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" class="input-chk">
+                                                </td>
+                                                <td>@Model.VehicleMaintenanceRequests[i].Date</td>
+                                                <td>
+                                                    <a class="text-bold-600">
+                                                        INV-@Model.VehicleMaintenanceRequests[i].RequestId-@Model.VehicleMaintenanceRequests[i].spareParts
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a class="text-bold-600">
+                                                        @Model.VehicleMaintenanceRequests[i].RegistrationNumber
+                                                    </a>
+                                                </td>
+                                                <td>@Model.VehicleMaintenanceRequests[i].MaintainedBy</td>
+                                                @if (@Model.VehicleMaintenanceRequests[i].Status == "Approved")
+                                                {
                                                     <td>
-                                                        <input type="checkbox" class="input-chk">
+                                                        <span class="badge badge-default badge-success badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
                                                     </td>
-                                                    <td>@Model.VehicleMaintenanceRequests[i].Date</td>
+                                                }
+                                                else if (@Model.VehicleMaintenanceRequests[i].Status == "Completed")
+                                                {
                                                     <td>
-                                                        <a class="text-bold-600">
-                                                            INV-@Model.VehicleMaintenanceRequests[i].RequestId-@Model.VehicleMaintenanceRequests[i].spareParts
-                                                        </a>
+                                                        <span class="badge badge-default badge-light badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
                                                     </td>
-                                                    <td>@Model.VehicleMaintenanceRequests[i].MaintainedBy</td>
-                                                    @if (@Model.VehicleMaintenanceRequests[i].Status == "Approved")
-                                                    {
-                                                        <td>
-                                                            <span class="badge badge-default badge-success badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
-                                                        </td>
-                                                    }
-                                                    else if (@Model.VehicleMaintenanceRequests[i].Status == "Completed")
-                                                    {
-                                                        <td>
-                                                            <span class="badge badge-default badge-light badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
-                                                        </td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td>
-                                                            <span class="badge badge-default badge-danger badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
-                                                        </td>
-                                                    }
+                                                }
+                                                else if (@Model.VehicleMaintenanceRequests[i].Status == "Invalid")
+                                                {
+                                                    <td>
+                                                        <span class="badge badge-default badge-info badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <span class="badge badge-default badge-danger badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
+                                                    </td>
+                                                }
 
-                                                    <td>Ghc @Model.VehicleMaintenanceRequests[i].MaintenanceCost</td>
-                                                    <td>
-                                                        <span class="dropdown">
-                                                            <button id="btnSearchDrop2" type="button" data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="true" class="btn btn-primary dropdown-toggle dropdown-menu-right">
-                                                                <i class="ft-settings"></i>
-                                                            </button>
-                                                            <span aria-labelledby="btnSearchDrop2" class="dropdown-menu mt-1 dropdown-menu-right">
-                                                                <a asp-action="RequestSparePartDetails" asp-controller="Request" asp-route-ListId="@Model.VehicleMaintenanceRequests[i].RequestId" class="dropdown-item">
-                                                                    <i class="la la-eye"></i> View Request
+                                                <td>Ghc @Model.VehicleMaintenanceRequests[i].MaintenanceCost</td>
+                                                <td>
+                                                    <span class="dropdown">
+                                                        <button id="btnSearchDrop2" type="button" data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="true" class="btn btn-primary dropdown-toggle dropdown-menu-right">
+                                                            <i class="ft-settings"></i>
+                                                        </button>
+                                                        <span aria-labelledby="btnSearchDrop2" class="dropdown-menu mt-1 dropdown-menu-right">
+                                                            <a asp-action="RequestSparePartDetails" asp-controller="Request" asp-route-ListId="@Model.VehicleMaintenanceRequests[i].RequestId" class="dropdown-item">
+                                                                <i class="la la-eye"></i> View Request
+                                                            </a>
+
+                                                            @if (@Model.VehicleMaintenanceRequests[i].Status == "Completed" || @Model.VehicleMaintenanceRequests[i].Status == "Approved")
+                                                            {
+                                                                <!--- do nothing  --->
+                                                            }
+                                                            else
+                                                            {
+                                                                <a asp-action="EditRequestMaintenance" asp-controller="Request" asp-route-RequestId="@Model.VehicleMaintenanceRequests[i].RequestId" class="dropdown-item">
+                                                                    <i class="la la-pencil"></i> Edit Request
                                                                 </a>
 
-                                                                @if (@Model.VehicleMaintenanceRequests[i].Status == "Completed" || @Model.VehicleMaintenanceRequests[i].Status == "Approved")
-                                                                {
-                                                                    <!--- do nothing  --->
-                                                                }
-                                                                else
-                                                                {
-                                                                    <a asp-action="EditRequestMaintenance" asp-controller="Request" asp-route-RequestId="@Model.VehicleMaintenanceRequests[i].RequestId" class="dropdown-item">
-                                                                        <i class="la la-pencil"></i> Edit Request
-                                                                    </a>
+                                                                <a id="DeleteButton" data-RequestId="@Model.VehicleMaintenanceRequests[i].RequestId" onclick="ConfirmDelete(@Model.VehicleMaintenanceRequests[i].RequestId)" class="dropdown-item">
+                                                                    <i class="la la-trash"></i> Delete Request
+                                                                </a>
+                                                            }
 
-                                                                    <a id="DeleteButton" data-RequestId="@Model.VehicleMaintenanceRequests[i].RequestId" onclick="ConfirmDelete(@Model.VehicleMaintenanceRequests[i].RequestId)" class="dropdown-item">
-                                                                        <i class="la la-trash"></i> Delete Request
-                                                                    </a>
-                                                                }
-
-                                                            </span>
                                                         </span>
-                                                    </td>
-                                                </tr>
+                                                    </span>
+                                                </td>
+                                            </tr>
                                             }
                                         </tbody>
                                         <tfoot>
@@ -142,6 +154,7 @@
                                                 </th>
                                                 <th>Date</th>
                                                 <th>Invoice #</th>
+                                                <th>Vehicle No.</th>
                                                 <th>Maintained By</th>
                                                 <th>Status</th>
                                                 <th>Amount</th>

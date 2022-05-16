@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using Transport.Models;
 using Transport.Services.IServices;
 using Transport.ViewModels;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace Transport.Controllers
 {
@@ -74,8 +77,6 @@ namespace Transport.Controllers
                 };
                 return View("Error", error);
             }
-
-
 
 
         }
@@ -207,5 +208,15 @@ namespace Transport.Controllers
         {
             return View();
         }
+
+        public void VehicleRequestMaintenanceDetails(int VehicleId)
+        {
+            var results = requestService.GetAllVehicleMaintenanceRequest().Item1.Where(x=>x.VehicleId== VehicleId);
+        }
+
+        public void UploadReceipts(IEnumerable<IFormFile> File)
+        {
+        }
     }
+    
 }

@@ -10,7 +10,7 @@ namespace Transport.ViewModels
     public class RequestMaintenanceViewModel
     {
         [Required]
-        public string RegistrationNumber { get; set; }
+        public int RegistrationNumber { get; set; }
         [Required]
         public string MaintenanceDescription { get; set; }
         public double MaintenanceCost { get; set; }

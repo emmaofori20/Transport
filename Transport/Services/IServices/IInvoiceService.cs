@@ -8,6 +8,7 @@ namespace Transport.Services.IServices
     public interface IInvoiceService
     {
         public void ApproveInvoice(int RequestId);
+        public void InvalidInvoice(int RequestId);
 
         public void CompleteInvoice();
 

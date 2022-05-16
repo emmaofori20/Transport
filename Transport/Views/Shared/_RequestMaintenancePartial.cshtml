@@ -1,45 +1,54 @@
 ﻿<!-- Request Maintenace Modal -->
 @model RequestVehicleViewModel
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="myModalLabel35"> Request Maintenance form </h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form asp-controller="Request" asp-action="MakeRequestMaintainance" method="post">
-                <div class="modal-body">
-                    <fieldset class="form-group floating-label-form-group">
-                        <label> Vehicle Registeration No. </label>
-                        <input type="text" class="form-control" asp-for="requestMaintenance.RegistrationNumber" placeholder="Vehicle Registration No.">
-                        <select asp-items="@Model.AllVehicles" asp-for="requestMaintenance.RegistrationNumber" class="form-control">
+<link href="~/lib/select2/css/select2.css" rel="stylesheet" defer />
+<div class="modal-content">
+    <div class="modal-header">
+        <h3 class="modal-title" id="myModalLabel35"> Request Maintenance form </h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form asp-controller="Request" asp-action="MakeRequestMaintainance" method="post">
+        <div class="modal-body">
+            <fieldset class="form-group floating-label-form-group">
+                <label> Vehicle Registeration No. </label>
+                @*<input type="text" class="form-control" asp-for="requestMaintenance.RegistrationNumber" placeholder="Vehicle Registration No.">*@
+                <select style="width: 250px !important" asp-items="@Model.AllVehicles" asp-for="requestMaintenance.RegistrationNumber"  id="select2" class=" form-control">
 
-                            <option value="none" selected="">Select item</option>
+                    <option value="none" selected="">Select Vehicle</option>
 
-                        </select>
-                        <span asp-validation-for="requestMaintenance.RegistrationNumber" class="text-danger"></span>
-                    </fieldset>
-                    @*<fieldset class="form-group floating-label-form-group">
-                        <label> Maintenance Cost</label>
-                        <input type="text" class="form-control" asp-for="requestMaintenance.MaintenanceCost" placeholder="Maintenance Cost">
-                        <span asp-validation-for="requestMaintenance.MaintenanceCost" class="text-danger"></span>
-                    </fieldset>*@
-                    <fieldset class="form-group floating-label-form-group">
-                        <label>Maintencace Description</label>
-                        <textarea class="form-control" rows="3" asp-for="requestMaintenance.MaintenanceDescription" placeholder="Maintenance Description"></textarea>
-                        <span asp-validation-for="requestMaintenance.MaintenanceDescription" class="text-danger"></span>
-                    </fieldset>
-                    @*<fieldset class="form-group floating-label-form-group">
-                        <label> Maintained By</label>
-                        <input type="text" class="form-control" asp-for="requestMaintenance.MaintainedBy" placeholder="Maintained By">
-                        <span asp-validation-for="requestMaintenance.MaintainedBy" class="text-danger"></span>
-                    </fieldset>*@
-                </div>
-                <div class="modal-footer">
-                    <input type="reset" class="btn btn-outline-secondary btn-lg" data-dismiss="modal"
-                           value="close">
-                    <input type="submit" class="btn btn-outline-primary btn-lg" value="Request Maintenance">
-                </div>
-            </form>
+                </select>
+                <span asp-validation-for="requestMaintenance.RegistrationNumber" class="text-danger"></span>
+            </fieldset>
+            @*<fieldset class="form-group floating-label-form-group">
+                    <label> Maintenance Cost</label>
+                    <input type="text" class="form-control" asp-for="requestMaintenance.MaintenanceCost" placeholder="Maintenance Cost">
+                    <span asp-validation-for="requestMaintenance.MaintenanceCost" class="text-danger"></span>
+                </fieldset>*@
+            <fieldset class="form-group floating-label-form-group">
+                <label>Maintencace Description</label>
+                <textarea class="form-control" rows="3" asp-for="requestMaintenance.MaintenanceDescription" placeholder="Maintenance Description"></textarea>
+                <span asp-validation-for="requestMaintenance.MaintenanceDescription" class="text-danger"></span>
+            </fieldset>
+            @*<fieldset class="form-group floating-label-form-group">
+                    <label> Maintained By</label>
+                    <input type="text" class="form-control" asp-for="requestMaintenance.MaintainedBy" placeholder="Maintained By">
+                    <span asp-validation-for="requestMaintenance.MaintainedBy" class="text-danger"></span>
+                </fieldset>*@
         </div>
-    
+        <div class="modal-footer">
+            <input type="reset" class="btn btn-outline-secondary btn-lg" data-dismiss="modal"
+                   value="close">
+            <input type="submit" class="btn btn-outline-primary btn-lg" value="Request Maintenance">
+        </div>
+    </form>
+</div>
+
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script src="~/lib/select2/js/select2.js" defer></script>
+<script>
+
+    $(document).ready(function () {
+        $('select').select2();
+    })
+</script>

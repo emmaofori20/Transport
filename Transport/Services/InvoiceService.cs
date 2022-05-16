@@ -26,6 +26,11 @@ namespace Transport.Services
             throw new NotImplementedException();
         }
 
+        public void InvalidInvoice(int RequestId)
+        {
+            vehicleMaintenanceRequestStatusRepository.InvalidVehicleMaintenanceRequest(RequestId);
+        }
+
         public void UnApprovedInvoice(int RequestId)
         {
             vehicleMaintenanceRequestStatusRepository.UnApproveVehicleMaintenance(RequestId);

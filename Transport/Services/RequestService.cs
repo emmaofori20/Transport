@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -73,13 +74,19 @@ namespace Transport.Services
             var Details = new VehicleMaintenanceRequestDetailsViewModel
             {
                 MaintenanceDescription = requestMaintenance.MaintenanceDescription,
-                RegistrationNumber = requestMaintenance.VehicleId,//later change to string
+                RegistrationNumber = requestMaintenance.Vehicle.RegistrationNumber,//later change to string
                 Status = requestStatus.MaintenanceStatus.StatusName,
                 Date = requestMaintenance.CreatedOn,
                 RequestId= requestMaintenance.VehicleMaintenanceRequestId,
                 spareParts = _spareParts,
-                MaintainedBy = requestMaintenance.CreatedBy
-                
+                MaintainedBy = requestMaintenance.CreatedBy,
+                VehicleId = requestMaintenance.VehicleId,
+                ///////////THIIS VARIABLE IS FOR THE EDITING OF  REQUEST MAINTENANCE SPARE PARTS////////
+                AllVehicles = new SelectList(GetAllVehicleMaintenanceRequest().Item2
+                                                    .Select(s => new { VehicleId = s.VehicleId, RegistrationNumber = $"{s.RegistrationNumber}", ChasisNumber = $"{s.ChasisNumber}" }), "VehicleId", "RegistrationNumber", "ChasisNumber")
+                ///////////THIIS VARIABLE IS FOR THE EDITING OF  REQUEST MAINTENANCE SPARE PARTS////////
+
+
             };
 
             return Details;
@@ -99,7 +106,8 @@ namespace Transport.Services
                 //Preparing the List
                 var singleRequestDetals = new VehicleMaintenanceRequestsViewModel
                 {
-                    RegistrationNumber = AllvehicleMaintenanceRequest[i].VehicleId  ,//later change to string                    
+                    RegistrationNumber = AllvehicleMaintenanceRequest[i].Vehicle.RegistrationNumber,
+                    VehicleId = AllvehicleMaintenanceRequest[i].VehicleId,                 
                     Status = AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestStatuses
                                             .OrderByDescending(x => x.CreatedOn)
                                             .FirstOrDefault(x => x.VehicleMaintenanceRequestId == AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId)
@@ -138,7 +146,7 @@ namespace Transport.Services
             var RequestMaintenance = new RequestMaintenanceViewModel
             {
                 MaintenanceDescription = model.MaintenanceDescription,
-                RegistrationNumber = "1",///change in the futre
+                RegistrationNumber = model.VehicleId,///change in the futre
 
             };
             vehicleMaintenanceRequestRepository.EditVehicleRequestMaintenance(RequestId, RequestMaintenance);

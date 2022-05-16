@@ -31,7 +31,6 @@ namespace Transport.Controllers
             return View(data);
         }
 
-
         public PartialViewResult AllRequestMaintenance()
         {
 
@@ -130,6 +129,24 @@ namespace Transport.Controllers
             try
             {
                 invoiceService.ApproveInvoice(RequestId);
+            }
+            catch (Exception err)
+            {
+
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+
+            }
+        }
+
+        //invalid request///
+        public void InvalidRequestMaintenance(int RequestId)
+        {
+            try
+            {
+                invoiceService.InvalidInvoice(RequestId);
             }
             catch (Exception err)
             {
