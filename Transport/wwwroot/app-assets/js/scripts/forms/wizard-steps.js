@@ -23,7 +23,7 @@ $(".number-tab-steps").steps({
 });
 
 // Wizard tabs with icons setup
-$(".steps").steps({
+$(".icons-tab-steps").steps({
     headerTag: "h6",
     bodyTag: "fieldset",
     transitionEffect: "fade",
@@ -32,7 +32,8 @@ $(".steps").steps({
         finish: 'Submit'
     },
     onFinished: function (event, currentIndex) {
-        alert("Form submitted.");
+        $("#my_Form").submit();
+        /*alert("Form submitted.");*/
     }
 });
 
@@ -85,7 +86,7 @@ $(".steps-validation").steps({
         }
         form.validate().settings.ignore = ":disabled,:hidden";
         return form.valid();
-    },
+    }, 
     onFinishing: function (event, currentIndex)
     {
         form.validate().settings.ignore = ":disabled";
@@ -93,7 +94,7 @@ $(".steps-validation").steps({
     },
     onFinished: function (event, currentIndex)
     {
-        alert("Submitted!");
+        $("#my_Form").submit();
         
     }
 });

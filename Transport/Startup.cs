@@ -35,7 +35,7 @@ namespace Transport
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<TransportDbContext>(options =>
+            services.AddDbContext<TransportDbTestContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -47,18 +47,34 @@ namespace Transport
             //Adding the repositories
             //services.AddTransient<IVehicleMaintenanceRequestRepository, VehicleMaintenanceRequestRepository>();
             //services.AddTransient<IVehicleMaintenanceRequestStatusRepository, VehicleMaintenanceRequestStatusRepository>();
-            services.AddTransient<IVehicleRepository,VehicleRepository>();
+            services.AddTransient<IVehicleRepository, VehicleRepository>();
             services.AddTransient<ICollegeRepository, CollegeRepository>();
             services.AddTransient<IDepartmentRepository, DepartmentRepository>();
             services.AddTransient<IInsuranceRepository, InsuranceRepository>();
             services.AddTransient<IMakeRepository, MakeRepository>();
             services.AddTransient<IVehicleStatusRepository, VehicleStatusRepository>();
             services.AddTransient<IVehicleUseRepository, VehicleUseRepository>();
+            services.AddTransient<ITyreSizeRepository, TyreSizeRepository>();
+            services.AddTransient<IModelRepository, ModelRepository>();
+            services.AddTransient<IVehicleTypeRepository, VehicleTypeRepository>();
+            services.AddTransient<IFuelTypeRepository, FuelTypeRepository>();
+            services.AddTransient<IColourRepository, ColourRepository>();
+            services.AddTransient<IQuantityRepository, QuantityRepository>();
+            services.AddTransient<ITransmissionTypeRepository, TransmissionTypeRepository>();
+            services.AddTransient<IPermAxleLoadRepository, PermAxleLoadRepository>();
+            services.AddTransient<ICountryRepository, CountryRepository>();
+            services.AddTransient<IPhotoSectionRepository, PhotoSectionRepository>();
+
+
+
+
+
+
 
             //services.AddTransient<IVehicleMaintenanceSparePart, VehicleMaintenanceSparePartRepository>();
             //Adding Services
             //services.AddScoped<IRequestService, RequestService>();
-            services.AddScoped<IVehicleService,VehicleService>();
+            services.AddScoped<IVehicleService, VehicleService>();
 
 
 

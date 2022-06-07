@@ -11,9 +11,9 @@ namespace Transport.Repositories
 {
     public class CollegeRepository : ICollegeRepository
     {
-        private readonly TransportDbContext _context;
+        private readonly TransportDbTestContext _context;
 
-        public CollegeRepository(TransportDbContext context)
+        public CollegeRepository(TransportDbTestContext context)
         {
             _context = context;
         }

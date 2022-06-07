@@ -6,11 +6,11 @@
 <div class="container">
 
     <div>
-        <h1 class="font-weight-bold">@Model.MakeName.ToUpper() @Model.vehicle.Model.ToUpper()</h1><br />
+        <h1 class="font-weight-bold"> @Model.ModelName.ToUpper() @Model.VehicleTypeName.ToUpper() </h1><br />
         <div class="row full-width mb-1">
             <div class="col-md-4">
                 <h5 class="h5 font-weight-normal"><span class="font-weight-bold">OWNER : </span>@Model.vehicle.Owner</h5>
-                <h5 class="h5 font-weight-normal"><span class="font-weight-bold">COLOUR : </span>@Model.vehicle.Colour</h5>
+                <h5 class="h5 font-weight-normal"><span class="font-weight-bold">COLOUR : </span>@Model.ColourName</h5>
 
             </div>
             <div class="col-md-4">
@@ -33,18 +33,27 @@
 
         <div id="carouselExampleIndicators" class="carousel slide" style="text-align:center;" data-ride="carousel">
             <ol class="carousel-indicators">
-                @for (var i = 0; i < Model.VehiclePhotos.Count(); i++)
+                @for (var i = 0; i < Model.PhotoItems.Count(); i++)
                 {
                     <li data-target="#carouselExampleIndicators" data-slide-to=@i class="@(i == 0 ? "active" : "")"></li>
                 }
             </ol>
             <div class="carousel-inner">
-                @for (var i = 0; i < Model.VehiclePhotos.Count(); i++)
+                @for (var i = 0; i < Model.PhotoItems.Count(); i++)
                 {
-                <div  class="@(i == 0 ? "carousel-item active" : "carousel-item")">
-                    @*<img class="d-block w-100" style="width:240px;height:240px;" src="@Model.VehiclePhotos[i].PhotoURL" alt="@Model.VehiclePhotos[i].PhotoName">*@
-                    <img class="w-50" style="width: 300px; height: 500px;" src="data:image;base64,@Convert.ToBase64String(Model.VehiclePhotos[i].PhotoFile)" alt="@Model.VehiclePhotos[i].PhotoName" />
-                </div>
+                    <div class="@(i == 0 ? "carousel-item active" : "carousel-item")">
+
+                        @if (Model.PhotoItems[i].PhotoFile != null)
+                        {
+                            <img class="w-50" style="width: 300px; height: 500px;" src="data:image;base64,@Convert.ToBase64String(Model.PhotoItems[i].PhotoFile)" alt="@Model.PhotoItems[i].PhotoName" />
+                        }
+                        else
+                        {
+                            <img class="w-50" style="width: 300px; height: 500px;" src="~/photos/vehicle/imageThumnail.png" />
+                        }
+
+
+                    </div>
                 }
 
             </div>
@@ -62,25 +71,27 @@
         <div class="card mb-4">
             <div class="card-body row m-1" style="flex-wrap:nowrap;">
                 <ul class="list-group col-sm-4">
-                    <li class="list-group-item"><span class="font-weight-bold">VEHICLE REGISTRATION NO.(OLD) - </span><br/>@Model.vehicle.OldRegistrationNumber</li>
+                    <li class="list-group-item"><span class="font-weight-bold">MAKE OF VEHICLE - </span>@Model.MakeName</li>
+                    <li class="list-group-item"><span class="font-weight-bold">VEHICLE REG. NUMBER(OLD) - </span>@Model.vehicle.OldRegistrationNumber</li>
                     <li class="list-group-item"><span class="font-weight-bold">OWNER - </span>@Model.vehicle.Owner</li>
                     <li class="list-group-item"><span class="font-weight-bold">POSTAL ADDRESS - </span>@Model.vehicle.PostalAddress</li>
                     <li class="list-group-item"><span class="font-weight-bold">RESIDENTIAL ADDRESS - </span>@Model.vehicle.ResidentialAddress</li>
-                    <li class="list-group-item"><span class="font-weight-bold">MEASUREMENTS(cm) -</span> @(Model.vehicle.Length)(L) x @(Model.vehicle.Width)(W) x @(Model.vehicle.Height)(H) </li>
+                    <li class="list-group-item"><span class="font-weight-bold">MEASUREMENTS(cm) -</span><br /> @(Model.vehicle.Length)(L) x @(Model.vehicle.Width)(W) x @(Model.vehicle.Height)(H) </li>
                 </ul>
                 <ul class="list-group  col-sm-4">
-                    <li class="list-group-item"><span class="font-weight-bold">MAKE - </span>@Model.MakeName</li>
-                    <li class="list-group-item"><span class="font-weight-bold">MODEL - </span>@Model.vehicle.Model</li>
-                    <li class="list-group-item"><span class="font-weight-bold">COLOUR - </span>@Model.vehicle.Colour</li>
+                    <li class="list-group-item"><span class="font-weight-bold">MODEL - </span>@Model.vehicle.Model.ModelName</li>
+                    <li class="list-group-item"><span class="font-weight-bold">COLOUR - </span>@Model.ColourName</li>
                     <li class="list-group-item"><span class="font-weight-bold">CHASIS NO. - </span>@Model.vehicle.ChasisNumber</li>
-                    <li class="list-group-item"><span class="font-weight-bold">SIZE OF TYRES - </span>@(Model.vehicle.SizeOfFrontTyre)(FRONT) @(Model.vehicle.SizeofMiddleTyre)(MIDDLE) @(Model.vehicle.SizeOfRearTyre)(REAR)</li>
+                    <li class="list-group-item"><span class="font-weight-bold">FRONT TYRE SIZE - </span><br/>@Model.FrontTyreSizeValue</li>
+                    <li class="list-group-item"><span class="font-weight-bold">MIDDLE TYRE SIZE - </span><br /> @Model.MiddleTyreSizeValue</li>
+                    <li class="list-group-item"><span class="font-weight-bold">REAR TYRE SIZE - </span><br /> @Model.RearTyreSizeValue</li>
 
                 </ul>
                 <ul class="list-group  col-sm-4">
-                    <li class="list-group-item"><span class="font-weight-bold">COUNTRY OF ORIGIN - </span>@Model.vehicle.CountryOfOrigin</li>
-                    <li class="list-group-item"><span class="font-weight-bold">YEAR OF MANUFACTURE - </span>@Model.vehicle.YearOfManufacture.Year</li>
-                    <li class="list-group-item"><span class="font-weight-bold">NO. OF WHEELS - </span>@Model.vehicle.NumberOfWheels</li>
-                    <li class="list-group-item"><span class="font-weight-bold">NO. OF AXLES - </span>@Model.vehicle.NumberOfAxles</li>
+                    <li class="list-group-item"><span class="font-weight-bold">COUNTRY OF ORIGIN - </span>@Model.CountryName</li>
+                    <li class="list-group-item"><span class="font-weight-bold">YEAR OF MANUFACTURE - </span>@Model.vehicle.YearOfManufacture</li>
+                    <li class="list-group-item"><span class="font-weight-bold">NO. OF WHEELS - </span>@Model.WheelCountNumber</li>
+                    <li class="list-group-item"><span class="font-weight-bold">NO. OF AXLES - </span>@Model.AxleCountNumber</li>
                     <li class="list-group-item"><span class="font-weight-bold">ENGINE NUMBER - </span>@Model.vehicle.EngineNumber</li>
 
                 </ul>

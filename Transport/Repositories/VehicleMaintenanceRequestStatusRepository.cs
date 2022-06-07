@@ -9,9 +9,9 @@ namespace Transport.Repositories.IRepository
 {
     public class VehicleMaintenanceRequestStatusRepository: IVehicleMaintenanceRequestStatusRepository
     {
-        private readonly TransportDbContext _context;
+        private readonly TransportDbTestContext _context;
 
-        public VehicleMaintenanceRequestStatusRepository(TransportDbContext context)
+        public VehicleMaintenanceRequestStatusRepository(TransportDbTestContext context)
         {
             _context = context;
         }

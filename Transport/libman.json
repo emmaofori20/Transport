@@ -10,16 +10,22 @@
       "provider": "jsdelivr",
       "library": "bootstrap@4.3.1",
       "destination": "wwwroot/lib/bootstrap/"
-    }
-  ,
-{
-  "library": "jquery-validate@1.19.3",
-  "destination": "wwwroot/lib/jquery-validate/"
-}
-,
-{
-  "library": "jquery-validation-unobtrusive@3.2.12",
-  "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
+    },
+    {
+      "library": "jquery-validate@1.19.3",
+      "destination": "wwwroot/lib/jquery-validate/"
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.12",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
+    },
+    {
+      "library": "popper.js@1.14.7",
+      "destination": "wwwroot/lib/popper.js/"
+    },
+    {
+      "library": "bootstrap-sweetalert@1.0.1",
+      "destination": "wwwroot/lib/bootstrap-sweetalert/"
     }
   ]
-}
+}r
