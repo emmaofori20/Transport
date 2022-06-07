@@ -15,7 +15,7 @@ namespace Transport.Services.IServices
 
         public VehicleMaintenanceRequestDetailsViewModel VehicleMaintenanceRequestDetails(int ListId);
 
-        public List<VehicleMaintenanceRequestsViewModel> GetAllVehicleMaintenanceRequest();
+        public (List<VehicleMaintenanceRequestsViewModel>, List<Vehicle>) GetAllVehicleMaintenanceRequest();
 
         public void DeleteVehicleRequestMaintenance(int RequestId);
 

@@ -19,7 +19,7 @@ namespace Transport.Repositories
             _context = context;
         }
         
-        public async Task<List<VehicleListViewModel>> GetAllVehicles()
+        public async Task<(List<VehicleListViewModel>,List<Vehicle>)> GetAllVehicles()
         {
             
             var vehicles = await _context.Vehicles
@@ -30,6 +30,8 @@ namespace Transport.Repositories
                 .Include(x => x.Colour)
                 .Where(x => x.IsDeleted == false)
                 .OrderByDescending(x => x.VehicleId)
+                .Include(x => x.Status)
+                .Include(x => x.VehiclePhotos)
                 .ToListAsync();
             List<VehicleListViewModel> allVehicles = new List<VehicleListViewModel>();
             
@@ -49,7 +51,7 @@ namespace Transport.Repositories
                allVehicles.Add(vehicleListViewModel);
             }
 
-            return allVehicles;
+            return (allVehicles, vehicles);
         }
         public async Task<VehicleDetailViewModel> GetVehicle(int Id)
         {

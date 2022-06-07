@@ -7,7 +7,8 @@ namespace Transport.ViewModels
 {
     public class VehicleMaintenanceRequestsViewModel
     {
-        public int RegistrationNumber { get; set; }
+        public int VehicleId { get; set; }
+        public string RegistrationNumber { get; set; }
         public string MaintainedBy { get; set; }
         public string Status { get; set; }
         public DateTime Date { get; set; }

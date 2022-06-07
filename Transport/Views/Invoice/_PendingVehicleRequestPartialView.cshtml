@@ -52,9 +52,11 @@
                                             <a onclick="SetListToApprove(this)" id="ApproveRequest" data-url='@Url.Action("ApproveRequestMaintenance","Invoice",new { RequestId = @Model.VehicleMaintenanceRequests[i].RequestId })' class="dropdown-item">
                                                 <i class="la la-check"></i> Approve Request
                                             </a>
-                                            <button onclick="return ConfirmDelete(this)" type="button" id="confirm-color" class="dropdown-item">
-                                                <i class="la la-trash"></i> Delete Request
-                                            </button>
+                                            <a onclick="SetListToInvalid(this)" id="InvlaidRequest" data-url='@Url.Action("InvalidRequestMaintenance","Invoice",new { RequestId = @Model.VehicleMaintenanceRequests[i].RequestId })' class="dropdown-item">
+                                                <i class="la la-times-circle"></i> Invalid Request
+                                            </a>
+
+                                         
                                         </span>
                                     </span>
                                 </td>
@@ -133,4 +135,26 @@ else
         });
     }
 
+
+    //setting a request list to invalid
+    function SetListToInvalid(element) {
+        var url = $(element).data('url');
+        debugger;
+        $.ajax({
+            url: url,
+            type: "get",
+            cache: false,
+            success: function (data) {
+                console.log('i work')
+               // location.reload();// reloads the entire page
+                $("#divContent").load('@Url.Action("InvalidRequestMaintenance", "Invoice")');//keeps the page still
+               // console.log('stay on page')
+            },
+            error: function (err) {
+                console.log('An error occured')
+                swal("Error!", "We could not access the server.", "error");
+
+            }
+        });
+    }
 </script>

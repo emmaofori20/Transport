@@ -69,10 +69,11 @@ namespace Transport.Services
         }
 
 
-        public async Task<List<VehicleListViewModel>> GetAllVehicles()
+        public List<VehicleListViewModel> GetAllVehicles()
         {
-            return await _vehicleRepository.GetAllVehicles();
+            return  _vehicleRepository.GetAllVehicles().Result.Item1;
         }
+      
 
         public async Task<VehicleDetailViewModel> GetVehicleById(int Id) 
         {

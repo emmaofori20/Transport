@@ -9,7 +9,7 @@ namespace Transport.Repositories.IRepository
 {
     public interface IVehicleRepository
     {
-        public Task<List<VehicleListViewModel>> GetAllVehicles();
+        public Task<(List<VehicleListViewModel>, List<Vehicle>)> GetAllVehicles();
         public Task<VehicleDetailViewModel> GetVehicle(int Id);
         public Task<int> AddVehicle(AddVehicleViewModel vehicleModel);
         public Task<UpdateVehicleViewModel> GetVehicleForUpdate(int Id);

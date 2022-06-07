@@ -20,7 +20,7 @@ namespace Transport.Repositories
 
         public VehicleMaintenanceRequest GetMaintenanceRequest(int RequestId)
         {
-            return _context.VehicleMaintenanceRequests
+            return _context.VehicleMaintenanceRequests.Include(x=>x.Vehicle)
                 .Where(x => x.VehicleMaintenanceRequestId == RequestId)
                 .FirstOrDefault();
         }
@@ -28,9 +28,11 @@ namespace Transport.Repositories
         public List<VehicleMaintenanceRequest> GetAllMaintenanceRequest()
         {
             return _context.VehicleMaintenanceRequests
+                .Include(x=>x.Vehicle)
                 .Include(x=>x.VehicleMaintenanceSpareparts)
                 .Include(x => x.VehicleMaintenanceRequestStatuses)
                 .ThenInclude(x => x.MaintenanceStatus)
+                .Where(x=>x.IsDeleted != true)
                 .ToList();
         }
 
@@ -39,7 +41,7 @@ namespace Transport.Repositories
             //Saving/adding Request Maintenance Data into the database
             VehicleMaintenanceRequest vehicleMaintenanceRequest = new VehicleMaintenanceRequest
             {
-                VehicleId = 1,
+                VehicleId = model.RegistrationNumber,
                 MaintenanceDescription = model.MaintenanceDescription,
                 CreatedBy = "AdminTest",
                 CreatedOn = DateTime.Now
@@ -56,20 +58,14 @@ namespace Transport.Repositories
                                         .Include(x => x.VehicleMaintenanceRequestStatuses)
                                         .Include(x => x.VehicleMaintenanceSpareparts).FirstOrDefault();
 
-            foreach (var vehicleRequestStatus in VehicleMaintenanceRepuest.VehicleMaintenanceRequestStatuses)
+            if (VehicleMaintenanceRepuest != null)
             {
-                _context.Remove(vehicleRequestStatus);
-                _context.SaveChanges();
+                VehicleMaintenanceRepuest.IsDeleted = true;
+                VehicleMaintenanceRepuest.UpdatedBy = "DeletedAdmin";
+                VehicleMaintenanceRepuest.UpdatedOn = DateTime.Now;
             }
 
-            foreach (var spareParts in VehicleMaintenanceRepuest.VehicleMaintenanceSpareparts)
-            {
-                _context.Remove(spareParts);
-                _context.SaveChanges();
-
-            }
-
-            _context.Remove(VehicleMaintenanceRepuest);
+            _context.VehicleMaintenanceRequests.Update(VehicleMaintenanceRepuest);
             _context.SaveChanges();
         }
 
@@ -77,6 +73,7 @@ namespace Transport.Repositories
         {
             VehicleMaintenanceRequest vehicleMaintenance= GetMaintenanceRequest(RequestId);
             vehicleMaintenance.MaintenanceDescription = model.MaintenanceDescription;
+            vehicleMaintenance.VehicleId = model.RegistrationNumber;
             vehicleMaintenance.UpdatedBy = "UpdatedAdmin";
             vehicleMaintenance.UpdatedOn = DateTime.Now;
 

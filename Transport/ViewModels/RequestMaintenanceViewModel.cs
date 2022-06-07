@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace Transport.ViewModels
     public class RequestMaintenanceViewModel
     {
         [Required]
-        public string RegistrationNumber { get; set; }
+        public int RegistrationNumber { get; set; }
         [Required]
         public string MaintenanceDescription { get; set; }
-        [Required]
         public double MaintenanceCost { get; set; }
         public string MaintainedBy { get; set; }
+        public SelectList Vehicles { get; set; }
     }
 }

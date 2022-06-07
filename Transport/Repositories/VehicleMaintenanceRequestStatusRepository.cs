@@ -41,15 +41,31 @@ namespace Transport.Repositories.IRepository
            return result;
         }
 
+        public void InvalidVehicleMaintenanceRequest(int RequestId)
+        {
+            var results = _context.VehicleMaintenanceRequestStatuses.Where(x => x.VehicleMaintenanceRequestId == RequestId)
+                         .OrderByDescending(x => x.CreatedOn).First();
+
+            if (results != null)
+            {
+                results.UpdatedBy = "Invalid Engineer";
+                results.UpdatedOn = DateTime.Now;
+                results.MaintenanceStatusId = 3003;
+            }
+            _context.VehicleMaintenanceRequestStatuses.Update(results);
+            _context.SaveChanges();
+        }
+
         //Setting a request to pending
         public void PendingVehicleMaintenanceRequestStatus( int vehicleMaintenanceRequestId)
         {
             VehicleMaintenanceRequestStatus vehicleMaintenanceRequestStatus = new VehicleMaintenanceRequestStatus
             {
                 VehicleMaintenanceRequestId = vehicleMaintenanceRequestId,
-                //MaintainanceStatusId = 3000,
                 CreatedBy="AdminTest",
-                CreatedOn=DateTime.Now
+                CreatedOn=DateTime.Now,
+                MaintenanceStatusId = 3000
+                
             };
 
             _context.VehicleMaintenanceRequestStatuses.Add(vehicleMaintenanceRequestStatus);
@@ -61,7 +77,14 @@ namespace Transport.Repositories.IRepository
         {
            var results= _context.VehicleMaintenanceRequestStatuses.Where(x=>x.VehicleMaintenanceRequestId == RequestId)
                 .OrderByDescending(x => x.CreatedOn).First();
-            _context.Remove(results);
+
+            if (results != null)
+            {
+                results.UpdatedBy = "UNApproved Engineer";
+                results.UpdatedOn = DateTime.Now;
+                results.MaintenanceStatusId = 3000;
+            }
+            _context.VehicleMaintenanceRequestStatuses.Update(results);
             _context.SaveChanges();
         }
     }

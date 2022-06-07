@@ -49,13 +49,19 @@
                                                         <span class="badge badge-default badge-light badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
                                                     </td>
                                                 }
+                                                else if (@Model.VehicleMaintenanceRequests[i].Status == "Invalid")
+                                                {
+                                                    <td>
+                                                        <span class="badge badge-default badge-info badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
+                                                    </td>
+                                                }
                                                 else
                                                 {
                                                     <td>
                                                         <span class="badge badge-default badge-danger badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
                                                     </td>
                                                 }
-                                                
+
                                                 <td>Ghc @Model.VehicleMaintenanceRequests[i].MaintenanceCost</td>
                                                 <td>
                                                     <span class="dropdown">

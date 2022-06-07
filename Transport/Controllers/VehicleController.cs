@@ -30,11 +30,11 @@ namespace Transport.Controllers
             
         }
         // GET: VehicleController
-        public async Task<ViewResult> VehicleList()
+        public ViewResult VehicleList()
         {
             try
             {
-                var vehicles = await _vehicleService.GetAllVehicles();
+                var vehicles = _vehicleService.GetAllVehicles();
                 return View(vehicles);
             }
             catch (Exception ex)

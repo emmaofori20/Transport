@@ -23,7 +23,7 @@ namespace Transport.Controllers
         // GET: MaintenanceController
         public ActionResult Index()
         {
-            List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
+            List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest().Item1;
             var data = new RequestVehicleViewModel
             {
                 VehicleMaintenanceRequests = results,
@@ -31,13 +31,12 @@ namespace Transport.Controllers
             return View(data);
         }
 
-
         public PartialViewResult AllRequestMaintenance()
         {
 
             try
             {
-                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
+                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest().Item1;
                 var data = new RequestVehicleViewModel
                 {
                     VehicleMaintenanceRequests = results,
@@ -78,7 +77,7 @@ namespace Transport.Controllers
         {
             try
             {
-                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
+                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest().Item1;
                 var PendingVehicleRequest = new RequestVehicleViewModel
                 {
                     VehicleMaintenanceRequests = results.Where(x=>x.Status == "Pending").ToList(),
@@ -103,7 +102,7 @@ namespace Transport.Controllers
         {
             try
             {
-                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest();
+                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest().Item1;
                 var ApprovedVehicleRequest = new RequestVehicleViewModel
                 {
                     VehicleMaintenanceRequests = results.Where(x => x.Status == "Approved").ToList(),
@@ -130,6 +129,24 @@ namespace Transport.Controllers
             try
             {
                 invoiceService.ApproveInvoice(RequestId);
+            }
+            catch (Exception err)
+            {
+
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+
+            }
+        }
+
+        //invalid request///
+        public void InvalidRequestMaintenance(int RequestId)
+        {
+            try
+            {
+                invoiceService.InvalidInvoice(RequestId);
             }
             catch (Exception err)
             {

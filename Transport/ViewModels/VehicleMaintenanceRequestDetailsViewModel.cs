@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +8,9 @@ namespace Transport.ViewModels
 {
     public class VehicleMaintenanceRequestDetailsViewModel
     {
-        public int RegistrationNumber { get; set; }
+        public string RegistrationNumber { get; set; }
+        public int VehicleId { get; set; }
+        public SelectList AllVehicles { get; set; }
         public string MaintenanceDescription { get; set; }
         public decimal MaintenanceCost { get; set; }
         public string MaintainedBy { get; set; }
