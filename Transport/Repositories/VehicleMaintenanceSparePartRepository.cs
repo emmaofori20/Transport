@@ -10,9 +10,9 @@ namespace Transport.Repositories
 {
     public class VehicleMaintenanceSparePartRepository: IVehicleMaintenanceSparePartRepository
     {
-        private readonly TransportDbContext _context;
+        private readonly TransportDbTestContext _context;
 
-        public VehicleMaintenanceSparePartRepository(TransportDbContext context)
+        public VehicleMaintenanceSparePartRepository(TransportDbTestContext context)
         {
             _context = context;
 

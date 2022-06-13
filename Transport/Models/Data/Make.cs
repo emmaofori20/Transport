@@ -9,6 +9,7 @@ namespace Transport.Models.Data
     {
         public Make()
         {
+            Models = new HashSet<Model>();
             Vehicles = new HashSet<Vehicle>();
         }
 
@@ -19,6 +20,7 @@ namespace Transport.Models.Data
         public DateTime? UpdatedOn { get; set; }
         public string UpdatedBy { get; set; }
 
+        public virtual ICollection<Model> Models { get; set; }
         public virtual ICollection<Vehicle> Vehicles { get; set; }
     }
 }

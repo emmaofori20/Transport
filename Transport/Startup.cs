@@ -35,7 +35,7 @@ namespace Transport
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<TransportDbContext>(options =>
+            services.AddDbContext<TransportDbTestContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -49,23 +49,21 @@ namespace Transport
             services.AddTransient<IVehicleMaintenanceRequestStatusRepository, VehicleMaintenanceRequestStatusRepository>();
             services.AddTransient<IVehicleMaintenanceSparePartRepository, VehicleMaintenanceSparePartRepository>();
             services.AddTransient<IInsuranceRepository, InsuranceRepository>();
+            //services.AddTransient<IVehicleMaintenanceRequestRepository, VehicleMaintenanceRequestRepository>();
+            //services.AddTransient<IVehicleMaintenanceRequestStatusRepository, VehicleMaintenanceRequestStatusRepository>();
+            services.AddTransient<IVehicleRepository, VehicleRepository>();
             services.AddTransient<ICollegeRepository, CollegeRepository>();
             services.AddTransient<IDepartmentRepository, DepartmentRepository>();
             services.AddTransient<IMakeRepository,MakeRepository>();
             services.AddTransient<IVehicleRepository, VehicleRepository>();
             services.AddTransient<IVehicleStatusRepository, VehicleStatusRepository>();
             services.AddTransient<IVehicleUseRepository, VehicleUseRepository>();
-            services.AddTransient<IRoutineMaintenanceActivityRepository, RoutineMaintenanceActivityRepository>();
-            services.AddTransient<ISparePartQuantityRepository, SparePartQuantityRepository>();
-            services.AddTransient<IVehicleRoutineMaintenanceRepository, VehicleRoutineMaintenanceRepository>();
-            services.AddTransient<IRoutneMaintenanceListRepository, RoutneMaintenanceListRepository>();
+
 
             //Adding Services
             services.AddScoped<IRequestService, RequestService>();
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IInvoiceService,InvoiceService>();
-            services.AddScoped<IRoutineService, RoutineService>();
-            services.AddScoped<ISparePartService, SparePartService>();
 
 
         }

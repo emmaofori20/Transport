@@ -11,9 +11,9 @@ namespace Transport.Repositories
 {
     public class InsuranceRepository : IInsuranceRepository
     {
-        private readonly TransportDbContext _context;
+        private readonly TransportDbTestContext _context;
 
-        public InsuranceRepository(TransportDbContext context)
+        public InsuranceRepository(TransportDbTestContext context)
         {
             _context = context;
         }

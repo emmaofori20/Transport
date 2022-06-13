@@ -15,17 +15,17 @@ namespace Transport.ViewModels
         [Required(ErrorMessage = "Enter Name of Vehicle Owner")]
         public string Owner { get; set; }
 
-        [StringLength(500, MinimumLength = 1)]
-        [Required(ErrorMessage = "Enter Colour of Vehicle")]
-        public string Colour { get; set; }
+        [Required]
+        public int ColourId { get; set; }
+        public SelectList Colours { get; set; }
+        
+        [Required]
+        public int ModelId { get; set; }
+        public SelectList Models { get; set; }
 
-        [StringLength(500, MinimumLength = 1)]
-        [Required(ErrorMessage = "Enter Vehicle Model")]
-        public string Model { get; set; }
-
-        [StringLength(500, MinimumLength = 1)]
-        [Required(ErrorMessage = "Enter Type of Vehicle")]
-        public string VehicleType { get; set; }
+        [Required]
+        public int VehicleTypeId { get; set; }
+        public SelectList VehicleTypes { get; set; }
 
         [StringLength(500, MinimumLength = 1)]
         [Required(ErrorMessage = "Enter Vehicle Registration No.")]
@@ -45,52 +45,29 @@ namespace Transport.ViewModels
         public decimal? Length { get; set; }
         public decimal? Width { get; set; }
         public decimal? Height { get; set; }
-        public int? NumberOfAxles { get; set; }
-
-
-        [Required(ErrorMessage = "Enter Number of Wheels")]
-        public int NumberOfWheels { get; set; }
-
-        public string CountryOfOrigin { get; set; }
+        public int CountryId { get; set; }
+        public SelectList Countries { get; set; }
 
         [Required(ErrorMessage = "Enter Year of Manufacture")]
-        [DataType(DataType.Date)]
-        public DateTime YearOfManufacture { get; set; }
+        public int YearOfManufacture { get; set; }
 
-        [StringLength(500, MinimumLength = 1)]
-        [Required(ErrorMessage = "Enter Size of Front Tyre")]
-        public string SizeOfFrontTyre { get; set; }
-        public string SizeofMiddleTyre { get; set; }
-
-        [StringLength(500, MinimumLength = 1)]
-        [Required(ErrorMessage = "Enter Size of Rear Tyre")]
-        public string SizeOfRearTyre { get; set; }
-        public string FrontPermAxleLoad { get; set; }
-        public string MiddlePermAxleLoad { get; set; }
-        public string RearPermAxleLoad { get; set; }
         public decimal? NetVehicleWeight { get; set; }
         public decimal? GrossVehicleWeight { get; set; }
         public decimal? PermCapacityLoad { get; set; }
-
-        [StringLength(500, MinimumLength = 1)]
-        [Required(ErrorMessage = "Enter Number of Persons")]
-        public string NumberOfPersons { get; set; }
         public string PolicyNumber { get; set; }
 
         [StringLength(500, MinimumLength = 1)]
         [Required(ErrorMessage = "Enter Engine Number")]
         public string EngineNumber { get; set; }
-
-
-        [Required(ErrorMessage = "Enter Number of Cylinders")]
-        public int NumberOfCylinders { get; set; }
-
+        
         [Required(ErrorMessage = "Enter Engine Capacity")]
         public int EngineCapacity { get; set; }
         public int? HorsePower { get; set; }
-        [StringLength(500, MinimumLength = 1)]
-        [Required(ErrorMessage = "Enter Fuel Type")]
-        public string FuelType { get; set; }
+        public int? Mileage { get; set; }
+
+        [Required]
+        public int FuelTypeId { get; set; }
+        public SelectList FuelTypes { get; set; }
         public DateTime? DateOfEntry { get; set; }
         [Required]
         public DateTime CreatedOn { get; set; }
@@ -99,7 +76,29 @@ namespace Transport.ViewModels
         public string CreatedBy { get; set; }
         public int StatusId { get; set; }
         public SelectList Statuses { get; set; }
+        public SelectList TyreSizes { get; set; }
 
+        [Required]
+        public int FrontTyreSize { get; set; }
+        public int? MiddleTyreSize { get; set; }
+        [Required]
+        public int RearTyreSize{ get; set; }
+        public SelectList PermAxleLoads { get; set; }
+        public int? FrontPermAxleLoad { get; set; }
+        public int? MiddlePermAxleLoad { get; set; }
+        public int? RearPermAxleLoad { get; set; }
+
+        public SelectList Quantities { get; set; }
+
+        [Required]
+        public int CylinderCount { get; set; }
+
+        [Required]
+        public int WheelCount { get; set; }
+
+        [Required]
+        public int PersonCount { get; set; }
+        public int AxleCount { get; set; }
         public int MakeId { get; set; }
         public SelectList Makes { get; set; }
 
@@ -111,11 +110,20 @@ namespace Transport.ViewModels
         public SelectList VehicleUses { get; set; }
         public int InsuranceId { get; set; }
         public SelectList Insurances { get; set; }
+        public int TransmissionTypeId { get; set; }
+        public SelectList TransmissionTypes { get; set; }
 
-        public IFormFileCollection PhotoFiles { get; set; }
+        public List<PhotoSection> PhotoSections { get; set; }
 
-        public List<VehiclePhoto> Photos { get; set; }
-
+        public List<PhotoItem> PhotoItems{ get; set; }
 
     }
+
+    public class PhotoItem
+    {
+        public int PhotoSectionId { get; set; }
+        public string PhotoSectionName { get; set; }
+        public IFormFile PhotoFile { get; set; }
+    }
+
 }

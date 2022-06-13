@@ -82,54 +82,51 @@ namespace Transport.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddNewVehicle(AddVehicleViewModel vehicleModel)
+        
         {
             var results = _vehicleService.setAllList();
-
-            try
-            {
-
-                
-
-                if (vehicleModel.PhotoFiles != null)
+            
+                try
                 {
-                    //string folder = "photos/vehicle/";
 
-                    vehicleModel.Photos = new List<VehiclePhoto>();
+                    var result = await _vehicleService.AddNewVehicle(vehicleModel);
 
-                    foreach (var file in vehicleModel.PhotoFiles)
-                    {
-                        var photo = new VehiclePhoto()
-                        {
-                            PhotoName = file.FileName,
-                            PhotoFile = UploadImage(file),
-                        };
-
-                        vehicleModel.Photos.Add(photo);
-                    }
+                    return RedirectToAction(nameof(VehicleList));
                 }
+                catch (Exception ex)
+                {
+                    var errorViewModel = new ErrorViewModel()
+                    {
+                        RequestId = ex.Message
+                    };
 
-                var result = await _vehicleService.AddNewVehicle(vehicleModel);
-
-                return RedirectToAction(nameof(VehicleList));
-            }
-            catch
-            {
-                return View();
-            }
+                    return View("Error", errorViewModel);
+                }      
 
         }
 
         // GET: VehicleController/Edit/5
         public async Task<IActionResult> UpdateVehicle(int Id)
         {
-            var results = _vehicleService.setAllList();
 
+            var results = _vehicleService.setAllList();
             ViewBag.Colleges = results.Colleges;
             ViewBag.Departments= results.Departments;
             ViewBag.Makes = results.Makes;
             ViewBag.Insurances = results.Insurances;
             ViewBag.Statuses = results.Statuses;
             ViewBag.UseOfVehicle = results.VehicleUses;
+            ViewBag.TyreSizes = results.TyreSizes;
+            ViewBag.Countries = results.Countries;
+            ViewBag.Models = results.Models;
+            ViewBag.VehicleTypes = results.VehicleTypes;
+            ViewBag.FuelTypes = results.FuelTypes;
+            ViewBag.Colours = results.Colours;
+            ViewBag.Quantities = results.Quantities;
+            ViewBag.TransmissionTypes = results.TransmissionTypes;
+            ViewBag.PermAxleLoads = results.PermAxleLoads;
+            ViewBag.PhotoSections = results.PhotoSections;
+            
             try
             {
                 var result = await _vehicleService.GetVehicleToUpdate(Id);
@@ -154,7 +151,6 @@ namespace Transport.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateVehicle(UpdateVehicleViewModel UpdateModel)
         {
-  
             var results = _vehicleService.setAllList();
             ViewBag.Colleges = results.Colleges;
             ViewBag.Departments = results.Departments;
@@ -162,37 +158,24 @@ namespace Transport.Controllers
             ViewBag.Insurances = results.Insurances;
             ViewBag.Statuses = results.Statuses;
             ViewBag.UseOfVehicle = results.VehicleUses;
+            ViewBag.TyreSizes = results.TyreSizes;
+            ViewBag.Countries = results.Countries;
+            ViewBag.Models = results.Models;
+            ViewBag.VehicleTypes = results.VehicleTypes;
+            ViewBag.FuelTypes = results.FuelTypes;
+            ViewBag.Colours = results.Colours;
+            ViewBag.Quantities = results.Quantities;
+            ViewBag.TransmissionTypes = results.TransmissionTypes;
+            ViewBag.PermAxleLoads = results.PermAxleLoads;
+            ViewBag.PhotoSections = results.PhotoSections;
+
+
             try
             {
 
-                    if (UpdateModel.PhotoFiles != null)
-                    {
-                    //string folder = "photos/vehicle/";
+                var resultId = await _vehicleService.UpdateVehicle(UpdateModel);
 
-                    UpdateModel.Photos = new List<VehiclePhoto>();
-
-
-                    foreach (var file in UpdateModel.PhotoFiles)
-                        {
-                            var gallery = new VehiclePhoto()
-                            {
-                                PhotoName = file.FileName,
-                                PhotoFile = UploadImage(file),
-                            };
-
-                            UpdateModel.Photos.Add(gallery);
-                        }
-
-                    }
-
-                    var resultId = await _vehicleService.UpdateVehicle(UpdateModel);
-
-                    return RedirectToAction(nameof(VehicleList));
-                    //if (vehicleId > 0)
-                    //{
-                    //    return RedirectToAction(nameof(GetVehicleDetails), new { isSuccess = true, Id = Id });
-                    //}
-                
+                return RedirectToAction(nameof(VehicleList));
             }
             catch (Exception ex)
             {
@@ -203,7 +186,7 @@ namespace Transport.Controllers
 
                 return View("Error", errorViewModel);
             }
-
+           
             
         }
 
@@ -226,27 +209,7 @@ namespace Transport.Controllers
             }
 
         }
-        //private async Task<string> UploadImage(string folderPath, IFormFile file)
-        //{
-        //    folderPath += Guid.NewGuid().ToString() + "_" + file.FileName;
-
-        //    string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folderPath);
-
-        //    await file.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-
-        //    return "/" + folderPath;
-        //}
-        private byte[] UploadImage(IFormFile formFile)
-        {
-            byte[] fileBytes;
-
-            using (var stream = new MemoryStream())
-            {
-                formFile.CopyTo(stream);
-                fileBytes = stream.ToArray();
-            }
-
-            return fileBytes;
-        }
+        
+        
     }
 }

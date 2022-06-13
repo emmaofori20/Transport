@@ -38,6 +38,8 @@ $(".icon-tab-steps").steps({
 
 //from maintenance spareparts
 $(".steps").steps({
+// Wizard tabs with icons setup
+$(".icons-tab-steps").steps({
     headerTag: "h6",
     bodyTag: "fieldset",
     transitionEffect: "fade",
@@ -108,6 +110,8 @@ $(".steps").steps({
 
         ///////////////Passing final data to the controller using ajax////////
 
+        $("#my_Form").submit();
+        /*alert("Form submitted.");*/
     }
 });
 
@@ -160,7 +164,7 @@ $(".steps-validation").steps({
         }
         form.validate().settings.ignore = ":disabled,:hidden";
         return form.valid();
-    },
+    }, 
     onFinishing: function (event, currentIndex)
     {
         form.validate().settings.ignore = ":disabled";
@@ -168,7 +172,7 @@ $(".steps-validation").steps({
     },
     onFinished: function (event, currentIndex)
     {
-        alert("Submitted!");
+        $("#my_Form").submit();
         
     }
 });

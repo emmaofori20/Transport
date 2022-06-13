@@ -6,30 +6,40 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Transport.Models.Data
 {
-    public partial class TransportDbContext : DbContext
+    public partial class TransportDbTestContext : DbContext
     {
-        public TransportDbContext()
+        public TransportDbTestContext()
         {
         }
 
-        public TransportDbContext(DbContextOptions<TransportDbContext> options)
+        public TransportDbTestContext(DbContextOptions<TransportDbTestContext> options)
             : base(options)
         {
         }
 
         public virtual DbSet<College> Colleges { get; set; }
+        public virtual DbSet<Colour> Colours { get; set; }
+        public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
+        public virtual DbSet<FuelType> FuelTypes { get; set; }
         public virtual DbSet<Hiring> Hirings { get; set; }
         public virtual DbSet<Insurance> Insurances { get; set; }
         public virtual DbSet<MaintenanceStatus> MaintenanceStatuses { get; set; }
         public virtual DbSet<Make> Makes { get; set; }
+        public virtual DbSet<Model> Models { get; set; }
+        public virtual DbSet<PermAxleLoad> PermAxleLoads { get; set; }
+        public virtual DbSet<PhotoSection> PhotoSections { get; set; }
+        public virtual DbSet<Quantity> Quantities { get; set; }
         public virtual DbSet<RoutineMaintenanceActivity> RoutineMaintenanceActivities { get; set; }
         public virtual DbSet<RoutineMaintenanceList> RoutineMaintenanceLists { get; set; }
         public virtual DbSet<SparePart> SpareParts { get; set; }
         public virtual DbSet<SparePartQuantity> SparePartQuantities { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
+        public virtual DbSet<TransmissionType> TransmissionTypes { get; set; }
         public virtual DbSet<TransportStaff> TransportStaffs { get; set; }
+        public virtual DbSet<TyreSize> TyreSizes { get; set; }
         public virtual DbSet<Vehicle> Vehicles { get; set; }
+        public virtual DbSet<VehicleDocument> VehicleDocuments { get; set; }
         public virtual DbSet<VehicleMaintenanceRequest> VehicleMaintenanceRequests { get; set; }
         public virtual DbSet<VehicleMaintenanceRequestStatus> VehicleMaintenanceRequestStatuses { get; set; }
         public virtual DbSet<VehicleMaintenanceSparepart> VehicleMaintenanceSpareparts { get; set; }
@@ -37,11 +47,18 @@ namespace Transport.Models.Data
         public virtual DbSet<VehicleRequestPhotoReceipt> VehicleRequestPhotoReceipts { get; set; }
         public virtual DbSet<VehicleRoutineMaintenance> VehicleRoutineMaintenances { get; set; }
         public virtual DbSet<VehicleTransportStaff> VehicleTransportStaffs { get; set; }
+        public virtual DbSet<VehicleType> VehicleTypes { get; set; }
         public virtual DbSet<VehicleUse> VehicleUses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
            
+        }
+            if (!optionsBuilder.IsConfigured)
+            {
+            }
+        }
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -70,6 +87,52 @@ namespace Transport.Models.Data
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<Colour>(entity =>
+            {
+                entity.HasKey(e => e.ColourId)
+                    .HasName("PK39")
+                    .IsClustered(false);
+
+                entity.ToTable("Colour");
+
+                entity.Property(e => e.ColourName)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Country>(entity =>
+            {
+                entity.HasKey(e => e.CountryId)
+                    .HasName("PK46")
+                    .IsClustered(false);
+
+                entity.ToTable("Country");
+
+                entity.Property(e => e.CountryName)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<Department>(entity =>
             {
                 entity.HasKey(e => e.DepartmentId)
@@ -84,6 +147,29 @@ namespace Transport.Models.Data
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
                 entity.Property(e => e.DepartmentName)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<FuelType>(entity =>
+            {
+                entity.HasKey(e => e.FuelTypeId)
+                    .HasName("PK38")
+                    .IsClustered(false);
+
+                entity.ToTable("FuelType");
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.FuelTypeName)
                     .IsRequired()
                     .HasMaxLength(255);
 
@@ -187,6 +273,86 @@ namespace Transport.Models.Data
                 entity.Property(e => e.MakeName)
                     .IsRequired()
                     .HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Model>(entity =>
+            {
+                entity.HasKey(e => e.ModelId)
+                    .HasName("PK45")
+                    .IsClustered(false);
+
+                entity.ToTable("Model");
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.ModelName)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Make)
+                    .WithMany(p => p.Models)
+                    .HasForeignKey(d => d.MakeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefMake73");
+            });
+
+            modelBuilder.Entity<PermAxleLoad>(entity =>
+            {
+                entity.HasKey(e => e.PermAxleLoadId)
+                    .HasName("PK44")
+                    .IsClustered(false);
+
+                entity.ToTable("PermAxleLoad");
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.PermAxleLoadValue).HasColumnType("decimal(8, 2)");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<PhotoSection>(entity =>
+            {
+                entity.HasKey(e => e.PhotoSectionId)
+                    .HasName("PK49")
+                    .IsClustered(false);
+
+                entity.ToTable("PhotoSection");
+
+                entity.Property(e => e.PhotoSectionName).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Quantity>(entity =>
+            {
+                entity.HasKey(e => e.QuantityId)
+                    .HasName("PK42")
+                    .IsClustered(false);
+
+                entity.ToTable("Quantity");
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(255);
 
@@ -319,6 +485,29 @@ namespace Transport.Models.Data
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<TransmissionType>(entity =>
+            {
+                entity.HasKey(e => e.TransmissionTypeId)
+                    .HasName("PK43")
+                    .IsClustered(false);
+
+                entity.ToTable("TransmissionType");
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.TransmissionTypeName)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<TransportStaff>(entity =>
             {
                 entity.HasKey(e => e.TransportStaffId)
@@ -351,6 +540,29 @@ namespace Transport.Models.Data
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<TyreSize>(entity =>
+            {
+                entity.HasKey(e => e.TyreSizeId)
+                    .HasName("PK41")
+                    .IsClustered(false);
+
+                entity.ToTable("TyreSize");
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.TyreSizeNumber)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<Vehicle>(entity =>
             {
                 entity.HasKey(e => e.VehicleId)
@@ -361,12 +573,6 @@ namespace Transport.Models.Data
                 entity.Property(e => e.ChasisNumber)
                     .IsRequired()
                     .HasMaxLength(255);
-
-                entity.Property(e => e.Colour)
-                    .IsRequired()
-                    .HasMaxLength(255);
-
-                entity.Property(e => e.CountryOfOrigin).HasMaxLength(255);
 
                 entity.Property(e => e.CreatedBy)
                     .IsRequired()
@@ -382,29 +588,13 @@ namespace Transport.Models.Data
                     .IsRequired()
                     .HasMaxLength(255);
 
-                entity.Property(e => e.FrontPermAxleLoad).HasMaxLength(255);
-
-                entity.Property(e => e.FuelType)
-                    .IsRequired()
-                    .HasMaxLength(255);
-
                 entity.Property(e => e.GrossVehicleWeight).HasColumnType("decimal(8, 2)");
 
                 entity.Property(e => e.Height).HasColumnType("decimal(8, 2)");
 
                 entity.Property(e => e.Length).HasColumnType("decimal(8, 2)");
 
-                entity.Property(e => e.MiddlePermAxleLoad).HasMaxLength(255);
-
-                entity.Property(e => e.Model)
-                    .IsRequired()
-                    .HasMaxLength(255);
-
                 entity.Property(e => e.NetVehicleWeight).HasColumnType("decimal(8, 2)");
-
-                entity.Property(e => e.NumberOfPersons)
-                    .IsRequired()
-                    .HasMaxLength(255);
 
                 entity.Property(e => e.OldRegistrationNumber).HasMaxLength(255);
 
@@ -420,35 +610,23 @@ namespace Transport.Models.Data
                     .IsRequired()
                     .HasMaxLength(255);
 
-                entity.Property(e => e.RearPermAxleLoad).HasMaxLength(255);
-
                 entity.Property(e => e.RegistrationNumber)
                     .IsRequired()
                     .HasMaxLength(255);
 
                 entity.Property(e => e.ResidentialAddress).HasMaxLength(255);
 
-                entity.Property(e => e.SizeOfFrontTyre)
-                    .IsRequired()
-                    .HasMaxLength(255);
-
-                entity.Property(e => e.SizeOfRearTyre)
-                    .IsRequired()
-                    .HasMaxLength(255);
-
-                entity.Property(e => e.SizeofMiddleTyre).HasMaxLength(255);
-
                 entity.Property(e => e.UpdatedBy).HasMaxLength(255);
 
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
 
-                entity.Property(e => e.VehicleType)
-                    .IsRequired()
-                    .HasMaxLength(255);
-
                 entity.Property(e => e.Width).HasColumnType("decimal(8, 2)");
 
-                entity.Property(e => e.YearOfManufacture).HasColumnType("datetime");
+                entity.HasOne(d => d.AxleCountNavigation)
+                    .WithMany(p => p.VehicleAxleCountNavigations)
+                    .HasForeignKey(d => d.AxleCount)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefQuantity69");
 
                 entity.HasOne(d => d.College)
                     .WithMany(p => p.Vehicles)
@@ -456,11 +634,46 @@ namespace Transport.Models.Data
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CollegeVehicle");
 
+                entity.HasOne(d => d.Colour)
+                    .WithMany(p => p.Vehicles)
+                    .HasForeignKey(d => d.ColourId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefColour46");
+
+                entity.HasOne(d => d.Country)
+                    .WithMany(p => p.Vehicles)
+                    .HasForeignKey(d => d.CountryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefCountry61");
+
+                entity.HasOne(d => d.CylinderCountNavigation)
+                    .WithMany(p => p.VehicleCylinderCountNavigations)
+                    .HasForeignKey(d => d.CylinderCount)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefQuantity72");
+
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.DepartmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_DepartmentVehicle");
+
+                entity.HasOne(d => d.FrontPermAxleLoadNavigation)
+                    .WithMany(p => p.VehicleFrontPermAxleLoadNavigations)
+                    .HasForeignKey(d => d.FrontPermAxleLoad)
+                    .HasConstraintName("RefPermAxleLoad59");
+
+                entity.HasOne(d => d.FrontTyreSizeNavigation)
+                    .WithMany(p => p.VehicleFrontTyreSizeNavigations)
+                    .HasForeignKey(d => d.FrontTyreSize)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefTyreSize48");
+
+                entity.HasOne(d => d.FuelType)
+                    .WithMany(p => p.Vehicles)
+                    .HasForeignKey(d => d.FuelTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefFuelType45");
 
                 entity.HasOne(d => d.Insurance)
                     .WithMany(p => p.Vehicles)
@@ -474,17 +687,99 @@ namespace Transport.Models.Data
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MakeVehicle");
 
+                entity.HasOne(d => d.MiddlePermAxleLoadNavigation)
+                    .WithMany(p => p.VehicleMiddlePermAxleLoadNavigations)
+                    .HasForeignKey(d => d.MiddlePermAxleLoad)
+                    .HasConstraintName("RefPermAxleLoad58");
+
+                entity.HasOne(d => d.MiddleTyreSizeNavigation)
+                    .WithMany(p => p.VehicleMiddleTyreSizeNavigations)
+                    .HasForeignKey(d => d.MiddleTyreSize)
+                    .HasConstraintName("RefTyreSize51");
+
+                entity.HasOne(d => d.Model)
+                    .WithMany(p => p.Vehicles)
+                    .HasForeignKey(d => d.ModelId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefModel79");
+
+                entity.HasOne(d => d.PersonCountNavigation)
+                    .WithMany(p => p.VehiclePersonCountNavigations)
+                    .HasForeignKey(d => d.PersonCount)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefQuantity70");
+
+                entity.HasOne(d => d.RearPermAxleLoadNavigation)
+                    .WithMany(p => p.VehicleRearPermAxleLoadNavigations)
+                    .HasForeignKey(d => d.RearPermAxleLoad)
+                    .HasConstraintName("RefPermAxleLoad60");
+
+                entity.HasOne(d => d.RearTyreSizeNavigation)
+                    .WithMany(p => p.VehicleRearTyreSizeNavigations)
+                    .HasForeignKey(d => d.RearTyreSize)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefTyreSize47");
+
                 entity.HasOne(d => d.Status)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.StatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_StatusVehicle");
 
+                entity.HasOne(d => d.TransmissionType)
+                    .WithMany(p => p.Vehicles)
+                    .HasForeignKey(d => d.TransmissionTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefTransmissionType53");
+
+                entity.HasOne(d => d.VehicleType)
+                    .WithMany(p => p.Vehicles)
+                    .HasForeignKey(d => d.VehicleTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefVehicleType44");
+
                 entity.HasOne(d => d.VehicleUse)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.VehicleUseId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("RefVehicleUse38");
+
+                entity.HasOne(d => d.WheelCountNavigation)
+                    .WithMany(p => p.VehicleWheelCountNavigations)
+                    .HasForeignKey(d => d.WheelCount)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefQuantity71");
+            });
+
+            modelBuilder.Entity<VehicleDocument>(entity =>
+            {
+                entity.HasKey(e => e.VehicleDocumentId)
+                    .HasName("PK47")
+                    .IsClustered(false);
+
+                entity.ToTable("VehicleDocument");
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.VehicleDocumentFile).IsRequired();
+
+                entity.Property(e => e.VehicleDocumentName)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.HasOne(d => d.Vehicle)
+                    .WithMany(p => p.VehicleDocuments)
+                    .HasForeignKey(d => d.VehicleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefVehicle63");
             });
 
             modelBuilder.Entity<VehicleMaintenanceRequest>(entity =>
@@ -586,17 +881,33 @@ namespace Transport.Models.Data
 
                 entity.ToTable("VehiclePhoto");
 
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
                 entity.Property(e => e.PhotoFile).IsRequired();
 
                 entity.Property(e => e.PhotoName)
                     .IsRequired()
                     .HasMaxLength(255);
 
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.HasOne(d => d.PhotoSection)
+                    .WithMany(p => p.VehiclePhotos)
+                    .HasForeignKey(d => d.PhotoSectionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("RefPhotoSection82");
+
                 entity.HasOne(d => d.Vehicle)
                     .WithMany(p => p.VehiclePhotos)
                     .HasForeignKey(d => d.VehicleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefVehicle37");
+                    .HasConstraintName("RefVehicle80");
             });
 
             modelBuilder.Entity<VehicleRequestPhotoReceipt>(entity =>
@@ -607,9 +918,19 @@ namespace Transport.Models.Data
 
                 entity.ToTable("VehicleRequestPhotoReceipt");
 
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
                 entity.Property(e => e.ReceiptName).HasMaxLength(255);
 
                 entity.Property(e => e.ReceiptPhotoUrl).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
 
                 entity.HasOne(d => d.VehicleMaintenanceRequest)
                     .WithMany(p => p.VehicleRequestPhotoReceipts)
@@ -675,6 +996,29 @@ namespace Transport.Models.Data
                     .HasForeignKey(d => d.VehicleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_VehicleVehicleTransportStaff");
+            });
+
+            modelBuilder.Entity<VehicleType>(entity =>
+            {
+                entity.HasKey(e => e.VehicleTypeId)
+                    .HasName("PK40")
+                    .IsClustered(false);
+
+                entity.ToTable("VehicleType");
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.VehicleTypeName)
+                    .IsRequired()
+                    .HasMaxLength(255);
             });
 
             modelBuilder.Entity<VehicleUse>(entity =>
