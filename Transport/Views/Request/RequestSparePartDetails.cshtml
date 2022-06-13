@@ -4,6 +4,7 @@
     ViewBag.Title = "Details";
 
     int Id = (int)ViewData["RequestListId"];
+    int SerialNum = 0;
 
 }
 
@@ -29,8 +30,8 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12 text-center text-md-right">
-                    <h2>INVOICE</h2>
-                    <p class="pb-3"># INV-@Id-@Model.spareParts.Count</p>
+                    <h2>Request Form</h2>
+                    <p class="pb-3"># INV-@Id</p>
                     @*<ul class="px-0 list-unstyled">
                             <li>Maintenanance Cost</li>
                             <li class="lead text-bold-800">Ghc @Model.MaintenanceCost</li>
@@ -50,7 +51,7 @@
                 </div>
                 <div class="col-md-6 col-sm-12 text-center text-md-right">
                     <p>
-                        <span class="text-muted">Invoice Date :</span> @Model.Date
+                        <span class="text-muted"> Date :</span> @Model.Date
                     </p>
                     <p>
                         <span class="text-muted">Vehicle Registration Number :</span> @Model.RegistrationNumber
@@ -72,14 +73,14 @@
                                     <th>#</th>
                                     <th>Item </th>
                                     <th class="text-right">Quantity</th>
-                                    <th class="text-right">Amount</th>
+                                    <th class="text-right">Unit Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @for (int i = 0; i < @Model.spareParts.Count; i++)
                                 {
                                     <tr>
-                                        <th scope="row">@i+1 </th>
+                                        <th scope="row">@(++SerialNum) </th>
                                         <td>
                                             <p>@Model.spareParts[i].SparePartName</p>
                                         </td>
@@ -100,23 +101,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Invoice Footer -->
-            <div id="invoice-footer">
-                <div class="row">
-                    <div class="col-md-7 col-sm-12">
-                        <h6>Terms & Condition</h6>
-                        <p>
-                            You know, being a test pilot isn't always the healthiest business
-                            in the world. We predict too much for the next year and yet far
-                            too little for the next 10.
-                        </p>
-                    </div>
-                    <div class="col-md-5 col-sm-12 text-center">
-                        <button type="button" class="btn btn-info btn-lg my-1"><i class="la la-paper-plane-o"></i> Print Invoice</button>
-                    </div>
-                </div>
-            </div>
-            <!--/ Invoice Footer -->
+            
             <!--Upload Receipts or Images-->
             @if (@Model.Status == "Pending")
             {

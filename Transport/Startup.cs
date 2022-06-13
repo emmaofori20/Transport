@@ -55,12 +55,17 @@ namespace Transport
             services.AddTransient<IVehicleRepository, VehicleRepository>();
             services.AddTransient<IVehicleStatusRepository, VehicleStatusRepository>();
             services.AddTransient<IVehicleUseRepository, VehicleUseRepository>();
-
+            services.AddTransient<IRoutineMaintenanceActivityRepository, RoutineMaintenanceActivityRepository>();
+            services.AddTransient<ISparePartQuantityRepository, SparePartQuantityRepository>();
+            services.AddTransient<IVehicleRoutineMaintenanceRepository, VehicleRoutineMaintenanceRepository>();
+            services.AddTransient<IRoutneMaintenanceListRepository, RoutneMaintenanceListRepository>();
 
             //Adding Services
             services.AddScoped<IRequestService, RequestService>();
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IInvoiceService,InvoiceService>();
+            services.AddScoped<IRoutineService, RoutineService>();
+            services.AddScoped<ISparePartService, SparePartService>();
 
 
         }

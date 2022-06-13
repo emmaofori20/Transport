@@ -1,0 +1,115 @@
+﻿@model RoutineMaintenanceVehicleViewModel
+
+@{
+    int SerialNum = 0;
+
+    ViewData["Title"] = "ViewRoutineMaintenance";
+}
+
+<h1>Routine Maintenance</h1>
+
+<section class="card">
+    <div id="invoice-template" class="card-body">
+        <!-- Invoice Company Details -->
+        <div id="invoice-company-details" class="row">
+            <div class="col-md-6 col-sm-12 text-center text-md-left">
+                <div class="media">
+                    <img src="~/app-assets/images/logo/bus.png" alt="company logo" style="height:70px;width:70px" class="" />
+                    <div class="media-body">
+                        <ul class="ml-2 px-0 list-unstyled">
+                            <li class="text-bold-800">KNUST TRANSPORT UNIT</li>
+                            <li>KUMASI,ASHANTI REGION</li>
+                            <li>Ghana</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-md-right">
+                <h2>Request Form</h2>
+                <p class="pb-3"># INV-@Model.RoutineId</p>
+               
+            </div>
+        </div>
+        <!--/ Invoice Company Details -->
+        <!-- Invoice Customer Details -->
+        <div id="invoice-customer-details" class="row pt-2">
+            <div class="col-sm-12 text-center text-md-left">
+                <p class="text-muted">Maintaned By</p>
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-md-left">
+                <ul class="px-0 list-unstyled">
+                    <li class="text-bold-800">@Model.CreatedBy</li>
+                </ul>
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-md-right">
+                <p>
+                    <span class="text-muted"> Date :</span> @Model.Date
+                </p>
+                <p>
+                    <span class="text-muted">Vehicle Registration Number :</span> @Model.RegistrationNumber
+                </p>
+              
+
+            </div>
+        </div>
+        <!--/ Invoice Customer Details -->
+        <!-- Invoice Items Details -->
+        <div id="invoice-items-details" class="pt-2">
+            <div class="row">
+                <div class="table-responsive col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Activity </th>
+                                <th class="text-right">Okay?</th>
+                                <th class="text-right">SparePart Changed?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < @Model.RoutineActivity.Count; i++)
+                            {
+                            <tr>
+                                <th scope="row">@(++SerialNum) </th>
+                                <td>
+                                    <p>@Model.RoutineActivity[i].ActivityName</p>
+                                </td>
+                                <td class="text-right"><input style="color:powderblue" type="checkbox" asp-for="@Model.RoutineActivity[i].Isokay" disabled /></td>
+                                <td class="text-right"> <input type="checkbox" asp-for="@Model.RoutineActivity[i].IsRequiredSparePart" disabled /></td>
+
+                                @if ((bool)@Model.RoutineActivity[i].IsRequiredSparePart)
+                                {
+                                    <td>
+                                        <div style="display: flex; justify-content: space-between; grid-gap: 24px;" >
+                                            <div>
+                                                <label> Spare Part Used</label>
+                                                <p>@Model.RoutineActivity[i].SparePartName</p>
+                 
+                                            </div>
+                                            <div>
+                                                <label> Quantity</label>
+                                                <h4> @Model.RoutineActivity[i].Quantity   </h4>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    }
+                                    else { 
+                                }
+                            </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+
+            </div>
+        </div>
+
+    </div>
+</section>

@@ -1,0 +1,102 @@
+﻿@model SparePartQuantity
+@{
+    ViewData["Title"] = "SparePartDetail";
+}
+<style>
+    #reduce {
+        height: 630px !important;
+        object-fit: contain;
+    }
+</style>
+<div style="display: flex; justify-content: space-between; padding-bottom: 20px;">
+    <h3>  Spare Part Detail  </h3>
+    <a asp-controller="SparePart" asp-action="EditSparePart" asp-route-SparePartId="@Model.SparePartId" class="btn btn-primary square btn-glow px-2" style="color:white">
+        Edit Spare Part
+    </a>
+</div>
+
+<ul>
+    <li>@Model.SparePart.SparePartName</li>
+    <li>@Model.Quantity</li>
+
+</ul>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Simple Bar Chart</h4>
+                <div class="heading-elements">
+                    <ul class="nav nav-pills nav-pills-rounded chart-action float-right btn-group" role="group">
+                        <li class="nav-item"><a class="active nav-link" data-toggle="tab" href="#scoreLineToDay">All </a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#scoreLineToWeek">Month</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#scoreLineToMonth">year</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-content collapse show">
+                <div class="card-body chartjs" id="reduce">
+                    <canvas id="myChart" style="height: 500px !important"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib//jquery/jquery.min.js" type="text/javascript"></script>
+
+<script src="~/lib/Chart.js/chart.min.js"></script>
+
+
+<script>
+
+    var repArray = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.Rep))');
+    var sparepart = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.sparepart))');
+
+    console.log(repArray, sparepart);
+
+    var ctx = $("#myChart");
+    var lineChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: sparepart,
+            datasets: [{
+                label: "Line graph",
+                data: repArray,
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+            }]
+        },
+
+        options: {
+            maintainAspectRatio: false,
+            legend: {display:false}
+        }
+
+    });
+
+    ////const labels = [
+    ////    'January',
+    ////    'February',
+    ////    'March',
+    ////    'April',
+    ////    'May',
+    ////    'June',
+    ////];
+
+    ////const data = {
+    ////    labels: labels,
+    ////    datasets: [{
+    ////        label: 'My First dataset',
+    ////        backgroundColor: 'rgb(255, 99, 132)',
+    ////        borderColor: 'rgb(255, 99, 132)',
+    ////        data: [0, 10, 5, 2, 20, 30, 45],
+    ////    }]
+    ////};
+
+    ////const config = {
+    ////    type: 'line',
+    ////    data: data,
+    ////    options: {}
+    ////};
+</script>
+

@@ -16,4 +16,15 @@ namespace Transport.ViewModels
         public int spareParts { get; set; }
         public decimal MaintenanceCost { get; set; }
     }
+
+    public class VehicleRoutineMaintenanceRequestViewModel
+    {
+        public int VehicleId { get; set; }
+        public string RegistrationNumber { get; set; }
+        public string MaintainedBy { get; set; }
+        public int RoutineRequestId { get; set; }
+        public DateTime Date { get; set; }
+
+
+    }
 }

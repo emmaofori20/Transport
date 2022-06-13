@@ -1,0 +1,146 @@
+﻿@model RoutineMaintenanceVehicleViewModel;
+@{
+    ViewData["Title"] = "Routine Maintenance";
+    int SerialNum = 0;
+
+}
+<link href="~/lib/select2/css/select2.css" rel="stylesheet" defer />
+
+
+<form method="post" asp-action="SelectVehicleForRoutineMaintenance" asp-controller="Routine">
+
+    <div class="card p-2">
+        <!--  Company Details -->
+        <div id="invoice-company-details" class="row">
+            <div class="col-md-6 col-sm-12 text-center text-md-left">
+                <div class="media">
+                    <img src="~/app-assets/images/logo/bus.png" alt="company logo" style="height:70px;width:70px" class="" />
+                    <div class="media-body">
+                        <ul class="ml-2 px-0 list-unstyled">
+                            <li class="text-bold-800">KNUST TRANSPORT UNIT</li>
+                            <li>KUMASI,ASHANTI REGION</li>
+                            <li>Ghana</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 text-center text-md-right">
+                <h2>Routine Form</h2>
+            </div>
+        </div>
+        <!--/  Company Details -->
+        <!-- Admin Details -->
+        <div id="invoice-customer-details" class="row pt-2">
+            <div class="col-sm-12 text-center text-md-left">
+                <p class="text-muted">Inspection By</p>
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-md-left">
+                <ul class="px-0 list-unstyled">
+                    <li class="text-bold-800">Deputy Engineer</li>
+                </ul>
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-md-right">
+                <p>
+                    <span class="text-muted"> Date :</span> @DateTime.Now
+                </p>
+                <p>
+                    <span class="text-muted">Vehicle Registration Number :</span>
+                    <select style="width: 250px !important" asp-items="@Model.AllVehicles" asp-for="@Model.VehicleId" id="select2" class=" form-control">
+
+                        <option value="none" selected="">Select Vehicle</option>
+
+                    </select>
+                </p>
+
+            </div>
+        </div>
+        <div class="row">
+            <section class="table-responsive col-sm-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Activity </th>
+                            <th class="text-right"> Okay?</th>
+                            <th class="text-right"> SparePart Changed?</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < @Model.RoutineActivity.Count; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(++SerialNum) </th>
+                                <td>
+                                    <p>@Model.RoutineActivity[i].ActivityName</p>
+                                    <input hidden asp-for="@Model.RoutineActivity[i].ActivityId" />
+                                </td>
+                                <td class="text-right"> <input type="checkbox" asp-for="@Model.RoutineActivity[i].Isokay" /> </td>
+                                <td class="text-right"><input type="checkbox" id="check_@i" onclick="IsSpartUsed(@i)" asp-for="@Model.RoutineActivity[i].IsRequiredSparePart" />  </td>
+                                <td>
+                                    <div class="d-none" style="display: flex; justify-content: space-between; grid-gap: 24px;" id="text_@i">
+                                        <div>
+                                            <label> Spare Part Used</label>
+                                            <select style="width: 250px !important" asp-items="@Model.SparePartsUsed" asp-for="@Model.RoutineActivity[i].SparePartId" id="select3" class=" form-control">
+
+                                                <option  >Select Spare Part Used</option>
+
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label> Quantity</label>
+                                            <input style="height:40px" type="number" asp-for="@Model.RoutineActivity[i].Quantity" placeholder="Quantity" />
+
+                                        </div>
+
+                                    </div>
+                                </td>
+
+
+
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+
+        <div class="card-footer">
+            <input type="submit" class="btn btn-primary dropdown-toggle dropdown-menu-right" />
+        </div>
+    </div>
+</form>
+
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script src="~/lib/select2/js/select2.js" defer></script>
+<script>
+
+    function IsSpartUsed(i) {
+        var checked = $(`#check_${i}`);
+
+        console.log(checked.is(":checked"));
+        if (checked.is(":checked")) {
+            $(`#text_${i}`).removeClass('d-none');
+        }
+        else  {
+            $(`#text_${i}`).addClass('d-none');
+        }
+    }
+
+    $(document).ready(function () {
+        $('select').select2();
+
+        $('#select3').select2();
+
+    })
+
+    function checkedd(i) {
+       
+    }
+
+   
+</script>

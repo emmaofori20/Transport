@@ -92,7 +92,7 @@ namespace Transport.Services
             return Details;
         }
 
-        public (List<VehicleMaintenanceRequestsViewModel>, List<Vehicle>) GetAllVehicleMaintenanceRequest()
+        public (List<VehicleMaintenanceRequestsViewModel>, List<Vehicle> ) GetAllVehicleMaintenanceRequest()
         {
             //get all request and store in list
             var AllvehicleMaintenanceRequest = vehicleMaintenanceRequestRepository.GetAllMaintenanceRequest();

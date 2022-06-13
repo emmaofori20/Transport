@@ -203,26 +203,9 @@ namespace Transport.Models.Data
 
                 entity.Property(e => e.ActivityName).HasMaxLength(520);
 
-                entity.Property(e => e.CreatedBy).HasColumnType("datetime");
-
-                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
-
-                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
-
-                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
-            });
-
-            modelBuilder.Entity<RoutineMaintenanceList>(entity =>
-            {
-                entity.HasKey(e => e.RoutineMaintenanceListId)
-                    .HasName("PK35")
-                    .IsClustered(false);
-
-                entity.ToTable("RoutineMaintenanceList");
-
                 entity.Property(e => e.CreatedBy)
                     .IsRequired()
-                    .HasMaxLength(10);
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 

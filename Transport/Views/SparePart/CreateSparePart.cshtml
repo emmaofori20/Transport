@@ -1,0 +1,25 @@
+﻿@model SparePartViewModel
+@{
+    ViewData["Title"] = "CreateSparePart";
+}
+
+<h1>Create Spare Part</h1>
+
+<div>
+    <div class="card-body" style="background-color:white; width:90%">
+        <form asp-action="CreateSparePart" method="post" asp-controller="SparePart">
+            <div class="form-group">
+                <label>Spare Part Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" asp-for="SparePartName" placeholder="Spare Part Name" style="width:50%">
+                <span asp-validation-for="SparePartName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Quantity: <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" asp-for="SparePartQuantity" placeholder="Enter Quantity" style="width:50%">
+                <span asp-validation-for="SparePartQuantity" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
