@@ -14,7 +14,7 @@
 </style>
 <h1>Vehicle Request Maintenance History</h1>
 
-<h4>Vehicle Registration number: <span>@Model.VehicleMaintenanceRequests[1].RegistrationNumber</span> </h4>
+<h4>Vehicle Registration number: <span>@Model.VehicleMaintenanceRequests[0].RegistrationNumber</span> </h4>
 <!-- line chart section start -->
 <section id="chartjs-line-charts">
     <!-- Line Chart -->
@@ -185,7 +185,7 @@
 
     var ctx = $("#myChart");
     var lineChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
             labels: request,
             datasets: [{

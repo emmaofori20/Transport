@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Transport.Models.Data
 {
-    public partial class TransportDbTestContext : DbContext
+    public partial class TransportDbContext : DbContext
     {
-        public TransportDbTestContext()
+        public TransportDbContext()
         {
         }
 
-        public TransportDbTestContext(DbContextOptions<TransportDbTestContext> options)
+        public TransportDbContext(DbContextOptions<TransportDbContext> options)
             : base(options)
         {
         }
@@ -53,12 +53,6 @@ namespace Transport.Models.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
            
-        }
-            if (!optionsBuilder.IsConfigured)
-            {
-            }
-        }
-            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -369,9 +363,7 @@ namespace Transport.Models.Data
 
                 entity.Property(e => e.ActivityName).HasMaxLength(520);
 
-                entity.Property(e => e.CreatedBy)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.CreatedBy).HasColumnType("datetime");
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 

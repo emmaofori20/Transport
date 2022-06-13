@@ -9,9 +9,9 @@ namespace Transport.Repositories
 {
     public class PhotoSectionRepository : IPhotoSectionRepository
     {
-        private TransportDbTestContext _context;
+        private TransportDbContext _context;
 
-        public PhotoSectionRepository(TransportDbTestContext context)
+        public PhotoSectionRepository(TransportDbContext context)
         {
             _context = context;
         }

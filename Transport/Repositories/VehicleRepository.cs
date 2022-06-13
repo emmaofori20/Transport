@@ -13,8 +13,8 @@ namespace Transport.Repositories
 {
     public class VehicleRepository : IVehicleRepository
     {
-        private readonly TransportDbTestContext _context;
-        public VehicleRepository(TransportDbTestContext context)
+        private readonly TransportDbContext _context;
+        public VehicleRepository(TransportDbContext context)
         {
             _context = context;
         }

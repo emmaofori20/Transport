@@ -10,9 +10,9 @@ namespace Transport.Repositories
 {
     public class QuantityRepository : IQuantityRepository
     {
-        private readonly TransportDbTestContext _context;
+        private readonly TransportDbContext _context;
 
-        public QuantityRepository(TransportDbTestContext context )
+        public QuantityRepository(TransportDbContext context )
         {
             _context = context;
         }

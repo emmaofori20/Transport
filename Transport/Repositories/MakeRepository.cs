@@ -11,9 +11,9 @@ namespace Transport.Repositories
 {
     public class MakeRepository : IMakeRepository
     {
-        private readonly TransportDbTestContext _context;
+        private readonly TransportDbContext _context;
 
-        public MakeRepository(TransportDbTestContext context)
+        public MakeRepository(TransportDbContext context)
         {
             _context = context;
         }

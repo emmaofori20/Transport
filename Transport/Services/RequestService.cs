@@ -99,7 +99,6 @@ namespace Transport.Services
             List<VehicleMaintenanceRequestsViewModel> AllRequestList = new List<VehicleMaintenanceRequestsViewModel>(); ;
 
             //set a list of v
-
             for (int i = 0; i < AllvehicleMaintenanceRequest.Count; i++)
             {
                 //preapring all the list

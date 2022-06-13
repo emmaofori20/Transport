@@ -210,34 +210,53 @@ namespace Transport.Controllers
         //for viewing history of a particular vehicle
         public IActionResult VehicleRequestMaintanceHistory(int VehicleId)
         {
-            var RequestMaintenanceHistory = requestService.GetAllVehicleMaintenanceRequest()
-                                            .Item1.Where(x=>x.VehicleId == VehicleId);
-            List<int> Repartitions = new List<int>();
-            var request = RequestMaintenanceHistory.Select(x=>x.Date.Month ).Distinct().ToList();
-            foreach (var item in request)
+            try
             {
-                Repartitions.Add(RequestMaintenanceHistory.Count(x => x.Date.Month == item));
+                ViewBag.VehicleId = VehicleId;
+
+                var RequestMaintenanceHistory = requestService.GetAllVehicleMaintenanceRequest()
+                                           .Item1.Where(x => x.VehicleId == VehicleId);
+                List<int> Repartitions = new List<int>();
+                var request = RequestMaintenanceHistory.Select(x => x.Date.Month).Distinct().ToList();
+                foreach (var item in request)
+                {
+                    Repartitions.Add(RequestMaintenanceHistory.Count(x => x.Date.Month == item));
+                }
+
+                var rep = Repartitions;
+                ViewBag.Request = request;
+                ViewBag.Rep = Repartitions.ToList();
+
+                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest().Item1;
+
+                var ApprovedVehicleRequest = new RequestVehicleViewModel
+                {
+                    VehicleMaintenanceRequests = results.Where(x => x.VehicleId == VehicleId).ToList(),
+                };
+                return View(ApprovedVehicleRequest);
             }
-
-            var rep = Repartitions;
-            ViewBag.Request = request;
-            ViewBag.Rep = Repartitions.ToList();
-
-            List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest().Item1;
-            var ApprovedVehicleRequest = new RequestVehicleViewModel
+            catch (Exception err)
             {
-                VehicleMaintenanceRequests = results.Where(x=>x.VehicleId == VehicleId).ToList(),
-            };
-            return View(ApprovedVehicleRequest);
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+           
         }
 
         public void VehicleRequestMaintenanceDetails(int VehicleId)
         {
         }
 
-        public void UploadReceipts(IEnumerable<IFormFile> File)
+        public void UploadReceipts(IEnumerable<IFormFile> DocumentPhotos)
         {
-        }
+
+            if (DocumentPhotos != null)
+            { 
+            }
+         }
     }
     
 }

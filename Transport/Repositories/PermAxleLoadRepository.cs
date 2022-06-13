@@ -10,8 +10,8 @@ namespace Transport.Repositories
 {
     public class PermAxleLoadRepository : IPermAxleLoadRepository
     {
-        private readonly TransportDbTestContext _context;
-        public PermAxleLoadRepository(TransportDbTestContext context)
+        private readonly TransportDbContext _context;
+        public PermAxleLoadRepository(TransportDbContext context)
         {
             _context = context;
         }
