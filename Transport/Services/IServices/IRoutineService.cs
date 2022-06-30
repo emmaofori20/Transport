@@ -10,9 +10,10 @@ namespace Transport.Services.IServices
     public interface IRoutineService
     {
         public RoutineMaintenanceVehicleViewModel routineMaintenanceVehicle();
-
         public void AddRoutineMaintenanceVehicle(RoutineMaintenanceVehicleViewModel model);
         public List<VehicleRoutineMaintenance> GetVehicleRoutineMaintenances();
         public RoutineMaintenanceVehicleViewModel ViewRoutineVehicleMaintenance(int RoutineId);
+        public void EditRoutineMaintenanceVehicle(RoutineMaintenanceVehicleViewModel model);
+        public void DeleteRoutineMaintenanceVehicle(int RoutineId);
     }
 }

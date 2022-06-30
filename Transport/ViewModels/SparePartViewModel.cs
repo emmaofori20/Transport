@@ -17,6 +17,12 @@ namespace Transport.ViewModels
         public int SparePartQuantity { get; set; }
     }
 
+    public class RoutineActivityViewModel
+    {
+        [Required]
+        public string RoutineActivityName { get; set; }
+    }
+
     public class SparePartRoutineActiviesViewModel
     {
         public List<SparePartQuantity> SparePartQuantities { get; set; }

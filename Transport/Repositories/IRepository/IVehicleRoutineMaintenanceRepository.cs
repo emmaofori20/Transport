@@ -12,5 +12,7 @@ namespace Transport.Repositories.IRepository
         public List<VehicleRoutineMaintenance> GetAllRoutineMaintenances();
         public VehicleRoutineMaintenance AddRoutineRequest(RoutineMaintenanceVehicleViewModel model);
         public List<RoutineMaintenanceList> GetRoutineMaintenance(int RoutineId);
+        public void EditRoutineMaintenanceRequest(RoutineMaintenanceVehicleViewModel model);
+        public void DeleteRoutineMaintenanceRequest(int RoutineId);
     }
 }

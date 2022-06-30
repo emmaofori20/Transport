@@ -21,5 +21,7 @@ namespace Transport.Repositories.IRepository
         public List<RoutineMaintenanceActivity> GetRoutineMaintenanceActivities();
         public void DeleteRoutineActivity(int RoutineActivityId);
         public void EditRoutineActivity(RoutineMaintenanceActivity routineActivity);
+
+        public void AddRoutineActivity(RoutineActivityViewModel model);
     }
 }

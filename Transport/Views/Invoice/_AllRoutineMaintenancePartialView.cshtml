@@ -1,0 +1,98 @@
+﻿@model RequestVehicleViewModel
+<link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/datatables.min.css">
+
+<div>
+    @if (@Model.VehicleRoutineMaintenanceRequest.Count >= 1)
+    {
+        <div class="card-content">
+            <div class="card-body">
+                <!-- Invoices List table -->
+                <div class="table-responsive">
+                    <table id="invoices-list" class=" table table-striped table-bordered zero-configuration ">
+                        <thead>
+                            <tr>
+
+                                <th>Date</th>
+                                <th>RoutineId</th>
+                                <th>Vehicle No.</th>
+                                <th>Maintained By</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- PAID -->
+                            @for (int i = 0; i < @Model.VehicleRoutineMaintenanceRequest.Count; i++)
+                            {
+                                <tr>
+
+                                    <td>@Model.VehicleRoutineMaintenanceRequest[i].CreatedOn</td>
+                                    <td>RTN-# @Model.VehicleRoutineMaintenanceRequest[i].VehicleRoutineMaintenanceId</td>
+
+                                    <td>
+                                        <a class="text-bold-600">
+                                            @Model.VehicleRoutineMaintenanceRequest[i].Vehicle.RegistrationNumber
+                                        </a>
+                                    </td>
+                                    <td>@Model.VehicleRoutineMaintenanceRequest[i].CreatedBy</td>
+
+
+                                    <td>
+                                        <span class="dropdown">
+                                            <button id="btnSearchDrop2" type="button" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="true" class="btn btn-primary dropdown-toggle dropdown-menu-right">
+                                                <i class="ft-settings"></i>
+                                            </button>
+                                            <span aria-labelledby="btnSearchDrop2" class="dropdown-menu mt-1 dropdown-menu-right">
+                                                <a asp-action="ViewRoutineMaintenance" asp-controller="Routine" asp-route-RoutineId="@Model.VehicleRoutineMaintenanceRequest[i].VehicleRoutineMaintenanceId" class="dropdown-item">
+                                                    <i class="la la-eye"></i> View Request
+                                                </a>
+
+
+                                                <a asp-action="EditRoutineMaintenance" asp-controller="Routine" asp-route-RoutineId="@Model.VehicleRoutineMaintenanceRequest[i].VehicleRoutineMaintenanceId" class="dropdown-item">
+                                                    <i class="la la-pencil"></i> Edit Request
+                                                </a>
+
+                                                <a id="DeleteButton" data-RoutineMaintenanceId="@Model.VehicleRoutineMaintenanceRequest[i].VehicleRoutineMaintenanceId" onclick="ConfirmDeleteForRoutineMaintenance(@Model.VehicleRoutineMaintenanceRequest[i].VehicleRoutineMaintenanceId)" class="dropdown-item">
+                                                    <i class="la la-trash"></i> Delete Request
+                                                </a>
+
+
+                                            </span>
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+
+                                <th>Date</th>
+                                <th>RoutineId</th>
+                                <th>Vehicle No.</th>
+                                <th>Maintained By</th>
+                                <th>Actions</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!--/ Invoices table -->
+            </div>
+        </div>
+
+
+    }
+    else
+    {
+        <div class="card-content">
+            <div class="card-body">
+                <!-- Invoices List table if Empty -->
+                <div class="table-responsive">
+                    <h4>No records Available</h4>
+                </div>
+                <!--/ Invoices table if empty-->
+            </div>
+        </div>
+    }
+
+</div>
+

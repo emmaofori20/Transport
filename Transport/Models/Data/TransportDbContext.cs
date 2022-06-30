@@ -52,7 +52,7 @@ namespace Transport.Models.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -363,7 +363,9 @@ namespace Transport.Models.Data
 
                 entity.Property(e => e.ActivityName).HasMaxLength(520);
 
-                entity.Property(e => e.CreatedBy).HasColumnType("datetime");
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(255);
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 

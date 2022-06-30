@@ -28,19 +28,21 @@ namespace Transport.Repositories
                     Quantity = (int)Activity.Quantity,
                     SparePartId= Activity.SparePartId,
                     IsSparePartUsed =true,
+                    IsRoutineCheck = true,
                     CreatedBy= "Admin",
                     CreatedOn = DateTime.Now
                 };
 
                 _context.RoutineMaintenanceLists.Add(RoutineActivity);
                 _context.SaveChanges();
-            }else if (Activity.Isokay)
+            }else if (Activity.Isokay )
             {
                 var RoutineActivity = new RoutineMaintenanceList
                 {
                     VehicleRoutineMaintenanceId = RoutineMaintenanceId,
                     RoutineMaintenanceActivityId = Activity.ActivityId,
                     IsSparePartUsed = false,
+                    IsRoutineCheck = true,
                     CreatedBy = "Admin",
                     CreatedOn = DateTime.Now
                 };
@@ -49,7 +51,34 @@ namespace Transport.Repositories
             }
             else
             {
+                var RoutineActivity = new RoutineMaintenanceList
+                {
+                    VehicleRoutineMaintenanceId = RoutineMaintenanceId,
+                    RoutineMaintenanceActivityId = Activity.ActivityId,
+                    IsRoutineCheck =false,
+                    CreatedBy = "Admin",
+                    CreatedOn = DateTime.Now
+                };
+                _context.RoutineMaintenanceLists.Add(RoutineActivity);
+                _context.SaveChanges();
+            }
+        }
 
+        public void EditRoutineMaintenanceList(RoutineActivityCheck Activity, int RoutineMaintenanceid)
+        {
+            var RoutineActivity = _context.RoutineMaintenanceLists
+                .Where(x=>x.VehicleRoutineMaintenanceId == RoutineMaintenanceid && x.RoutineMaintenanceActivityId == Activity.ActivityId).FirstOrDefault();
+            if (RoutineActivity != null)
+            {
+                RoutineActivity.IsRoutineCheck = Activity.Isokay;
+                RoutineActivity.IsSparePartUsed = Activity.IsRequiredSparePart;
+                RoutineActivity.Quantity = (int?)Activity.Quantity;
+                RoutineActivity.SparePartId = Activity.SparePartId == 0 ? null: Activity.SparePartId;
+                RoutineActivity.UpdatedBy = "UpdatedAdmin";
+                RoutineActivity.UpdatedOn = DateTime.Now;
+
+                _context.RoutineMaintenanceLists.Update(RoutineActivity);
+                _context.SaveChanges();
             }
         }
     }

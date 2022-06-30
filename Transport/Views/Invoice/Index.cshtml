@@ -148,32 +148,34 @@
                     $("#divContent").html(data);
                 },
                 error: function (err) {
-                    console.log(err, "err")
+                    $("#divContent").html("An error occured...");
+                    console.log(err, "err");
                 }
 
             });
 
         })
 
-        // to get all  routine maintenance
+        ///// function to get all  routine maintenance
         $('#MainPanel3').on('click', function () {
             console.log("i work3");
 
             $('#MainPanel1').removeClass('active');
             $('#MainPanel2').removeClass('active');
             $('#MainPanel3').addClass('active');
-            $(".card-title").html("All Rotine Maintenance");
+            $(".card-title").html("All Routine Maintenance");
 
             $.ajax({
                 type: "get",
                 cache: false,
-                url: "/Invoice/AllRequestMaintenance",
+                url: "/Invoice/AllRoutineMaintenance",
                 success: function (data) {
                     console.log('trying test')
-                    $("#divContent").html("Page Under Construction");
+                    $("#divContent").html(data);
                 },
                 error: function (err) {
-                    console.log(err, "err")
+                    $("#divContent").html("An error occured...");
+                    console.log(err, "err");
                 }
 
             });

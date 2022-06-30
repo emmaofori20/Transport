@@ -3,10 +3,14 @@
 @{
     int SerialNum = 0;
 
-    ViewData["Title"] = "ViewRoutineMaintenance";
+    ViewData["Title"] = "View Routine Maintenance";
 }
+<div style=" display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+    <h1>Routine Maintenance</h1>
 
-<h1>Routine Maintenance</h1>
+    <a asp-action="EditRoutineMaintenance" asp-controller="Routine" asp-route-RoutineId ="@Model.RoutineId"
+       class="btn btn-primary btn-glow" style="color:white">Edit Routine Maintenance</a>
+</div>
 
 <section class="card">
     <div id="invoice-template" class="card-body">
@@ -74,17 +78,20 @@
                                 <td>
                                     <p>@Model.RoutineActivity[i].ActivityName</p>
                                 </td>
-                                <td class="text-right"><input style="color:powderblue" type="checkbox" asp-for="@Model.RoutineActivity[i].Isokay" disabled /></td>
-                                <td class="text-right"> <input type="checkbox" asp-for="@Model.RoutineActivity[i].IsRequiredSparePart" disabled /></td>
+                                <!--Checks if vehicle was tick for an activity-->
+                              
+                                    <td class="text-right"><input style="color:powderblue" type="checkbox" asp-for="@Model.RoutineActivity[i].Isokay" disabled /></td>
+                                    <td class="text-right"> <input type="checkbox" asp-for="@Model.RoutineActivity[i].IsRequiredSparePart" disabled /></td>
+
 
                                 @if ((bool)@Model.RoutineActivity[i].IsRequiredSparePart)
                                 {
                                     <td>
-                                        <div style="display: flex; justify-content: space-between; grid-gap: 24px;" >
+                                        <div style="display: flex; justify-content: space-between; grid-gap: 24px;">
                                             <div>
                                                 <label> Spare Part Used</label>
                                                 <p>@Model.RoutineActivity[i].SparePartName</p>
-                 
+
                                             </div>
                                             <div>
                                                 <label> Quantity</label>
@@ -95,8 +102,9 @@
                                         </div>
                                     </td>
 
-                                    }
-                                    else { 
+                                }
+                                else
+                                {
                                 }
                             </tr>
                             }

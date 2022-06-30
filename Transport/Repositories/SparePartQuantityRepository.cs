@@ -121,14 +121,17 @@ namespace Transport.Repositories
         ///
         public List<RoutineMaintenanceActivity> GetRoutineMaintenanceActivities()
         {
-            return _context.RoutineMaintenanceActivities.ToList();
+            return _context.RoutineMaintenanceActivities.Where(x => x.IsDeleted != true).ToList();
         }
 
         public void DeleteRoutineActivity(int RoutineActivityId)
         {
           var results=  _context.RoutineMaintenanceActivities.Where(x => x.RoutineMaintenanceActivityId == RoutineActivityId).FirstOrDefault();
 
-            _context.RoutineMaintenanceActivities.Remove(results);
+            results.IsDeleted = true;
+            results.UpdatedBy = "UpdatedAdmin";
+            results.UpdatedOn = DateTime.Now;
+            _context.RoutineMaintenanceActivities.Update(results);
             _context.SaveChanges();
         }
 
@@ -145,6 +148,19 @@ namespace Transport.Repositories
                 _context.RoutineMaintenanceActivities.Update(results);
                 _context.SaveChanges();
             }
+        }
+
+        public void AddRoutineActivity(RoutineActivityViewModel model)
+        {
+            var routineActivity = new RoutineMaintenanceActivity()
+            {
+                ActivityName = model.RoutineActivityName,
+                CreatedBy = "RoutineAdmin",
+                CreatedOn = DateTime.Now,
+                IsDeleted = false,
+            };
+            _context.RoutineMaintenanceActivities.Add(routineActivity);
+            _context.SaveChanges();
         }
     }
 }

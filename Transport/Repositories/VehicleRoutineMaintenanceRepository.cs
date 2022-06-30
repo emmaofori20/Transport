@@ -23,6 +23,7 @@ namespace Transport.Repositories
             return _context.VehicleRoutineMaintenances
                     .Include(x=>x.Vehicle)
                     .Include(x => x.RoutineMaintenanceLists)
+                    .Where(x=>x.IsDeleted!=true)
                     .ToList();
         }
 
@@ -50,6 +51,36 @@ namespace Transport.Repositories
                 .Include(x => x.SparePart)
                 .Include(x => x.RoutineMaintenanceActivity)
                 .Where(x=>x.VehicleRoutineMaintenanceId ==RoutineId).ToList();
+        }
+
+        public void EditRoutineMaintenanceRequest(RoutineMaintenanceVehicleViewModel model)
+        {
+            var res = _context.VehicleRoutineMaintenances.Find(model.RoutineId);
+
+            if (res != null)
+            {
+                res.UpdatedBy = "UpdatedAdmin";
+                res.UpdatedOn = DateTime.Now;
+                res.VehicleId = model.VehicleId;
+
+                _context.VehicleRoutineMaintenances.Update(res);
+                _context.SaveChanges();
+            }
+        }
+
+        public void DeleteRoutineMaintenanceRequest(int RoutineId)
+        {
+            var res = _context.VehicleRoutineMaintenances.Find(RoutineId);
+
+            if (res != null)
+            {
+                res.UpdatedBy = "UpdatedAdmin";
+                res.UpdatedOn = DateTime.Now;
+                res.IsDeleted = true;
+
+                _context.VehicleRoutineMaintenances.Update(res);
+                _context.SaveChanges();
+            }
         }
     }
 }

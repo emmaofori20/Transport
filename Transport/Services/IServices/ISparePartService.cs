@@ -21,5 +21,9 @@ namespace Transport.Services.IServices
         public List<RoutineMaintenanceActivity> GetRoutineMaintenanceActivities();
 
         public void DeleteRoutineActivity(int RoutineActivityId);
+
+        public void CreateRoutineActivity(RoutineActivityViewModel model);
+
+        public void EditRoutineActivity(RoutineMaintenanceActivity model);
     }
 }

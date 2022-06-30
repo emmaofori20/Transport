@@ -17,7 +17,8 @@ namespace Transport.Models.Data
         public DateTime? UpdatedOn { get; set; }
         public string UpdatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
-        public DateTime CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
+        public bool? IsDeleted { get; set; }
 
         public virtual ICollection<RoutineMaintenanceList> RoutineMaintenanceLists { get; set; }
     }

@@ -60,7 +60,10 @@ namespace Transport.Services
         {
             sparePartQuantityRepository.DeleteSparePart(sparePartId);
         }
-
+        /// <summary>
+        /// ROUTINE ACTIVITY
+        /// </summary>
+        /// <returns></returns>
         public List<RoutineMaintenanceActivity> GetRoutineMaintenanceActivities()
         {
             return sparePartQuantityRepository.GetRoutineMaintenanceActivities();
@@ -71,5 +74,14 @@ namespace Transport.Services
             sparePartQuantityRepository.DeleteRoutineActivity(RoutineActivityId);
         }
 
+        public void CreateRoutineActivity(RoutineActivityViewModel model)
+        {
+            sparePartQuantityRepository.AddRoutineActivity(model);
+        }
+
+        public void EditRoutineActivity(RoutineMaintenanceActivity model)
+        {
+            sparePartQuantityRepository.EditRoutineActivity(model);
+        }
     }
 }

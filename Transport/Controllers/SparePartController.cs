@@ -22,32 +22,58 @@ namespace Transport.Controllers
         // GET: SparePartController
         public IActionResult Index()
         {
-            var results = new SparePartRoutineActiviesViewModel()
+            try
             {
-                RoutineMaintenanceActivities = sparePartService.GetRoutineMaintenanceActivities(),
-                SparePartQuantities = sparePartService.GetAllSpareParts().Item1
-            };
-            
-            return View(results);
+                var results = new SparePartRoutineActiviesViewModel()
+                {
+                    RoutineMaintenanceActivities = sparePartService.GetRoutineMaintenanceActivities(),
+                    SparePartQuantities = sparePartService.GetAllSpareParts().Item1
+                };
+
+                return View(results);
+            }
+            catch (Exception err)
+            {
+
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+           
         }
 
         // GET: SparePartController/Details/5
         public IActionResult SparePartDetail(int SpartPartId)
         {
-            var results = sparePartService.GetSparePart(SpartPartId);
-
-            var sparePartsHistory = sparePartService.GetAllSpareParts().spareparts.Where(x => x.SparePartId == SpartPartId);
-            List<int> Repartitions = new List<int>();
-            var sparepart = sparePartsHistory.Select(x => x.CreatedOn.Month).Distinct().ToList();
-            foreach (var item in sparepart)
+            try
             {
-                Repartitions.Add(sparePartsHistory.Count(x => x.CreatedOn.Month == item));
-            }
-            var rep = Repartitions;
-            ViewBag.sparepart = sparepart;
-            ViewBag.Rep = Repartitions.ToList();
+                var results = sparePartService.GetSparePart(SpartPartId);
 
-            return View(results);
+                var sparePartsHistory = sparePartService.GetAllSpareParts().spareparts.Where(x => x.SparePartId == SpartPartId);
+                List<int> Repartitions = new List<int>();
+                var sparepart = sparePartsHistory.Select(x => x.CreatedOn.Month).Distinct().ToList();
+                foreach (var item in sparepart)
+                {
+                    Repartitions.Add(sparePartsHistory.Count(x => x.CreatedOn.Month == item));
+                }
+                var rep = Repartitions;
+                ViewBag.sparepart = sparepart;
+                ViewBag.Rep = Repartitions.ToList();
+
+                return View(results);
+            }
+            catch (Exception err)
+            {
+
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+          
         }
 
         // GET: SparePartController/Create
@@ -65,7 +91,7 @@ namespace Transport.Controllers
                 if (ModelState.IsValid)
                 {
                     sparePartService.AddSparePart(model);
-                    RedirectToAction("Index");
+                   return RedirectToAction("Index");
                 }
                 return View(model);
             }
@@ -82,14 +108,27 @@ namespace Transport.Controllers
         // GET: SparePartController/Edit/5
         public ActionResult EditSparePart(int SparePartId)
         {
-            var results = sparePartService.GetSparePart(SparePartId);
-            SparePartViewModel sparePart = new SparePartViewModel
+            try
             {
-                SparePartId = results.SparePartId,
-                SparePartName = results.SparePart.SparePartName,
-                SparePartQuantity = results.Quantity
-            };
-            return View(sparePart);
+                var results = sparePartService.GetSparePart(SparePartId);
+                SparePartViewModel sparePart = new SparePartViewModel
+                {
+                    SparePartId = results.SparePartId,
+                    SparePartName = results.SparePart.SparePartName,
+                    SparePartQuantity = results.Quantity
+                };
+                return View(sparePart);
+            }
+            catch (Exception err)
+            {
+
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+         
         }
 
         // POST: SparePartController/Edit/5
@@ -134,17 +173,101 @@ namespace Transport.Controllers
                 return View("Error", error);
             }
         }
+        /// <summary>
+        /// 
+        /// 
+        /// 
+        /// 
+        /// For Routine Actives
+        /// 
 
+        public IActionResult CreateRoutineActivity()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateRoutineActivity(RoutineActivityViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    sparePartService.CreateRoutineActivity(model);
+
+                    return RedirectToAction("Index");
+                }
+                return View();
+
+            }
+            catch (Exception err)
+            {
+
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+        }
         public IActionResult DeleteRoutineActivity(int RoutineActivityId)
         {
-            sparePartService.DeleteRoutineActivity(RoutineActivityId);
-            return RedirectToAction("Index");
+            try
+            {
+                sparePartService.DeleteRoutineActivity(RoutineActivityId);
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception err)
+            {
+
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
         }
 
         public IActionResult ViewRoutineActvity(int RoutineActivityId)
         {
-            var results= sparePartService.GetRoutineMaintenanceActivities().Where(x => x.RoutineMaintenanceActivityId == RoutineActivityId).FirstOrDefault();
-            return View(results);
+            try
+            {
+                var results = sparePartService.GetRoutineMaintenanceActivities().Where(x => x.RoutineMaintenanceActivityId == RoutineActivityId).FirstOrDefault();
+                return View(results);
+            }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+           
+        } 
+        
+        [HttpPost]
+        public IActionResult ViewRoutineActvity(int RoutineActivityId, RoutineMaintenanceActivity model )
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    sparePartService.EditRoutineActivity(model);
+                    return RedirectToAction("Index");
+                }
+                return View(model);
+            }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+           
         }
 
         
