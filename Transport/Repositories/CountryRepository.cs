@@ -10,8 +10,8 @@ namespace Transport.Repositories
 {
     public class CountryRepository : ICountryRepository
     {
-        private readonly TransportDbTestContext _context;
-        public CountryRepository(TransportDbTestContext context)
+        private readonly TransportDbContext _context;
+        public CountryRepository(TransportDbContext context)
         {
             _context = context;
         }

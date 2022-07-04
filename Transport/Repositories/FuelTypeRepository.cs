@@ -10,8 +10,8 @@ namespace Transport.Repositories
 {
     public class FuelTypeRepository : IFuelTypeRepository
     {
-        private readonly TransportDbTestContext _context;
-        public FuelTypeRepository(TransportDbTestContext context)
+        private readonly TransportDbContext _context;
+        public FuelTypeRepository(TransportDbContext context)
         {
             _context = context;
         }

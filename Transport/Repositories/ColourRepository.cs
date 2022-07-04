@@ -10,8 +10,8 @@ namespace Transport.Repositories
 {
     public class ColourRepository : IColourRepository
     {
-        private readonly TransportDbTestContext _context;
-        public ColourRepository(TransportDbTestContext context)
+        private readonly TransportDbContext _context;
+        public ColourRepository(TransportDbContext context)
         {
             _context = context;
         }

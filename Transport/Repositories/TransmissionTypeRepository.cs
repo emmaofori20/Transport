@@ -10,8 +10,8 @@ namespace Transport.Repositories
 {
     public class TransmissionTypeRepository : ITransmissionTypeRepository
     {
-        private readonly TransportDbTestContext _context;
-        public TransmissionTypeRepository(TransportDbTestContext context)
+        private readonly TransportDbContext _context;
+        public TransmissionTypeRepository(TransportDbContext context)
         {
             _context = context;
         }

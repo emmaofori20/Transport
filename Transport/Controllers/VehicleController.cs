@@ -84,7 +84,7 @@ namespace Transport.Controllers
         public async Task<IActionResult> AddNewVehicle(AddVehicleViewModel vehicleModel)
         
         {
-            var results = _vehicleService.setAllList();
+            //var results = _vehicleService.setAllList();
             
                 try
                 {

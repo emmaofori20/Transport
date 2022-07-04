@@ -35,7 +35,7 @@ namespace Transport
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<TransportDbTestContext>(options =>
+            services.AddDbContext<TransportDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -68,12 +68,6 @@ namespace Transport
             services.AddTransient<IPermAxleLoadRepository, PermAxleLoadRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<IPhotoSectionRepository, PhotoSectionRepository>();
-
-
-
-
-
-
 
 
             //Adding Services

@@ -12,8 +12,8 @@ namespace Transport.Repositories
    
     public class TyreSizeRepository : ITyreSizeRepository
     {
-        private readonly TransportDbTestContext _context;
-        public TyreSizeRepository(TransportDbTestContext context)
+        private readonly TransportDbContext _context;
+        public TyreSizeRepository(TransportDbContext context)
         {
             _context = context;
         }

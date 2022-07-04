@@ -11,8 +11,8 @@ namespace Transport.Repositories
 
     public class VehicleTypeRepository : IVehicleTypeRepository
     {
-        private readonly TransportDbTestContext _context;
-        public VehicleTypeRepository(TransportDbTestContext context)
+        private readonly TransportDbContext _context;
+        public VehicleTypeRepository(TransportDbContext context)
         {
             _context = context;
         }

@@ -299,7 +299,7 @@
                                                     <input type="number" class="form-control" asp-for="Mileage" placeholder="Mileage">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <span class="danger">*</span><select class="custom-select form-control required" asp-for="@Model.PersonCount" asp-items="ViewBag.Quantities">
+                                                    <select class="custom-select form-control required" asp-for="@Model.PersonCount" asp-items="ViewBag.Quantities">
                                                         <option value="">Select Number of Persons...</option>
                                                     </select>
 
@@ -376,10 +376,10 @@
 
                                                 <div class="col-md-3">
                                                     <div class="text-center" style="max-width: 100%; max-height: 100% ">
-                                                        <img src="data:image;base64,@Convert.ToBase64String(Model.PhotoItems[i].PhotoFile)" class="img-thumbnail" style="height: 150px" alt="">
+                                                        <img src="data:image;base64,@Convert.ToBase64String(Model.PhotoItems[i].PhotoFile)" class="img-fluid" style="height: 150px" alt="" id="img_Preview">
                                                     </div>
                                                     <div class="form-group">
-                                                        <input type="file" asp-for="@Model.PhotoItems[i].PhotoFile" />
+                                                        <input type="file"  asp-for="@Model.PhotoItems[i].PhotoFile" id="img_File" />
                                                         <label>Photo Section :</label>
                                                         <span class="danger">*</span>
                                                         <input class="form-control" value="@Model.PhotoItems[i].PhotoSectionName" disabled />
@@ -431,5 +431,22 @@
         viewMode: "years",
         minViewMode: "years",
         autoclose: true //to close picker once year is selected
+    });
+</script>
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#img_Preview').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#img_File").change(function () {
+        readURL(this);
     });
 </script>
