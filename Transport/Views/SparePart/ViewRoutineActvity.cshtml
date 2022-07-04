@@ -1,0 +1,22 @@
+﻿@model RoutineMaintenanceActivity
+@{
+    ViewData["Title"] = "View Routine Actvity";
+}
+
+<h1>Edit Routine Actvity</h1>
+
+<div>
+    <div class="card-body" style="background-color:white; width:90%">
+        <form asp-action="ViewRoutineActvity" method="post" asp-controller="SparePart">
+            <div class="form-group">
+                <input asp-for="RoutineMaintenanceActivityId" hidden />
+                <label>Activity Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" asp-for="ActivityName" placeholder="Spare Part Name" style="width:50%">
+                <span asp-validation-for="ActivityName" class="text-danger"></span>
+            </div>
+
+            <a asp-action="Index" asp-controller="SparePart" class="btn btn-primary">Back</a>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+    </div>
+</div>

@@ -92,14 +92,13 @@ namespace Transport.Services
             return Details;
         }
 
-        public (List<VehicleMaintenanceRequestsViewModel>, List<Vehicle>) GetAllVehicleMaintenanceRequest()
+        public (List<VehicleMaintenanceRequestsViewModel>, List<Vehicle> ) GetAllVehicleMaintenanceRequest()
         {
             //get all request and store in list
             var AllvehicleMaintenanceRequest = vehicleMaintenanceRequestRepository.GetAllMaintenanceRequest();
             List<VehicleMaintenanceRequestsViewModel> AllRequestList = new List<VehicleMaintenanceRequestsViewModel>(); ;
 
             //set a list of v
-
             for (int i = 0; i < AllvehicleMaintenanceRequest.Count; i++)
             {
                 //preapring all the list

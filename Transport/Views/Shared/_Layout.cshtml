@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="apple-touch-icon" href="~/app-assets/images/ico/apple-icon-120.png">
-    
+    <link href="~/css/myloader.css" rel="stylesheet" />
     <link rel="shortcut icon" type="image/x-icon" href="~/app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Quicksand:300,400,500,700"
           rel="stylesheet">
@@ -22,6 +22,7 @@
     <!-- BEGIN Custom CSS-->
     <link rel="stylesheet" type="text/css" href="~/assets/css/style.css">
     <!-- END Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/plugins/loaders/loaders.css" />
 </head>
 <body class="vertical-layout vertical-menu-modern 2-columns   menu-expanded fixed-navbar"
       data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
@@ -34,7 +35,7 @@
                     <li class="nav-item mr-auto">
                         <a class="navbar-brand">
                             <img class="brand-logo" alt="modern admin logo" src="~/app-assets/images/logo/bus.png">
-                            <h3 class="brand-text">Trans-System</h3>
+                            <h3 class="brand-text">Transport</h3>
                         </a>
                     </li>
                     <li class="nav-item d-none d-md-block float-right"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="toggle-icon ft-toggle-right font-medium-3 white" data-ticon="ft-toggle-right"></i></a></li>
@@ -166,7 +167,7 @@
                 <li class=" nav-item">
                     <a asp-action="VehicleList" asp-controller="Vehicle"><i class="la la-bus"></i><span class="menu-title" data-i18n="nav.templates.main">Vehicle</span></a>
                 </li>
-                <li class=" nav-item">
+                <li class=" ">
                     <a><i class="la la-medkit"></i><span class="menu-title" data-i18n="nav.dash.main">Maintenance</span></a>
                     <ul class="menu-content">
                         <li>
@@ -191,10 +192,27 @@
             </ul>
         </div>
     </div>
+    
+
     <div class="app-content content">
+
         <div class="content-wrapper">
+
+            <div id="myloader">
+                <div>
+                    <div class="loader-container">
+                        <h4 class="text-bold-700" style="text-align:center; color:black">Processing...</h4>
+                        <div class="ball-pulse  loader-info" style="color:black;">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             @RenderBody()
         </div>
+
 
 
     </div>
@@ -229,7 +247,8 @@
             $('.nav-item a').click(function (e) {
                 $('.active').removeClass('active');
             });
-        });</script>
+        });
+    </script>
 
 
 </body>

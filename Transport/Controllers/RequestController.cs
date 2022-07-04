@@ -17,12 +17,14 @@ namespace Transport.Controllers
     {
         public IRequestService requestService;
         private readonly IVehicleService vehicleService;
+        private readonly IRoutineService routineService;
 
         //CONSTRUCTOR
-        public RequestController(IRequestService _requestService, IVehicleService vehicleService)
+        public RequestController(IRequestService _requestService, IVehicleService vehicleService,IRoutineService routineService)
         {
             requestService = _requestService;
             this.vehicleService = vehicleService;
+            this.routineService = routineService;
         }
         public IActionResult Index()
         {
@@ -30,9 +32,11 @@ namespace Transport.Controllers
             {
 
                 List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest().Item1;
+                var routineMaintenances = routineService.GetVehicleRoutineMaintenances();
                 var data = new RequestVehicleViewModel
                 {
                     VehicleMaintenanceRequests = results,
+                    VehicleRoutineMaintenanceRequest =routineMaintenances,
                     AllVehicles = new SelectList(requestService
                                                     .GetAllVehicleMaintenanceRequest().Item2
                                                     .Select(s=> new { VehicleId = s.VehicleId, RegistrationNumber = $"{s.RegistrationNumber}", ChasisNumber = $"{s.ChasisNumber}"}), "VehicleId", "RegistrationNumber", "ChasisNumber")
@@ -206,17 +210,53 @@ namespace Transport.Controllers
         //for viewing history of a particular vehicle
         public IActionResult VehicleRequestMaintanceHistory(int VehicleId)
         {
-            return View();
+            try
+            {
+                ViewBag.VehicleId = VehicleId;
+
+                var RequestMaintenanceHistory = requestService.GetAllVehicleMaintenanceRequest()
+                                           .Item1.Where(x => x.VehicleId == VehicleId);
+                List<int> Repartitions = new List<int>();
+                var request = RequestMaintenanceHistory.Select(x => x.Date.Month).Distinct().ToList();
+                foreach (var item in request)
+                {
+                    Repartitions.Add(RequestMaintenanceHistory.Count(x => x.Date.Month == item));
+                }
+
+                var rep = Repartitions;
+                ViewBag.Request = request;
+                ViewBag.Rep = Repartitions.ToList();
+
+                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest().Item1;
+
+                var ApprovedVehicleRequest = new RequestVehicleViewModel
+                {
+                    VehicleMaintenanceRequests = results.Where(x => x.VehicleId == VehicleId).ToList(),
+                };
+                return View(ApprovedVehicleRequest);
+            }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+           
         }
 
         public void VehicleRequestMaintenanceDetails(int VehicleId)
         {
-            var results = requestService.GetAllVehicleMaintenanceRequest().Item1.Where(x=>x.VehicleId== VehicleId);
         }
 
-        public void UploadReceipts(IEnumerable<IFormFile> File)
+        public void UploadReceipts(IEnumerable<IFormFile> DocumentPhotos)
         {
-        }
+
+            if (DocumentPhotos != null)
+            { 
+            }
+         }
     }
     
 }

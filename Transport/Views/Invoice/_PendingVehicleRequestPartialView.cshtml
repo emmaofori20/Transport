@@ -11,10 +11,8 @@
                 <table id="invoices-list" class=" table table-striped table-bordered zero-configuration ">
                     <thead>
                         <tr>
-                            <th>
-                                <input type="checkbox" class="input-chk-all">
-                            </th>
-                            <th>Invoice #</th>
+                           
+                            <th>Request #</th>
                             <th>Maintained By</th>
                             <th>Status</th>
                             <th>Amount</th>
@@ -26,17 +24,15 @@
                         @for (int i = 0; i < @Model.VehicleMaintenanceRequests.Count; i++)
                         {
                             <tr>
-                                <td>
-                                    <input type="checkbox" class="input-chk">
-                                </td>
+                                
                                 <td>
                                     <a class="text-bold-600">
-                                        INV-@Model.VehicleMaintenanceRequests[i].RequestId-@Model.VehicleMaintenanceRequests[i].spareParts
+                                        INV-@Model.VehicleMaintenanceRequests[i].RequestId
                                     </a>
                                 </td>
                                 <td>@Model.VehicleMaintenanceRequests[i].MaintainedBy</td>
                                 <td>
-                                    <span class="badge badge-default badge-light badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
+                                    <span class="badge badge-default badge-info badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
                                 </td>
                                 <td>Ghc @Model.VehicleMaintenanceRequests[i].MaintenanceCost</td>
                                 <td>
@@ -65,10 +61,8 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>
-                                <input type="checkbox" class="input-chk-all">
-                            </th>
-                            <th>Invoice #</th>
+                           
+                            <th>Request #</th>
                             <th>Maintained By</th>
                             <th>Status</th>
                             <th>Amount</th>

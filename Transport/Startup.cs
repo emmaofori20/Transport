@@ -49,8 +49,8 @@ namespace Transport
             services.AddTransient<IVehicleMaintenanceRequestStatusRepository, VehicleMaintenanceRequestStatusRepository>();
             services.AddTransient<IVehicleMaintenanceSparePartRepository, VehicleMaintenanceSparePartRepository>();
             services.AddTransient<IInsuranceRepository, InsuranceRepository>();
-            //services.AddTransient<IVehicleMaintenanceRequestRepository, VehicleMaintenanceRequestRepository>();
-            //services.AddTransient<IVehicleMaintenanceRequestStatusRepository, VehicleMaintenanceRequestStatusRepository>();
+            services.AddTransient<IVehicleMaintenanceRequestRepository, VehicleMaintenanceRequestRepository>();
+            services.AddTransient<IVehicleMaintenanceRequestStatusRepository, VehicleMaintenanceRequestStatusRepository>();
             services.AddTransient<IVehicleRepository, VehicleRepository>();
             services.AddTransient<ICollegeRepository, CollegeRepository>();
             services.AddTransient<IDepartmentRepository, DepartmentRepository>();
@@ -58,26 +58,33 @@ namespace Transport
             services.AddTransient<IVehicleRepository, VehicleRepository>();
             services.AddTransient<IVehicleStatusRepository, VehicleStatusRepository>();
             services.AddTransient<IVehicleUseRepository, VehicleUseRepository>();
+            services.AddTransient<ISparePartQuantityRepository, SparePartQuantityRepository>();
             services.AddTransient<ITyreSizeRepository, TyreSizeRepository>();
-            services.AddTransient<IModelRepository, ModelRepository>();
-            services.AddTransient<IVehicleTypeRepository, VehicleTypeRepository>();
-            services.AddTransient<IFuelTypeRepository, FuelTypeRepository>();
+            services.AddTransient<ICollegeRepository, CollegeRepository>();
             services.AddTransient<IColourRepository, ColourRepository>();
+            services.AddTransient<ICountryRepository, CountryRepository>();
+            services.AddTransient<IModelRepository, ModelRepository>();
+            services.AddTransient<IVehicleStatusRepository, VehicleStatusRepository>();
+            services.AddTransient<IVehicleTypeRepository, VehicleTypeRepository>();
+            services.AddTransient<IVehicleUseRepository, VehicleUseRepository>();
+            services.AddTransient<IFuelTypeRepository, FuelTypeRepository>();
             services.AddTransient<IQuantityRepository, QuantityRepository>();
             services.AddTransient<ITransmissionTypeRepository, TransmissionTypeRepository>();
             services.AddTransient<IPermAxleLoadRepository, PermAxleLoadRepository>();
-            services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<IPhotoSectionRepository, PhotoSectionRepository>();
 
 
+            services.AddTransient<IRoutineMaintenanceActivityRepository, RoutineMaintenanceActivityRepository>();
+            services.AddTransient<IRoutneMaintenanceListRepository, RoutneMaintenanceListRepository>();
+            services.AddTransient<IVehicleMaintenanceRequestRepository, VehicleMaintenanceRequestRepository>();
+            services.AddTransient<IVehicleMaintenanceRequestStatusRepository, VehicleMaintenanceRequestStatusRepository>();
+            services.AddTransient<IVehicleRoutineMaintenanceRepository, VehicleRoutineMaintenanceRepository>();
             //Adding Services
             services.AddScoped<IRequestService, RequestService>();
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IInvoiceService,InvoiceService>();
-            //services.AddScoped<IRequestService, RequestService>();
-            services.AddScoped<IVehicleService, VehicleService>();
-
-
+            services.AddScoped<ISparePartService, SparePartService>();
+            services.AddScoped<IRoutineService, RoutineService>();
 
         }
 

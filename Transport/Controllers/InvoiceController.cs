@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Transport.Models;
+using Transport.Models.Data;
 using Transport.Services.IServices;
 using Transport.ViewModels;
 
@@ -14,11 +15,13 @@ namespace Transport.Controllers
     {
         public IRequestService requestService;
         private readonly IInvoiceService invoiceService;
+        private readonly IRoutineService routineService;
 
-        public InvoiceController(IRequestService _requestService, IInvoiceService invoiceService)
+        public InvoiceController(IRequestService _requestService, IInvoiceService invoiceService, IRoutineService routineService)
         {
             requestService = _requestService;
             this.invoiceService = invoiceService;
+            this.routineService = routineService;
         }
         // GET: MaintenanceController
         public ActionResult Index()
@@ -59,8 +62,12 @@ namespace Transport.Controllers
 
             try
             {
-                
-                return PartialView();
+                List<VehicleRoutineMaintenance> results = routineService.GetVehicleRoutineMaintenances(); 
+                var data = new RequestVehicleViewModel
+                {
+                    VehicleRoutineMaintenanceRequest = results,
+                };
+                return PartialView("_AllRoutineMaintenancePartialView", data);
 
             }
             catch (Exception err)

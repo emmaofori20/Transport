@@ -6,7 +6,11 @@
 <div class="container">
 
     <div>
-        <h1 class="font-weight-bold"> @Model.ModelName.ToUpper() @Model.VehicleTypeName.ToUpper() </h1><br />
+        <div style=" display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <h1 class="font-weight-bold"> @Model.ModelName.ToUpper() @Model.VehicleTypeName.ToUpper() </h1>
+            <a class="btn btn-primary " asp-controller="Request" asp-action="VehicleRequestMaintanceHistory" asp-route-VehicleId="@Model.vehicle.VehicleId">View Maintenance History</a>
+        </div>
+        <br />
         <div class="row full-width mb-1">
             <div class="col-md-4">
                 <h5 class="h5 font-weight-normal"><span class="font-weight-bold">OWNER : </span>@Model.vehicle.Owner</h5>

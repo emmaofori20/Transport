@@ -4,6 +4,7 @@
     ViewBag.Title = "Details";
 
     int Id = (int)ViewData["RequestListId"];
+    int SerialNum = 0;
 
 }
 
@@ -29,8 +30,8 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12 text-center text-md-right">
-                    <h2>INVOICE</h2>
-                    <p class="pb-3"># INV-@Id-@Model.spareParts.Count</p>
+                    <h2>Request Form</h2>
+                    <p class="pb-3"># INV-@Id</p>
                     @*<ul class="px-0 list-unstyled">
                             <li>Maintenanance Cost</li>
                             <li class="lead text-bold-800">Ghc @Model.MaintenanceCost</li>
@@ -50,7 +51,7 @@
                 </div>
                 <div class="col-md-6 col-sm-12 text-center text-md-right">
                     <p>
-                        <span class="text-muted">Invoice Date :</span> @Model.Date
+                        <span class="text-muted"> Date :</span> @Model.Date
                     </p>
                     <p>
                         <span class="text-muted">Vehicle Registration Number :</span> @Model.RegistrationNumber
@@ -72,14 +73,14 @@
                                     <th>#</th>
                                     <th>Item </th>
                                     <th class="text-right">Quantity</th>
-                                    <th class="text-right">Amount</th>
+                                    <th class="text-right">Unit Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @for (int i = 0; i < @Model.spareParts.Count; i++)
                                 {
                                     <tr>
-                                        <th scope="row">@i+1 </th>
+                                        <th scope="row">@(++SerialNum) </th>
                                         <td>
                                             <p>@Model.spareParts[i].SparePartName</p>
                                         </td>
@@ -100,23 +101,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Invoice Footer -->
-            <div id="invoice-footer">
-                <div class="row">
-                    <div class="col-md-7 col-sm-12">
-                        <h6>Terms & Condition</h6>
-                        <p>
-                            You know, being a test pilot isn't always the healthiest business
-                            in the world. We predict too much for the next year and yet far
-                            too little for the next 10.
-                        </p>
-                    </div>
-                    <div class="col-md-5 col-sm-12 text-center">
-                        <button type="button" class="btn btn-info btn-lg my-1"><i class="la la-paper-plane-o"></i> Print Invoice</button>
-                    </div>
-                </div>
-            </div>
-            <!--/ Invoice Footer -->
+            
             <!--Upload Receipts or Images-->
             @if (@Model.Status == "Pending")
             {
@@ -134,29 +119,13 @@
                                         Upload receipts or pictures of the spare parts
                                     </p>
 
-                                    <form enctype="multipart/form-data" action="/Request/UploadReceipts" method="post" class="dropzone"
-                                          id="my-awesome-dropzone">
-                                    </form>
-
-                                    @*<form id="myDropzone" method="post" asp-controller="Request" asp-action="UploadReceipts">
-            <br />
-
-            <div>
-                <div id="previews" class="dz-default dz-message box__input dropzone">
-                    <div style="text-align:center">
-                        <i class="fa fa-cloud-upload" style="font-size:23px;position:relative;top:4px;"></i> <span style="margin-left:20px">Drop files  to attach or browse</span>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div>
-                <input type="submit" id="Submit" name="Submit" class="btn btn-success m-t-5" value="Submit" />
-            </div>
-        </form>*@
-
-
-
-
+                                    @*<form asp-action="UploadReceipts" asp-controller="Request" method="post" enctype="multipart/form-data" class="dropzone dz-clickable form-horizontal form-bordered" id="dropzoneForm">
+                                        <div class="form-group form-actions">
+                                            <div class="col-md-9 col-md-offset-4">
+                                                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> Upload</button>
+                                            </div>
+                                        </div>
+                                    </form>*@
 
 
                                 </div>
@@ -175,6 +144,31 @@
 <script src="~/lib/dropzone/min/dropzone.min.js"></script>
 
 <script>
+    function myParamName() {
+        return "DocumentPhotos";
+    }
+    Dropzone.options.dropzoneForm = {
+        autoProcessQueue: false,
+        paramName: myParamName , // The name that will be used to transfer the file
+        uploadMultiple: true,
+        parallelUploads: 100,
+        init: function () {
+            console.log("active");
+            var wrapperThis = this;
+
+            $("#submit").click(function (e) {
+                e.preventDefault();
+                wrapperThis.processQueue();
+            });
+        },
+        accept: function (file, done) {
+            done();
+        }
+    };
+</script>
+
+
+@*<script>
     Dropzone.options.myAwesomeDropzone = {
         //maxFilesize: 5,
         //maxFiles: 1,
@@ -232,80 +226,5 @@
                 console.log(file);
             });
       /*  //*/}
-</script>
-
-@*<script>
-    var currentFile = null;
-    var response = [];
-    Dropzone.autoDiscover = false;
-
-    Dropzone.autoDiscover = false;
-    $('#myDropzone').dropzone({
-        //parameter name value
-        paramName: "files",
-        //clickable div id
-        //clickable: '#previews',
-        ////preview files container Id
-        //previewsContainer: "#previewFiles",
-        autoProcessQueue: false,
-        uploadMultiple: true,
-        parallelUploads: 100,
-        maxFiles: 100,
-        //  url:"/", // url here to save file
-        maxFilesize: 100,//max file size in MB,
-        addRemoveLinks: true,
-        dictResponseError: 'Server not Configured',
-        acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg,.pdf",// use this to restrict file type
-        init: function () {
-            var self = this;
-            // config
-            self.options.addRemoveLinks = true;
-            self.options.dictRemoveFile = "Delete";
-            //New file added
-            self.on("addedfile", function (file) {
-                console.log('new file added ', file);
-                $('.dz-success-mark').hide();
-                $('.dz-error-mark').hide();
-            });
-            // Send file starts
-            self.on("sending", function (file) {
-                console.log('upload started', file);
-                $('.meter').show();
-            });
-
-            // File upload Progress
-            self.on("totaluploadprogress", function (progress) {
-                console.log("progress ", progress);
-                $('.roller').width(progress + '%');
-            });
-
-            self.on("queuecomplete", function (progress) {
-                $('.meter').delay(999).slideUp(999);
-            });
-
-            // On removing file
-            self.on("removedfile", function (file) {
-                console.log(file);
-            });
-
-            $('#Submit').on("click", function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                // Validate form here if needed
-
-                var form = new FormData(document.getElementById("myDropzone"));
-                console.log(form);
-
-            });
-
-
-
-            self.on("successmultiple", function (files, response) {
-                // Gets triggered when the files have successfully been sent.
-                // Redirect user or notify of success.
-
-            });
-        }
-    });
-   
 </script>*@
+

@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="~/app-assets/css/plugins/forms/wizard.css" defer>
 <link href="~/lib/select2/css/select2.css" rel="stylesheet" defer />
 
-<h1>Edit Request Maintenance</h1>
+<h1>Edit Request Maintenance Form</h1>
 
 
 <div>
@@ -68,17 +68,23 @@
                                                             <div class="form-group mb-1 col-sm-12 col-md-2">
                                                                 <label>Spare Part</label>
                                                                 <br>
-                                                                <input class="form-control" data-id="id" asp-for="@Model.spareParts[i].SparePartName"  placeholder="Name Of Spare part">
+                                                                <input class="form-control" data-id="id" asp-for="@Model.spareParts[i].SparePartName" placeholder="Name Of Spare part">
+                                                                <span asp-validation-for="@Model.spareParts[i].SparePartName"></span>
+
                                                             </div>
                                                             <div class="form-group mb-1 col-sm-12 col-md-2">
                                                                 <label for="pass">Quantity</label>
                                                                 <br>
-                                                                <input type="number" data-id="id" asp-for="@Model.spareParts[i].Quantity" placeholder="Quantity"  class="form-control" min="1">
+                                                                <input type="number" data-id="id" asp-for="@Model.spareParts[i].Quantity" placeholder="Quantity" class="form-control" min="1">
+                                                                <span asp-validation-for="@Model.spareParts[i].Quantity"></span>
+
                                                             </div>
                                                             <div class="form-group mb-1 col-sm-12 col-md-2">
                                                                 <label for="pass">Amount</label>
                                                                 <br>
-                                                                <input type="number" data-id="id" asp-for="@Model.spareParts[i].Amount"  class="form-control" placeholder="Enter Amount">
+                                                                <input type="number" data-id="id" asp-for="@Model.spareParts[i].Amount" class="form-control" placeholder="Enter Amount">
+                                                                <span asp-validation-for="@Model.spareParts[i].Amount"></span>
+
                                                             </div>
                                                             <div class="form-group col-sm-12 col-md-2 text-center mt-2">
                                                                 <button type="button" class="btn btn-danger" data-repeater-delete> <i class="ft-x"></i> Delete</button>

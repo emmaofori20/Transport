@@ -17,6 +17,7 @@ namespace Transport.Models.Data
         public DateTime CreatedOn { get; set; }
         public string CreatedBy { get; set; }
         public int? Quantity { get; set; }
+        public bool? IsRoutineCheck { get; set; }
 
         public virtual RoutineMaintenanceActivity RoutineMaintenanceActivity { get; set; }
         public virtual SparePart SparePart { get; set; }
