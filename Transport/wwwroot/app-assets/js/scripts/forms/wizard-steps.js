@@ -32,6 +32,24 @@ $(".icons-tab-steps").steps({
         finish: 'Submit'
     },
     onFinished: function (event, currentIndex) {
+        finish: 'Submit'
+    },
+    onFinished: function (event, currentIndex) {
+        alert("Form submitted.");
+    }
+});
+
+//from maintenance spareparts
+$(".steps").steps({
+>>>>>>>>> Temporary merge branch 2
+    headerTag: "h6",
+    bodyTag: "fieldset",
+    transitionEffect: "fade",
+    titleTemplate: '<span class="step">#index#</span> #title#',
+    labels: {
+        finish: 'Submit'
+    },
+    onFinished: function (event, currentIndex) {
         $("#my_Form").submit();
     }
 
@@ -44,7 +62,8 @@ $(".icons-tab-steps").steps({
 
 
 //from maintenance spareparts
-$(".steps").steps({
+$(".steps").steps(
+    {
     headerTag: "h6",
     bodyTag: "fieldset",
     transitionEffect: "fade",
