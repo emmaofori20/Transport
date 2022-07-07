@@ -38,8 +38,6 @@ $(".icon-tab-steps").steps({
 
 //from maintenance spareparts
 $(".steps").steps({
-// Wizard tabs with icons setup
-$(".icons-tab-steps").steps({
     headerTag: "h6",
     bodyTag: "fieldset",
     transitionEffect: "fade",

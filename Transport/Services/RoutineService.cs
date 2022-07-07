@@ -36,6 +36,8 @@ namespace Transport.Services
         {
             var RoutineMaintenance = vehicleRoutineMaintenanceRepository.AddRoutineRequest(model);
 
+            //CHECK TOTAL NUMBER OF A SPARE PART BEFORE PROCEDDING///
+
             for (int i = 0; i < model.RoutineActivity.Count; i++)
             {
                routneMaintenanceListRepository.AddRoutineMaintenanceLsit(model.RoutineActivity[i], RoutineMaintenance.VehicleRoutineMaintenanceId);
