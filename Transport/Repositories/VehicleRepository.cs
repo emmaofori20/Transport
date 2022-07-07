@@ -55,7 +55,9 @@ namespace Transport.Repositories
         }
         public async Task<VehicleDetailViewModel> GetVehicle(int Id)
         {
-            var vehicle = await _context.Vehicles
+            try
+            {
+                var vehicle = await _context.Vehicles
                 .Include(x => x.Make)
                 .Include(x => x.Model)
                 .Include(x => x.VehicleType)
@@ -79,45 +81,48 @@ namespace Transport.Repositories
                 .Include(x => x.PersonCountNavigation)
                 .Include(x => x.FuelType)
                 .Include(x => x.VehiclePhotos)
-
-                
-                //.Include(x => x.VehiclePhotos)
                 .FirstOrDefaultAsync(x => x.VehicleId == Id);
-            VehicleDetailViewModel vehicleDetailViewModel = new VehicleDetailViewModel()
-            {
-                vehicle = vehicle,
-                MakeName = vehicle.Make.MakeName,
-                ModelName = vehicle.Model.ModelName,
-                VehicleTypeName = vehicle.VehicleType.VehicleTypeName,
-                TransmissionTypeName = vehicle.VehicleType.VehicleTypeName,
-                CountryName = vehicle.Country.CountryName,
-                ColourName = vehicle.Colour.ColourName,
-                FuelTypeName = vehicle.FuelType.FuelTypeName,
-                DepartmentName = vehicle.Department.DepartmentName,
-                CollegeName = vehicle.College.CollegeName,
-                InsurancePolicyName = vehicle.Insurance.InsurancePolicyName,
-                StatusName = vehicle.Status.StatusName,
-                UseName = vehicle.VehicleUse.UseName,
-                FrontTyreSizeValue = vehicle.FrontTyreSizeNavigation.TyreSizeNumber,
-                MiddleTyreSizeValue = vehicle.MiddleTyreSizeNavigation != null ? vehicle.MiddleTyreSizeNavigation.TyreSizeNumber : null,
-                RearTyreSizeValue = vehicle.RearTyreSizeNavigation.TyreSizeNumber,
-                FrontPermAxleLoadValue = vehicle.FrontPermAxleLoadNavigation != null ? vehicle.FrontPermAxleLoadNavigation.PermAxleLoadValue : 0,
-                MiddlePermAxleLoadValue = vehicle.MiddlePermAxleLoadNavigation != null ? vehicle.MiddlePermAxleLoadNavigation.PermAxleLoadValue : 0,
-                RearPermAxleLoadValue = vehicle.RearPermAxleLoadNavigation != null ? vehicle.RearPermAxleLoadNavigation.PermAxleLoadValue : 0,
-                WheelCountNumber = vehicle.WheelCountNavigation.Number,
-                AxleCountNumber = vehicle.AxleCountNavigation.Number,
-                CylinderCountNumber = vehicle.CylinderCountNavigation.Number,
-                PersonCountNumber = vehicle.PersonCountNavigation.Number,
-                PhotoItems = vehicle.VehiclePhotos.Select(x => new VehiclePhoto
+                VehicleDetailViewModel vehicleDetailViewModel = new VehicleDetailViewModel()
                 {
-                    VehiclePhotoId  = x.VehiclePhotoId,
-                    PhotoSectionId = x.PhotoSectionId,
-                    PhotoName = x.PhotoName,
-                    PhotoFile = x.PhotoFile,
-                    
-                }).ToList()
-            };
-            return vehicleDetailViewModel;
+                    vehicle = vehicle,
+                    MakeName = vehicle.Make.MakeName,
+                    ModelName = vehicle.Model.ModelName,
+                    VehicleTypeName = vehicle.VehicleType.VehicleTypeName,
+                    TransmissionTypeName = vehicle.VehicleType.VehicleTypeName,
+                    CountryName = vehicle.Country.CountryName,
+                    ColourName = vehicle.Colour.ColourName,
+                    FuelTypeName = vehicle.FuelType.FuelTypeName,
+                    DepartmentName = vehicle.Department.DepartmentName,
+                    CollegeName = vehicle.College.CollegeName,
+                    InsurancePolicyName = vehicle.Insurance.InsurancePolicyName,
+                    StatusName = vehicle.Status.StatusName,
+                    UseName = vehicle.VehicleUse.UseName,
+                    FrontTyreSizeValue = vehicle.FrontTyreSizeNavigation.TyreSizeNumber,
+                    MiddleTyreSizeValue = vehicle.MiddleTyreSizeNavigation != null ? vehicle.MiddleTyreSizeNavigation.TyreSizeNumber : null,
+                    RearTyreSizeValue = vehicle.RearTyreSizeNavigation.TyreSizeNumber,
+                    FrontPermAxleLoadValue = vehicle.FrontPermAxleLoadNavigation != null ? vehicle.FrontPermAxleLoadNavigation.PermAxleLoadValue : 0,
+                    MiddlePermAxleLoadValue = vehicle.MiddlePermAxleLoadNavigation != null ? vehicle.MiddlePermAxleLoadNavigation.PermAxleLoadValue : 0,
+                    RearPermAxleLoadValue = vehicle.RearPermAxleLoadNavigation != null ? vehicle.RearPermAxleLoadNavigation.PermAxleLoadValue : 0,
+                    WheelCountNumber = vehicle.WheelCountNavigation.Number,
+                    AxleCountNumber = vehicle.AxleCountNavigation.Number,
+                    CylinderCountNumber = vehicle.CylinderCountNavigation.Number,
+                    PersonCountNumber = vehicle.PersonCountNavigation.Number,
+                    PhotoItems = vehicle.VehiclePhotos.Select(x => new VehiclePhoto
+                    {
+                        VehiclePhotoId = x.VehiclePhotoId,
+                        PhotoSectionId = x.PhotoSectionId,
+                        PhotoName = x.PhotoName,
+                        PhotoFile = x.PhotoFile,
+                    }).ToList()
+                };
+                return vehicleDetailViewModel;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
         }
         public async Task<int> AddVehicle(AddVehicleViewModel vehicleModel)
         {
@@ -159,7 +164,7 @@ namespace Transport.Repositories
                     HorsePower = vehicleModel.HorsePower,
                     Mileage = vehicleModel.Mileage,
                     FuelTypeId = vehicleModel.FuelTypeId,
-                    DateOfEntry = DateTime.Now,
+                    DateOfEntry = vehicleModel.DateOfEntry,
                     CreatedOn = DateTime.Now,
                     CreatedBy = "User",
                     IsDeleted = false,
