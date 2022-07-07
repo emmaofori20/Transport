@@ -72,6 +72,8 @@ namespace Transport
             services.AddTransient<ITransmissionTypeRepository, TransmissionTypeRepository>();
             services.AddTransient<IPermAxleLoadRepository, PermAxleLoadRepository>();
             services.AddTransient<IPhotoSectionRepository, PhotoSectionRepository>();
+
+
             services.AddTransient<IRoutineMaintenanceActivityRepository, RoutineMaintenanceActivityRepository>();
             services.AddTransient<IRoutneMaintenanceListRepository, RoutneMaintenanceListRepository>();
             services.AddTransient<IVehicleMaintenanceRequestRepository, VehicleMaintenanceRequestRepository>();

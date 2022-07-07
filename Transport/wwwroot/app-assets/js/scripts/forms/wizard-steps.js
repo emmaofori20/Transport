@@ -22,8 +22,8 @@ $(".number-tab-steps").steps({
     }
 });
 
- //Wizard tabs with icons setup
-$(".icon-tab-steps").steps({
+// Wizard tabs with icons setup
+$(".icons-tab-steps").steps({
     headerTag: "h6",
     bodyTag: "fieldset",
     transitionEffect: "fade",
@@ -32,9 +32,16 @@ $(".icon-tab-steps").steps({
         finish: 'Submit'
     },
     onFinished: function (event, currentIndex) {
-        alert("Form submitted.");
+        $("#my_Form").submit();
     }
+
+    ///////////////Passing final data to the controller using ajax////////
+
+
+    /*alert("Form submitted.");*/
+
 });
+
 
 //from maintenance spareparts
 $(".steps").steps({
@@ -45,75 +52,71 @@ $(".steps").steps({
     labels: {
         finish: 'Submit'
     },
-    onFinished: function (event, currentIndex) {
+        onFinished: function (event, currentIndex) {
 
-        /////////////getting values//////////////////////
-        var RequestId = document.getElementById('RequestId').value;
-        var RegistrationNumber = $('form #select2').val();
-        //var MaintainedBy = $('form #MaintainedBy').val();
-        var MaintenanceDescription = $('form #projectinput8').val();
-        /////////////getting values//////////////////////
+            /////////////getting values//////////////////////
+            var RequestId = document.getElementById('RequestId').value;
+            var RegistrationNumber = $('form #select2').val();
+            //var MaintainedBy = $('form #MaintainedBy').val();
+            var MaintenanceDescription = $('form #projectinput8').val();
+            /////////////getting values//////////////////////
 
-        var SparePartList = [];// for holding spare parts
-        var FinalList = {}
+            var SparePartList = [];// for holding spare parts
+            var FinalList = {}
 
-        var allSpareParts = $('#List input');
-        debugger;
+            var allSpareParts = $('#List input');
+            debugger;
 
-        for (var i = 0; i < allSpareParts.length; i++) {
-            let obj = {};
-            let sparename;
-            let quantity;
-            let amount;
-            console.log(allSpareParts[i])
+            for (var i = 0; i < allSpareParts.length; i++) {
+                let obj = {};
+                let sparename;
+                let quantity;
+                let amount;
+                console.log(allSpareParts[i])
 
-            if (allSpareParts[i].getAttribute("id") == `spareParts_${i / 3}__SparePartName` || allSpareParts[i].getAttribute("id") == "spareParts_0__SparePartName" ) {
-                sparename = allSpareParts[i].value;
-                quantity = allSpareParts[i + 1].value;
-                amount = allSpareParts[i + 2].value;
-                i = i + 2;
-            } else {
+                if (allSpareParts[i].getAttribute("id") == `spareParts_${i / 3}__SparePartName` || allSpareParts[i].getAttribute("id") == "spareParts_0__SparePartName") {
+                    sparename = allSpareParts[i].value;
+                    quantity = allSpareParts[i + 1].value;
+                    amount = allSpareParts[i + 2].value;
+                    i = i + 2;
+                } else {
 
+                }
+
+                obj = { "SparePartName": sparename, "Quantity": quantity, "Amount": amount };
+                SparePartList.push(obj);
             }
 
-            obj = { "SparePartName": sparename, "Quantity": quantity, "Amount": amount };
-            SparePartList.push(obj);
-        }
-
-        ////////////PREPARING FINAL LIST////////////////////
-        FinalList = {
-            "VehicleId": RegistrationNumber,
-            "MaintenanceDescription": MaintenanceDescription,
-            "RequestId":RequestId,
-            "spareParts": SparePartList
-        }
-        ////////////PREPARING FINAL LIST////////////////////
-
-        console.log("the final list", FinalList);
-        ///////////////Passing final data to the controller using ajax////////
-        $.ajax({
-            url: '/Request/EditRequestMaintenance',
-            dataType: 'html',
-            method: 'post',
-            data: { 'model': FinalList, 'RequestId': RequestId },
-            success: function (res) {
-                console.log('Success');
-                window.location.href = `/Request/RequestSparePartDetails?ListId=${RequestId}`;
-
-            },
-            error: function (err) {
-                console.log(err, "err");
+            ////////////PREPARING FINAL LIST////////////////////
+            FinalList = {
+                "VehicleId": RegistrationNumber,
+                "MaintenanceDescription": MaintenanceDescription,
+                "RequestId": RequestId,
+                "spareParts": SparePartList
             }
-        })
+            ////////////PREPARING FINAL LIST////////////////////
 
-        ///////////////Passing final data to the controller using ajax////////
+            console.log("the final list", FinalList);
+            ///////////////Passing final data to the controller using ajax////////
+            $.ajax({
+                url: '/Request/EditRequestMaintenance',
+                dataType: 'html',
+                method: 'post',
+                data: { 'model': FinalList, 'RequestId': RequestId },
+                success: function (res) {
+                    console.log('Success');
+                    window.location.href = `/Request/RequestSparePartDetails?ListId=${RequestId}`;
 
-        $("#my_Form").submit();
-        /*alert("Form submitted.");*/
-    }
+                },
+                error: function (err) {
+                    console.log(err, "err");
+                }
+            })
+        }
 });
 
-// Vertical tabs form wizard setup
+
+ //Vertical tabs form wizard setup
 $(".vertical-tab-steps").steps({
     headerTag: "h6",
     bodyTag: "fieldset",
@@ -205,6 +208,6 @@ $('.datetime').daterangepicker({
     timePicker: true,
     timePickerIncrement: 30,
     locale: {
-        format: 'MM/DD/YYYY h:mm A'
+        format: 'YYYY/MM/DD h:mm A'
     }
 });
