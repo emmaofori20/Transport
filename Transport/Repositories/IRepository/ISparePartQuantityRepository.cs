@@ -13,7 +13,7 @@ namespace Transport.Repositories.IRepository
         public void AddSparePart(SparePartViewModel model);
         public void UpdateSpareQuantity(SparePartViewModel model);
         public void DeleteSparePart(int sparePartId);
-
+        public void UpdateSparePartQuantityAfterRoutineMaintenanceActivity(RoutineActivityCheck Activity);
         /// <summary>
         /// Routine Activities
         /// </summary>

@@ -41,7 +41,6 @@ $(".icons-tab-steps").steps({
 
 //from maintenance spareparts
 $(".steps").steps({
->>>>>>>>> Temporary merge branch 2
     headerTag: "h6",
     bodyTag: "fieldset",
     transitionEffect: "fade",

@@ -57,13 +57,61 @@ namespace Transport.Controllers
 
         public IActionResult HiringDashboard()
         {
-            var res = hiringService.GetAllHirers();
-            return View(res);
+            try
+            {
+                var res = hiringService.GetAllHirers();
+                return View(res);
+            }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+           
         }
 
         public IActionResult ViewHiringDetails(int HirerId)
         {
-            return View();
+            try
+            {
+                var res = hiringService.GetSingleHireDetails(HirerId);
+                return View(res);
+
+            }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ProceedToApproveHire(List<ApproveHireRequest> models)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    hiringService.ApproveHireRequest(models);
+
+                }
+                return View();
+            }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
         }
     }
 }

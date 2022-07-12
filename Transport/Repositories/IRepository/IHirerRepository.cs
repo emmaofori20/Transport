@@ -12,5 +12,6 @@ namespace Transport.Repositories.IRepository
         public void SetHirerDetails(HireDetailsViewModel model);
         public List<HirerHiringStatus> GetAllHireHiringStatus();
         public List<Hirer> GetAllHirers();
+        public void ApprovedHire(ApproveHireRequest model);
     }
 }

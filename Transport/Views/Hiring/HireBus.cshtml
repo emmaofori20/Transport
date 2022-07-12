@@ -41,13 +41,6 @@
                 <span class="mdi mdi-menu"></span>
             </button><!--end button-->
 
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav mx-auto">
-                </ul><!--end navbar nav-->
-                <div>
-                    <a href="#services" class="login-button mouse-down ml-3">Hire a Bus</a>
-                </div><!--end login button-->
-            </div><!--end collapse-->
         </div><!--end container-->
     </nav><!--end navbar-->
     <!-- Navbar End -->
@@ -72,7 +65,7 @@
                     <div class="card-content collapse show">
                         <div class="card-body">
 
-                            <form class="form" method="post" asp-action="HireBus" asp-controller="Hiring">
+                            <form class="form" id="SubmitHireForm" method="post" asp-action="HireBus" asp-controller="Hiring">
                                 <div class="row justify-content-md-center">
                                     <div class="col-md-6">
                                         <div class="form-body">
@@ -109,6 +102,8 @@
 
                                         </div>
                                     </div>
+
+                                    <input id="DistanceCalculated" asp-for="DistanceCalculatedFromOrigin" hidden  />
 
                                     <div class="col-md-6">
                                         <div class="form-body">
@@ -169,15 +164,15 @@
                                                 <textarea type="text" class="form-control " asp-for="PurposeOfHire" placeholder="eg. FieldTrip, chilling"></textarea>
                                                 <span asp-validation-for="PurposeOfHire"></span>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="form-actions center">
                                     <button type="button" class="btn btn-warning mr-1">
                                         <i class="ft-x"></i> Cancel
                                     </button>
-                                    <button type="submit" class="btn btn-primary">
+                                    <button  id="SubmitForm" class="btn btn-primary">
                                         <i class="la la-check-square-o"></i> Hire Bus
                                     </button>
                                 </div>
@@ -220,25 +215,93 @@
     <!-- Main Js -->
     <script src="~/landingPage/js/app.js"></script>
     <script defer
-            src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyAevDNarlsyjbMUq-uzDWGCSVs7MdEZD0U"
+            src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyCBIpaZoGDIQZ3_FlYEPw4EDZZgLsk6iL4"
             type="text/javascript">
 
     </script>
 
     <script>
+        //Setting defualt origin
+        var defaultOrigin = "KNUST, Kumasi, Ghana";
+
         $(function () {
             // add input listeners
             google.maps.event.addDomListener(window, "load", function () {
-                var from_places = new google.maps.places.Autocomplete(
-                    document.getElementById("from_places")
-                );
+               
                 var to_places = new google.maps.places.Autocomplete(
                     document.getElementById("Destination")
                 );
-                console.log("Iwtest")
+
+                google.maps.event.addListener(
+                    to_places,
+                    "place_changed",
+                    function () {
+                        var to_place = to_places.getPlace();
+                        var to_address = to_place.formatted_address;
+                        $("#Destination").val(to_address);
+                    }
+                );
+            });
+            // calculate distance
+            function calculateDistance() {
+                //Setting defualt origin
+                var defaultOrigin = "KNUST, Kumasi, Ghana";
+                //Setting defualt origin
+                var origin = defaultOrigin;
+                var destination = $("#Destination").val();
+                var service = new google.maps.DistanceMatrixService();
+                service.getDistanceMatrix(
+                    {
+                        origins: [origin],
+                        destinations: [destination],
+                        travelMode: google.maps.TravelMode.DRIVING,
+                        unitSystem: google.maps.UnitSystem.IMPERIAL, // miles and feet.
+                        // unitSystem: google.maps.UnitSystem.metric, // kilometers and meters.
+                        avoidHighways: false,
+                        avoidTolls: false,
+                    },
+                    callback
+                );
+            }
+            // get distance results
+            function callback(response, status) {
+                if (status != google.maps.DistanceMatrixStatus.OK) {
+                    $("#result").html(err);
+                } else {
+                    var origin = response.originAddresses[0];
+                    console.log(origin);
+                    var destination = response.destinationAddresses[0];
+                    console.log(destination);
+                    if (response.rows[0].elements[0].status === "ZERO_RESULTS") {
+                        $("#result").html(
+                            "Better get on a plane. There are no roads between " +
+                            origin +
+                            " and " +
+                            destination
+                        );
+                    } else {
+                        var distance = response.rows[0].elements[0].distance;
+                        console.log(distance);
+                        var duration = response.rows[0].elements[0].duration;
+                        console.log(duration);
+                        console.log(response.rows[0].elements[0].distance);
+                        var distance_in_kilo = distance.value / 1000; // the kilom
+                        var distance_in_mile = distance.value / 1609.34; // the mile
+                        console.log(distance_in_kilo,"in kilo");
+                        document.getElementById("DistanceCalculated").value = 354 ;
+                        /////////////////////////////FINAL FORM SUBMISSION..............////////
+                        $("#SubmitHireForm").submit();
+                        /////////////////////////////FINAL FORM SUBMISSION..............////////
+
+                    }
+                }
+            }
+            // print results on submit the form
+            $("#SubmitForm").click(function (e) {
+                e.preventDefault();
+                calculateDistance();
             });
         });
-
         
     </script>
 </body>

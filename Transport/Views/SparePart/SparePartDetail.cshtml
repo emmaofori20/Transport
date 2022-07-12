@@ -9,7 +9,7 @@
     }
 </style>
 <div style="display: flex; justify-content: space-between; padding-bottom: 20px;">
-    <h3>  Spare Part Detail  </h3>
+    <h3 style="font-weight:800">  Spare Part Detail  </h3>
     <a asp-controller="SparePart" asp-action="EditSparePart" asp-route-SparePartId="@Model.SparePartId" class="btn btn-primary square btn-glow px-2" style="color:white">
         Edit Spare Part
     </a>
@@ -18,7 +18,7 @@
 <div class="card" style="display: flex; align-content: space-around; flex-direction: row; justify-content: flex-start; grid-gap: 39px; width: 40%; padding: 10px;" >
 
     <p> <strong>Name:</strong> @Model.SparePart.SparePartName</p>
-    <p> <em>Quantity</em> @Model.Quantity</p>
+    <p> <strong>Quantity Left:</strong> @Model.QuantityLeft</p>
 
 </div>
 
@@ -31,6 +31,7 @@
 
                 <th>Date</th>
                 <th>Quantity Bought</th>
+                <th>Quantity Left</th>
             </tr>
         </thead>
         <tbody>
@@ -41,7 +42,7 @@
 
                     <td>@item.CreatedOn</td>
                     <td>@item.Quantity</td>
-
+                    <td>@item.QuantityLeft</td>
                 </tr>
             }
         
@@ -51,6 +52,7 @@
 
                 <th>Date</th>
                 <th>Quantity Bought</th>
+                <th>Quantity Left</th>
             </tr>
         </tfoot>
     </table>

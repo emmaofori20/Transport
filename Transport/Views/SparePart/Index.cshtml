@@ -25,7 +25,7 @@
 
                             <th>Date</th>
                             <th>Spare Part Name</th>
-                            <th>Quantity</th>
+                            <th>Quantity Left</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -41,10 +41,10 @@
 
                                 <td>
                                     <a class="text-bold-600">
-                                        @Model.SparePartQuantities[i].Quantity
+                                        @Model.SparePartQuantities[i].QuantityLeft
                                     </a>
                                 </td>
-                                @if (@Model.SparePartQuantities[i].Quantity > 5)
+                                @if (@Model.SparePartQuantities[i].QuantityLeft > 5)
                                 {
                                     <td>
                                         <span class="badge badge-default badge-success badge-lg"> In stock</span>
@@ -93,7 +93,7 @@
 
                             <th>Date</th>
                             <th>Spare Part Name</th>
-                            <th>Quantity</th>
+                            <th>Quantity Left</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>

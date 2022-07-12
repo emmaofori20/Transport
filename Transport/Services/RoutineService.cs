@@ -32,18 +32,35 @@ namespace Transport.Services
             this.routneMaintenanceListRepository = routneMaintenanceListRepository;
         }
 
-        public void AddRoutineMaintenanceVehicle(RoutineMaintenanceVehicleViewModel model)
+        public VehicleRoutineMaintenance AddRoutineMaintenanceVehicle(RoutineMaintenanceVehicleViewModel model)
         {
-            var RoutineMaintenance = vehicleRoutineMaintenanceRepository.AddRoutineRequest(model);
 
-            //CHECK TOTAL NUMBER OF A SPARE PART BEFORE PROCEDDING///
+                var RoutineMaintenance = vehicleRoutineMaintenanceRepository.AddRoutineRequest(model);
+                for (int i = 0; i < model.RoutineActivity.Count; i++)
+                {
+                    routneMaintenanceListRepository.AddRoutineMaintenanceLsit(model.RoutineActivity[i], RoutineMaintenance.VehicleRoutineMaintenanceId);
+                }
+                return RoutineMaintenance;
 
-            for (int i = 0; i < model.RoutineActivity.Count; i++)
-            {
-               routneMaintenanceListRepository.AddRoutineMaintenanceLsit(model.RoutineActivity[i], RoutineMaintenance.VehicleRoutineMaintenanceId);
-            }
         }
 
+        public bool CheckRoutineMaintenanceVehicleSpareParts(RoutineMaintenanceVehicleViewModel model)
+        { 
+            //CHECK TOTAL NUMBER OF A SPARE PART BEFORE PROCEDDING///
+            var AllCurrentSpareParts = sparePartService.GetAllSpareParts().Item1;
+
+            List<bool> checks = new List<bool>();
+
+            for (int i = 0; i < model.RoutineActivity.Where(x => x.IsRequiredSparePart == true).Count(); i++)
+            {
+                //Checking if the spareparts are of the same ID and the quantity left is greater than the quantity requested
+                bool query = AllCurrentSpareParts.Any(x => x.SparePartId == model.RoutineActivity[i].SparePartId
+                                                   && x.QuantityLeft <= model.RoutineActivity[i].Quantity);
+                checks.Add(query);
+            }
+            //CHECK TOTAL NUMBER OF A SPARE PART BEFORE PROCEDDING///
+            return checks.Any(x=>x == true);/// if any of them is true then the code should not continue
+        }
         public List<VehicleRoutineMaintenance> GetVehicleRoutineMaintenances()
         {
             return vehicleRoutineMaintenanceRepository.GetAllRoutineMaintenances();

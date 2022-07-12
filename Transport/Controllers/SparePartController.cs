@@ -51,7 +51,7 @@ namespace Transport.Controllers
             {
                 var results = sparePartService.GetSparePart(SpartPartId);
 
-                var sparePartsHistory = sparePartService.GetAllSpareParts().spareparts.Where(x => x.SparePartId == SpartPartId);
+                var sparePartsHistory = sparePartService.GetAllSpareParts().AllSparePartsHistory.Where(x => x.SparePartId == SpartPartId);
                 List<int> Repartitions = new List<int>();
                 var sparepart = sparePartsHistory.Select(x => x.CreatedOn.Month).Distinct().ToList();
                 foreach (var item in sparepart)
@@ -115,7 +115,7 @@ namespace Transport.Controllers
                 {
                     SparePartId = results.SparePartId,
                     SparePartName = results.SparePart.SparePartName,
-                    SparePartQuantity = results.Quantity
+                    SparePartQuantity = (int)results.QuantityLeft
                 };
                 return View(sparePart);
             }

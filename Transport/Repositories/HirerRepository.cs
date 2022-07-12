@@ -33,6 +33,7 @@ namespace Transport.Repositories
 
         public void SetHirerDetails(HireDetailsViewModel model)
         {
+            decimal Hireprice= CalculateBusHiringPrices(model.VehicleTypeForHireId, (double)model.DistanceCalculatedFromOrigin);
             var hirer = new Hirer()
             {
                 OrganisationName = model.OrganisationName,
@@ -52,8 +53,8 @@ namespace Transport.Repositories
                 VehicleTypeForHireId = model.VehicleTypeForHireId,
                 CreatedOn = DateTime.Now,
                 CreatedBy = model.ContactName,
-                
-                
+                DistanceCalculatedFromOrigin = model.DistanceCalculatedFromOrigin,
+                DistanceCalaculatedFromOriginCost = Hireprice
 
             };
 
@@ -75,6 +76,39 @@ namespace Transport.Repositories
             };
 
             _context.HirerHiringStatuses.Add(hirerHiringStatus);
+            _context.SaveChanges();
+        }
+
+        public decimal CalculateBusHiringPrices(int VehicleTypeForHireId, double DistanceCalculated)
+        {
+            //get BusHiringDistances Id
+            var BusHiringDistanceId= _context.BusHiringDistances
+                .Where(x => x.MinimumDistance <= DistanceCalculated && x.MaximumDistance >= DistanceCalculated)
+                .FirstOrDefault().BusHiringDistanceId;
+            //get BusHiringPrices Id
+            var BusHiringPrice = _context.BusHiringPrices
+                .Where(x => x.BusHiringDistanceId == BusHiringDistanceId && x.VehicleTypeForHireId == VehicleTypeForHireId)
+                .FirstOrDefault().Price;
+            //get Hire price
+            decimal HirePrice = (decimal)BusHiringPrice;
+            return HirePrice;
+        }
+        public void ApprovedHire(ApproveHireRequest model)
+        {
+            var hiring = new Hiring()
+            {
+                HirerId = model.HirerId,
+                TimeHired = DateTime.Now,
+                TotalHirePrice = model.HireCostFee + model.WashingFee + model.DriverFee,
+                HireCostFee = model.HireCostFee,
+                WashingFee = model.WashingFee,
+                DriverHireFee = model.DriverFee,
+                CreatedBy ="Admin",
+                CreatedOn = DateTime.Now,
+                VehicleId = model.VehicleId
+            };
+
+            _context.Hirings.Add(hiring);
             _context.SaveChanges();
         }
     }

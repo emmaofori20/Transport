@@ -1,7 +1,233 @@
-﻿
+﻿@model ApproveHiringRequestViewModel
 @{
     ViewData["Title"] = "View Hiring Details";
 }
+<link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+
 
 <h1>View Hiring Details</h1>
 
+<div>
+    <div class="card-body" style="background-color:white">
+
+        <div id="SubmitHireForm" method="post" asp-action="HireBus" asp-controller="Hiring">
+            <div class="row justify-content-md-center">
+                <div class="col-md-6">
+                    <div class="form-body">
+                        <h6 style=" font-weight: 800; ">Hirer Information</h6>
+                        <div class="form-group">
+                            <label>Organisation Name  </label>
+                            <input type="text" asp-for="hireDetails.OrganisationName" class="form-control" placeholder="eg. Nestle Ghana" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Full Name <span class="text-danger">*</span> </label>
+                            <input type="text" asp-for="hireDetails.ContactName" class="form-control" placeholder="Full Name" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Postal Address </label>
+                            <input type="text" asp-for="hireDetails.PostalAddress" class="form-control" placeholder="Postal Address" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Email </label>
+                            <input type="email" asp-for="hireDetails.Email" class="form-control" placeholder="Email" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Primary Phone Number </label>
+                            <input type="tel" asp-for="hireDetails.PrimaryContactNumber" class="form-control" placeholder="(+233)123456789" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Other Phone Number</label>
+                            <input type="tel" asp-for="hireDetails.OtherContactNumber" class="form-control" placeholder="(+233)123456789" readonly>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-body">
+                        <h6 style=" font-weight: 800; ">Hire Details</h6>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label>Journey Start Date  </label>
+                                <input type="date" asp-for="hireDetails.StartDate" class="form-control" placeholder="start date" readonly>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>Journey Start Time  </label>
+                                <input type="time" asp-for="hireDetails.StartTime" class="form-control" placeholder="start time" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label>Journey Finish Date  </label>
+                                <input type="date" asp-for="hireDetails.FinishDate" class="form-control" placeholder="Return date" readonly>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>Journey Finish Time  </label>
+                                <input type="time" asp-for="hireDetails.FinishTime" class="form-control" placeholder="Return time" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label>Type Of Vehicle </label>
+                                <input class="form-control" asp-for="@Model.hireDetails.VehicleTypeForHireType" readonly />
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>No. of Bus(es) needed  </label>
+                                <input type="number" asp-for="hireDetails.NoOfBusses" class="form-control" min="1" placeholder="eg. 1" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label>Number of Passengers  </label>
+                                <input type="number" asp-for="hireDetails.NoOfPassangers" class="form-control" placeholder="eg. 30" readonly>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>Destination  </label>
+                                <input readonly type="text" id="Destination" asp-for="hireDetails.Destination" class="form-control" placeholder="eg. Kakum National Park">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Purpose of Hire?</label>
+                            <textarea readonly type="text" class="form-control " asp-for="hireDetails.PurposeOfHire" placeholder="eg. FieldTrip, chilling"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <hr>
+
+                    <h6 style=" font-weight: 800; text-align:center">Hiring Costs</h6>
+
+                    <div class="col-md-12">
+                        <input asp-for="@Model.hireDetails.HirerId" hidden id="ApproveId" />
+
+                        <div id="List" class="d-flex flex-wrap">
+                            @for (int i = 0; i < Model.hireDetails.NoOfBusses; i++)
+                            {
+                                <div class="p-2 ">
+                                    <h6>Diver @i </h6>
+
+                                    <div>
+                                        <div class="form-group">
+                                            <label>Bus Hiring Price</label>
+                                            <input id="cost_@i" asp-for="approveHireRequest.HireCostFee" class="form-control" readonly />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Driver Price</label>
+                                            <input class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Washing fee</label>
+                                            <input class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Assign vehicle</label>
+                                            <select style="width: 200px !important" id="select_@i" class="select2 form-control" asp-items="@Model.approveHireRequest.Vehicles" asp-for="approveHireRequest.VehicleId">
+                                                <option>Select Vehicle</option>
+                                            </select>
+                                            <span class="text-danger" asp-validation-for="approveHireRequest.VehicleId">  </span>
+                                        </div>
+                                    </div>
+                                    <hr>
+
+                                </div>
+                            }
+
+                        </div>
+
+                        <div class="form-actions center" style="text-align:center">
+                            <button type="button" class="btn btn-warning mr-1">
+                                <i class="ft-x"></i> Set Invalid
+                            </button>
+                            <button class="btn btn-primary" id="ApproveButton">
+                                <i class="la la-check-square-o"></i> Proceed To Approve
+                            </button>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script src="~/lib/select2/js/select2.js" defer ></script>
+<script>
+
+    $(document).ready(function () {
+        //select all select tag and initialise select2 library
+        $('select.select2').each(function (index) {
+            console.log(index);
+            $("#select_"+index).select2();
+        })
+
+
+        $('#ApproveButton').click(function () {
+
+            ///Get the approvingHireId list id
+            var HireApproveId = document.getElementById("ApproveId").value;
+
+            /////And array to hold the list of hires
+            var AllHireListToApprove = [];
+
+            /////Get all input tags/////////////
+            var allHiresInput = $('#List input');
+
+            for (var i = 0; i < allHiresInput.length; i++) {
+                let obj = {};
+                let HirerId;
+                let HireCostFee;
+                let DriverFee;
+                let WashingFee;
+                let VehicleId;
+
+                if (allHiresInput[i].getAttribute("id") == `cost_${i / 3}`) {
+                    HirerId = HireApproveId;
+                    HireCostFee = allHiresInput[i].value;
+                    DriverFee = allHiresInput[i + 1].value;
+                    WashingFee = allHiresInput[i + 2].value;
+                    VehicleId = 1;
+
+                    i = i + 2;
+                    obj = {
+                        "HirerId": HirerId,
+                        "HireCostFee": HireCostFee,
+                        "DriverFee": DriverFee,
+                        "WashingFee": WashingFee,
+                        "VehicleId": VehicleId,
+                        "Vehicles":null
+                    }
+                    console.log(obj);
+                    AllHireListToApprove.push(obj);
+                } else {
+                }
+            }
+            debugger;
+            console.log(AllHireListToApprove);
+            ///////////////Passing final data to the controller using ajax////////
+            $.ajax({
+                url: '/Hiring/ProceedToApproveHire',
+                method: 'get',
+                data:  AllHireListToApprove ,
+                success: function (res) {
+                    console.log('Success');
+                    window.location.href = `/Hiring/HiringDashboard`;
+
+                },
+                error: function (err) {
+                    console.log(err, "err");
+                }
+            })
+        });
+
+    })
+
+</script>

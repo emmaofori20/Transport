@@ -58,7 +58,7 @@ namespace Transport.Models.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           
+          
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -102,17 +102,15 @@ namespace Transport.Models.Data
 
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
 
-                entity.Property(e => e.VehicleTypeForHire).HasColumnName("VehicleTypeForHIre");
-
                 entity.HasOne(d => d.BusHiringDistance)
                     .WithMany(p => p.BusHiringPrices)
                     .HasForeignKey(d => d.BusHiringDistanceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("RefBusHiringDistance52");
 
-                entity.HasOne(d => d.VehicleTypeForHireNavigation)
+                entity.HasOne(d => d.VehicleTypeForHire)
                     .WithMany(p => p.BusHiringPrices)
-                    .HasForeignKey(d => d.VehicleTypeForHire)
+                    .HasForeignKey(d => d.VehicleTypeForHireId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("RefVehicleTypeForHIre53");
             });
@@ -252,6 +250,10 @@ namespace Transport.Models.Data
                     .IsRequired()
                     .HasMaxLength(255);
 
+                entity.Property(e => e.DistanceCalaculatedFromOriginCost).HasColumnType("decimal(10, 0)");
+
+                entity.Property(e => e.DistanceCalculatedFromOrigin).HasColumnType("decimal(18, 0)");
+
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(255);
@@ -327,15 +329,21 @@ namespace Transport.Models.Data
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
-                entity.Property(e => e.Price).HasColumnType("decimal(10, 0)");
+                entity.Property(e => e.DriverHireFee).HasColumnType("decimal(10, 0)");
+
+                entity.Property(e => e.HireCostFee).HasColumnType("decimal(10, 0)");
 
                 entity.Property(e => e.TimeHired).HasColumnType("datetime");
 
                 entity.Property(e => e.TimeReturned).HasColumnType("datetime");
 
+                entity.Property(e => e.TotalHirePrice).HasColumnType("decimal(10, 0)");
+
                 entity.Property(e => e.UpdatedBy).HasMaxLength(255);
 
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.WashingFee).HasColumnType("decimal(10, 0)");
 
                 entity.HasOne(d => d.Hirer)
                     .WithMany(p => p.Hirings)
