@@ -108,22 +108,22 @@ else
 
     //setting a request list to aprroved
     function SetListToApprove(element) {
-        console.log('setting to approve', $(element).data('url'));
         var url = $(element).data('url');
-        debugger;
         $.ajax({
             url: url,
             type: "get",
             cache: false,
             success: function (data) {
                 console.log('i work')
+                toastr.success('Request Approved', 'Success', { "hideDuration": 3000 });
                // location.reload();// reloads the entire page
                 $("#divContent").load('@Url.Action("PendingVehicleRequest", "Invoice")');//keeps the page still
                // console.log('stay on page')
             },
             error: function (err) {
                 console.log('An error occured')
-                swal("Error!", "We could not access the server.", "error");
+                toastr.error('We could not access the server', 'Error', { "hideDuration": 3000 });
+                //swal("Error!", "We could not access the server.", "error");
 
             }
         });
@@ -133,20 +133,21 @@ else
     //setting a request list to invalid
     function SetListToInvalid(element) {
         var url = $(element).data('url');
-        debugger;
         $.ajax({
             url: url,
             type: "get",
             cache: false,
             success: function (data) {
-                console.log('i work')
+                toastr.success('Request Set to Invalid', 'Success', { "hideDuration": 3000 });
                // location.reload();// reloads the entire page
                 $("#divContent").load('@Url.Action("InvalidRequestMaintenance", "Invoice")');//keeps the page still
                // console.log('stay on page')
+                toastr.success('Request Unapproved', 'Success', { "hideDuration": 3000 });
+
             },
             error: function (err) {
-                console.log('An error occured')
-                swal("Error!", "We could not access the server.", "error");
+                toastr.error('We could not access the server', 'Error', { "hideDuration": 3000 });
+                //swal("Error!", "We could not access the server.", "error");
 
             }
         });

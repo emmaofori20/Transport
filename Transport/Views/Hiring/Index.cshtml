@@ -47,7 +47,7 @@
                 <div>
                     <a asp-controller="Hiring" asp-action="HireBus" class="login-button mouse-down ml-3">Hire a Bus</a>
                 </div>
-                <a href="#services" class="btn btn-outline-white mb-2">Book an appointment</a>
+                <a href="#services" class="btn btn-outline-white mb-2">Login</a>
                 <!--end login button-->
             </div><!--end collapse-->
         </div><!--end container-->
@@ -62,11 +62,11 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-10 text-center">
                             <div class="title-heading">
-                                <h1 class="heading text-white mb-3"><span class="element" data-elements=" Great Service and Quality Repairs, Expert Auto Repairs , The Transport Unit Knust"></span></h1>
+                                <h1 class="heading text-white mb-3"><span class="element" data-elements=" Hire Busses, Expert Auto Repairs , The Transport Unit Knust"></span></h1>
                                 <p class="para-desc mx-auto text-white-50">Great content details the repair process for potential clients, helping them to feel confident that they know exactly what they are paying for.</p>
                                 <div class="mt-4 pt-2">
-                                    <a href="javascript:void(0)" class="btn btn-custom mb-2 mr-2">Book an Appointment</a>
-                                    <a href="#services" class="btn btn-outline-white mb-2">Hire a Bus</a>
+                                    @*<a href="javascript:void(0)" class="btn btn-custom mb-2 mr-2">Hire a Bus</a>*@
+                                    <a asp-controller="Hiring" asp-action="HireBus" class="btn btn-outline-white mb-2">Hire a Bus</a>
                                 </div>
                             </div>
                         </div><!--end col-->
@@ -140,43 +140,6 @@
                     <div class="card-content collapse show">
                         <div class="card-body">
 
-                            <form class="form">
-                                <div class="row justify-content-md-center">
-                                    <div class="col-md-6">
-                                        <div class="form-body">
-                                            <div class="form-group">
-                                                <label>Full Name <span class="text-danger">*</span> </label>
-                                                <input type="text" class="form-control" placeholder="name">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Email <span class="text-danger">*</span></label>
-                                                <input type="email" class="form-control" placeholder="Email">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Primary Phone Number <span class="text-danger">*</span></label>
-                                                <input type="tel" class="form-control" placeholder="(+233)123456789">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Other Phone Number</label>
-                                                <input type="tel" class="form-control" placeholder="(+233)123456789">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>No of Passengers</label>
-                                                <input type="number" class="form-control " placeholder="No. Of Passengers">
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-actions center">
-                                    <button type="button" class="btn btn-warning mr-1">
-                                        <i class="ft-x"></i> Cancel
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="la la-check-square-o"></i> Hire Bus
-                                    </button>
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </div>

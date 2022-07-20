@@ -22,7 +22,7 @@ namespace Transport.Repositories
         public List<Hirer> GetAllHirers()
         {
             return _context.Hirers.Include(x => x.VehicleTypeForHire)
-                .Include(x => x.HirerHiringStatuses).ThenInclude(x => x.HiringStatus).ToList();
+                .Include(x => x.HirerHiringStatuses).ThenInclude(x => x.Status).ToList();
         }
 
         public List<HirerHiringStatus> GetAllHireHiringStatus()
@@ -69,7 +69,7 @@ namespace Transport.Repositories
             var hirerHiringStatus = new HirerHiringStatus()
             {
                 HirerId = hirerId,
-                HiringStatusId = 40000,
+                StatusId = 2003,
                 CreatedBy = "AdminHire",
                 CreatedOn = DateTime.Now,
                
@@ -78,7 +78,6 @@ namespace Transport.Repositories
             _context.HirerHiringStatuses.Add(hirerHiringStatus);
             _context.SaveChanges();
         }
-
         public decimal CalculateBusHiringPrices(int VehicleTypeForHireId, double DistanceCalculated)
         {
             //get BusHiringDistances Id
@@ -109,6 +108,22 @@ namespace Transport.Repositories
             };
 
             _context.Hirings.Add(hiring);
+            _context.SaveChanges();
+
+        }
+
+        public void SetHirerHiringStatusToApproved (int hirerId)
+        {
+            var hirerHiringStatus = new HirerHiringStatus()
+            {
+                HirerId = hirerId,
+                StatusId = 2005,
+                CreatedBy = "AdminHire",
+                CreatedOn = DateTime.Now,
+
+            };
+
+            _context.HirerHiringStatuses.Add(hirerHiringStatus);
             _context.SaveChanges();
         }
     }

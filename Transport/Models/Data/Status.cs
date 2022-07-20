@@ -9,6 +9,8 @@ namespace Transport.Models.Data
     {
         public Status()
         {
+            HirerHiringStatuses = new HashSet<HirerHiringStatus>();
+            VehicleMaintenanceRequestStatuses = new HashSet<VehicleMaintenanceRequestStatus>();
             Vehicles = new HashSet<Vehicle>();
         }
 
@@ -18,7 +20,10 @@ namespace Transport.Models.Data
         public string CreatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public string UpdatedBy { get; set; }
+        public bool? VisibleToVehicle { get; set; }
 
+        public virtual ICollection<HirerHiringStatus> HirerHiringStatuses { get; set; }
+        public virtual ICollection<VehicleMaintenanceRequestStatus> VehicleMaintenanceRequestStatuses { get; set; }
         public virtual ICollection<Vehicle> Vehicles { get; set; }
     }
 }

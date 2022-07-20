@@ -30,6 +30,7 @@ namespace Transport.Services
             {
                 hirerRepository.ApprovedHire(model[i]);
             }
+            hirerRepository.SetHirerHiringStatusToApproved(model[0].HirerId);
         }
 
         public List<HireDetailsViewModel> GetAllHirers()
@@ -63,7 +64,7 @@ namespace Transport.Services
                     DistanceCalculatedFromOrigin = AllHiringRequest[i].DistanceCalculatedFromOrigin,
                     ////////Getting Status Name/////////////////
                     Status = AllHiringRequest[i].HirerHiringStatuses.OrderByDescending(x=>x.CreatedOn)
-                                .FirstOrDefault(x=>x.HirerId == AllHiringRequest[i].HirerId).HiringStatus.StatusName,
+                                .FirstOrDefault(x=>x.HirerId == AllHiringRequest[i].HirerId).Status.StatusName,
                     ////////Getting Status Name/////////////////
                     CreatedOn = DateTime.Now,
                     CreatedBy = AllHiringRequest[i].ContactName,
@@ -83,12 +84,18 @@ namespace Transport.Services
             HireDetailsViewModel singleHireDetails = AllHireDetails.Where(x => x.HirerId == HirerId).FirstOrDefault();
             ApproveHireRequest _approveHireRequest = new ApproveHireRequest()
             {
+                
                 HirerId = singleHireDetails.HirerId,
                 HireCostFee = singleHireDetails.DistanceCalculatedFromOrginCost,
                 Vehicles = new SelectList(requestService
                                                     .GetAllVehicleMaintenanceRequest().Item2
                                                     .Select(s => new { VehicleId = s.VehicleId, RegistrationNumber = $"{s.RegistrationNumber}", ChasisNumber = $"{s.ChasisNumber}" }), "VehicleId", "RegistrationNumber", "ChasisNumber"),
-
+                //WashingFee = (decimal)hirerRepository.GetAllHirers()
+                //                                .FirstOrDefault(x =>x.HirerId == HirerId).Hirings
+                //                                .Where(x=>x.HirerId==HirerId).FirstOrDefault().WashingFee,
+                //DriverFee = (decimal)hirerRepository.GetAllHirers()
+                //                                .FirstOrDefault(x => x.HirerId == HirerId).Hirings
+                //                                .Where(x => x.HirerId == HirerId).FirstOrDefault().DriverHireFee,
             };
             ApproveHiringRequestViewModel approveHiringRequestViewModel = new ApproveHiringRequestViewModel
             {

@@ -33,9 +33,9 @@
                     <h2>Request Form</h2>
                     <p class="pb-3"># INV-@Id</p>
                     @*<ul class="px-0 list-unstyled">
-                            <li>Maintenanance Cost</li>
-                            <li class="lead text-bold-800">Ghc @Model.MaintenanceCost</li>
-                        </ul>*@
+                    <li>Maintenanance Cost</li>
+                    <li class="lead text-bold-800">Ghc @Model.MaintenanceCost</li>
+                </ul>*@
                 </div>
             </div>
             <!--/ Invoice Company Details -->
@@ -101,10 +101,27 @@
                     </div>
                 </div>
             </div>
-            
+
             <!--Upload Receipts or Images-->
             @if (@Model.Status == "Pending")
             {
+
+            }
+            else if (Model.Status == "Completed")
+            {
+                <p class="font-weight-bold text-center h3">Photos of Receipts/Spare parts</p>
+                <div style="display: flex; grid-gap: 10px; " >
+                    @foreach (var item in Model.ReceiptImages)
+                    {
+                    <div style="height:300px" class="w-21" >
+                        <img style="width:100%; height:100%; object-fit:contain" src="data:image;base64,@Convert.ToBase64String(item.ReceiptPhotoFile)" />
+
+                    </div>
+
+                    }
+                </div>
+              
+ 
 
             }
             else
@@ -119,14 +136,19 @@
                                         Upload receipts or pictures of the spare parts
                                     </p>
 
-                                    @*<form asp-action="UploadReceipts" asp-controller="Request" method="post" enctype="multipart/form-data" class="dropzone dz-clickable form-horizontal form-bordered" id="dropzoneForm">
-                                        <div class="form-group form-actions">
-                                            <div class="col-md-9 col-md-offset-4">
+                                    <form asp-action="UploadReceipts" asp-controller="Request" method="post" enctype="multipart/form-data" style=" height: 200px; border: 1px dashed black; position: relative; cursor: pointer;" class="myCustomDropZone">
+                                        <input type="file" asp-for="@Model.ReceiptFiles" multiple id="file-input" style="height: 160px; width: 100%; " />
+                                        <input hidden asp-for="@Model.RequestId" />
+                                        <div style="padding:20px;">
+                                            <div id="preview" style="position: absolute; z-index: 3; top: 20%; display: flex; flex-wrap: wrap; grid-gap: 10px; ">
+                                                <p>Click to add Receipts</p>
+                                            </div>
+                                            <div style=" position: absolute; top: 80%;">
                                                 <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> Upload</button>
                                             </div>
                                         </div>
-                                    </form>*@
 
+                                    </form>
 
                                 </div>
                             </div>
@@ -141,90 +163,41 @@
 
 <script src="~/app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
 
-<script src="~/lib/dropzone/min/dropzone.min.js"></script>
 
 <script>
-    function myParamName() {
-        return "DocumentPhotos";
-    }
-    Dropzone.options.dropzoneForm = {
-        autoProcessQueue: false,
-        paramName: myParamName , // The name that will be used to transfer the file
-        uploadMultiple: true,
-        parallelUploads: 100,
-        init: function () {
-            console.log("active");
-            var wrapperThis = this;
 
-            $("#submit").click(function (e) {
-                e.preventDefault();
-                wrapperThis.processQueue();
-            });
-        },
-        accept: function (file, done) {
-            done();
-        }
-    };
-</script>
+    $(document).ready(function () {
+        $("form").click(function () {
+            $('#file-input').on("change", previewImages);
+            //alert("The text has been changed.");
+        });
+       
+        function previewImages() {
+            var $preview = $('#preview').empty();
+            if (this.files) $.each(this.files, readAndPreview);
 
+            function readAndPreview(i, file) {
+               console.log("picture testing")
 
-@*<script>
-    Dropzone.options.myAwesomeDropzone = {
-        //maxFilesize: 5,
-        //maxFiles: 1,
-        addRemoveLinks: true,
-        dictResponseError: 'Server not Configured',
-        //acceptedFiles: ".pdf",
-        init: function () {
-            var self = this;
-            // config
-            self.options.addRemoveLinks = true;
-            self.options.dictRemoveFile = "Delete";
-            //New file added
-            self.on("addedfile", function (file) {
-                console.log('new file added ', file);
-                if (!confirm("Do you want to upload the file?")) {
-                    this.removeFile(file);
-                    return false;
-                }
+                if (!/\.(jpe?g|png|gif)$/i.test(file.name)) {
+                    return alert(file.name + " is not an image");
+                } // else...
 
-            });
+                var reader = new FileReader();
 
-            debugger;
-            // Send file starts
-            self.on("sending", function (file, xhr, formData) {
-                debugger;
-
-                console.log('upload started', file);
-                $('.meter').show();
-
-                var form_data = new FormData("#my-awesome-dropzone");
-
-                $.ajax({
-                    url: '/Request/UploadReceipts',
-                    data: 'file=' + file.name,
-                    type: 'POST',
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                    }
+                $(reader).on("load", function () {
+                    $preview.append($("<img/>", { src: this.result, height: 100 }));
                 });
-            });
 
-            // File upload Progress
-            self.on("totaluploadprogress", function (progress) {
-                console.log("progress ", progress);
-                $('.roller').width(progress + '%');
-            });
+                reader.readAsDataURL(file);
 
-            self.on("queuecomplete", function (progress) {
-                $('.meter').delay(999).slideUp(999);
-            });
+            }
 
-            // On removing file
-            self.on("removedfile", function (file) {
-                console.log(file);
-            });
-      /*  //*/}
-</script>*@
+        }
+
+
+    })
+
+
+</script>
 

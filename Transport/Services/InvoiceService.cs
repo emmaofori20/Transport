@@ -21,7 +21,7 @@ namespace Transport.Services
             vehicleMaintenanceRequestStatusRepository.ApproveVehicleMaintenance(RequestId);
         }
 
-        public void CompleteInvoice()
+        public void CompleteInvoice(int RequestId)
         {
             throw new NotImplementedException();
         }

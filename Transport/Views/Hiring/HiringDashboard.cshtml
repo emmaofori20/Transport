@@ -12,12 +12,12 @@
     </div>
     <div class="content-header-right col-md-6 col-12">
         <div class="dropdown float-md-right">
-            <a class=" btn btn-primary btn-glow" asp-action="HireBus" asp-controller="Hiring">
+            @*<a class=" btn btn-primary btn-glow" asp-action="HireBus" asp-controller="Hiring">
                 <i class="la la-taxi"></i>
                 <span class="menu-title" data-i18n="nav.dash.main">
                     Hire a Bus
                 </span>
-            </a>
+            </a>*@
 
         </div>
     </div>
@@ -53,41 +53,37 @@
                                 <!-- PAID -->
                                 @for (int i = 0; i < Model.Count; i++)
                                 {
-                                    <tr>
+                                <tr>
 
-                                        <td>@Model[i].CreatedOn</td>
-                                        <td>
-                                            <a class="text-bold-600">
-                                                HRG-@Model[i].HirerId
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a class="text-bold-600">
-                                                @Model[i].ContactName
-                                            </a>
-                                        </td>
-                                        <td>@Model[i].Destination</td>
-                                        <td>@Model[i].Status</td>
-                                        <td>@Model[i].NoOfPassangers</td>
-                                        <td>
-                                            <span class="dropdown">
-                                                <button id="btnSearchDrop2" type="button" data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="true" class="btn btn-primary dropdown-toggle dropdown-menu-right">
-                                                    <i class="ft-settings"></i>
-                                                </button>
-                                                <span aria-labelledby="btnSearchDrop2" class="dropdown-menu mt-1 dropdown-menu-right">
-                                                    <a asp-action="ViewHiringDetails" asp-controller="Hiring" asp-route-HirerId="@Model[i].HirerId" class="dropdown-item">
-                                                        <i class="la la-eye"></i> View Details
-                                                    </a>
-                                                    <a asp-action="EditRequestMaintenance" asp-controller="Hiring" asp-route-HirerId="@Model[i].HirerId" class="dropdown-item">
-                                                        <i class="la la-pencil"></i> Edit Details
-                                                    </a>
+                                    <td>@Model[i].CreatedOn</td>
+                                    <td>
+                                        <a class="text-bold-600">
+                                            HRG-@Model[i].HirerId
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a class="text-bold-600">
+                                            @Model[i].ContactName
+                                        </a>
+                                    </td>
+                                    <td>@Model[i].Destination</td>
+                                    @if (@Model[i].Status == "Approved")
+                                    {
+                                        <td> <span class="badge badge-default badge-success badge-lg">@Model[i].Status</span> </td>
 
+                                    }
+                                    else
+                                    {
+                                        <td> <span class="badge badge-default badge-primary badge-lg">@Model[i].Status</span></td>
 
-                                                </span>
-                                            </span>
-                                        </td>
-                                    </tr>
+                                    }
+                                    <td>@Model[i].NoOfPassangers</td>
+                                    <td>
+                                        <a asp-action="ViewHiringDetails" asp-controller="Hiring" asp-route-HirerId="@Model[i].HirerId">
+                                            View Details...
+                                        </a>
+                                    </td>
+                                </tr>
                                 }
                             </tbody>
                             <tfoot>

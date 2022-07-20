@@ -92,15 +92,15 @@ namespace Transport.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult ProceedToApproveHire(List<ApproveHireRequest> models)
+        [HttpPost]
+        public IActionResult ProceedToApproveHire(List<ApproveHireRequest> requests)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    hiringService.ApproveHireRequest(models);
-
+                    hiringService.ApproveHireRequest(requests);
+                    return RedirectToAction(" HiringDashboard");
                 }
                 return View();
             }

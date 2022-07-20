@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Transport.Models.Data;
@@ -16,16 +18,19 @@ namespace Transport.Services
         private readonly IVehicleMaintenanceRequestStatusRepository vehicleMaintenanceRequestStatusRepository;
         private readonly IVehicleMaintenanceSparePartRepository vehicleMaintenanceSparePartRepository;
         private readonly IVehicleRepository vehicleRepository;
+        private readonly IVehicleRequestPhotoReceiptRepository vehicleRequestPhotoReceiptRepository;
 
         public RequestService(IVehicleMaintenanceRequestRepository vehicleMaintenanceRequestRepository, 
                                IVehicleMaintenanceRequestStatusRepository vehicleMaintenanceRequestStatusRepository,
                                 IVehicleMaintenanceSparePartRepository vehicleMaintenanceSparePartRepository,
-                                IVehicleRepository vehicleRepository)
+                                IVehicleRepository vehicleRepository,
+                                IVehicleRequestPhotoReceiptRepository vehicleRequestPhotoReceiptRepository)
         {
             this.vehicleMaintenanceRequestRepository = vehicleMaintenanceRequestRepository;
             this.vehicleMaintenanceRequestStatusRepository = vehicleMaintenanceRequestStatusRepository;
             this.vehicleMaintenanceSparePartRepository = vehicleMaintenanceSparePartRepository;
             this.vehicleRepository = vehicleRepository;
+            this.vehicleRequestPhotoReceiptRepository = vehicleRequestPhotoReceiptRepository;
         }
 
         public VehicleMaintenanceRequest MakeRequestMaintenance(RequestMaintenanceViewModel model)
@@ -75,17 +80,17 @@ namespace Transport.Services
             {
                 MaintenanceDescription = requestMaintenance.MaintenanceDescription,
                 RegistrationNumber = requestMaintenance.Vehicle.RegistrationNumber,//later change to string
-                Status = requestStatus.MaintenanceStatus.StatusName,
+                Status = requestStatus.Status.StatusName,
                 Date = requestMaintenance.CreatedOn,
                 RequestId= requestMaintenance.VehicleMaintenanceRequestId,
                 spareParts = _spareParts,
                 MaintainedBy = requestMaintenance.CreatedBy,
                 VehicleId = requestMaintenance.VehicleId,
+                ReceiptImages = requestMaintenance.VehicleRequestPhotoReceipts.Where(x=>x.VehicleMaintenanceRequestId == ListId).ToList(),
                 ///////////THIIS VARIABLE IS FOR THE EDITING OF  REQUEST MAINTENANCE SPARE PARTS////////
                 AllVehicles = new SelectList(GetAllVehicleMaintenanceRequest().Item2
                                                     .Select(s => new { VehicleId = s.VehicleId, RegistrationNumber = $"{s.RegistrationNumber}", ChasisNumber = $"{s.ChasisNumber}" }), "VehicleId", "RegistrationNumber", "ChasisNumber")
                 ///////////THIIS VARIABLE IS FOR THE EDITING OF  REQUEST MAINTENANCE SPARE PARTS////////
-
 
             };
 
@@ -110,7 +115,7 @@ namespace Transport.Services
                     Status = AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestStatuses
                                             .OrderByDescending(x => x.CreatedOn)
                                             .FirstOrDefault(x => x.VehicleMaintenanceRequestId == AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId)
-                                            .MaintenanceStatus.StatusName,// getting status name
+                                            .Status.StatusName,// getting status name
                     spareParts = AllvehicleMaintenanceRequest[i].VehicleMaintenanceSpareparts
                                             .Where(x=>x.VehicleMaintenanceRequestId == AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId)
                                             .Count(),//getting total list of spareprt to display number
@@ -160,5 +165,17 @@ namespace Transport.Services
             ////////////UPDATE OF THE SPARE PART SECTION////////////
 
         }
+
+        public void UploadFiles(List<IFormFile> formFiles, int RequestId)
+        {
+            for (int i = 0; i < formFiles.Count; i++)
+            {
+                vehicleRequestPhotoReceiptRepository.AddVehicleRequestPhotoReceipt(formFiles[i], RequestId);
+            }
+
+            vehicleMaintenanceRequestStatusRepository.CompleteVehicleMaintenanceRequest(RequestId);
+        }
+
+
     }
 }

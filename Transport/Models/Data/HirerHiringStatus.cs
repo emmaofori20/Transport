@@ -12,10 +12,10 @@ namespace Transport.Models.Data
         public DateTime? UpdatedOn { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
-        public int HiringStatusId { get; set; }
         public int HirerId { get; set; }
+        public int? StatusId { get; set; }
 
         public virtual Hirer Hirer { get; set; }
-        public virtual HiringStatus HiringStatus { get; set; }
+        public virtual Status Status { get; set; }
     }
 }
