@@ -34,6 +34,10 @@
         <div id="invoice-customer-details" class="row pt-2">
             <div class="col-sm-12 text-center text-md-left">
                 <p class="text-muted">Inspection By</p>
+                @if (ViewBag.PageError != null)
+                {
+                    <p class="text-danger">@ViewBag.PageError</p>
+                }
             </div>
             <div class="col-md-6 col-sm-12 text-center text-md-left">
                 <ul class="px-0 list-unstyled">

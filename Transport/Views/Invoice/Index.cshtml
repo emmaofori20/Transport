@@ -66,8 +66,10 @@
                                     </span>
                                     <a> Approved Requests</a>
                                 </li>
-                                <li class="list-group-item">
-                                    <span class="badge badge-success badge-pill float-right">10</span> <a href="#"> Completed Requests</a>
+                                <li class="list-group-item" id="Completed">
+                                    <span class="badge badge-success badge-pill float-right" id="Completed" >
+                                        @Model.VehicleMaintenanceRequests.Where(x => x.Status == "Completed").Count()
+                                    </span> <a > Completed Requests</a>
                                 </li>
 
                             </ul>
@@ -217,6 +219,30 @@
                 type: "get",
                 cache: false,
                 url: "/Invoice/GetApproveRequestMaintenance",
+                success: function (data) {
+                    $("#divContent").html(data);
+                    toastr.success('All Approved Request Maintenance List', 'Success', { "hideDuration": 3000 });
+
+                },
+                error: function (err) {
+                    toastr.error(' An error occured... Please again later ', 'Error Occured', { "hideDuration": 3000 });
+                }
+
+            });
+        })
+
+        //getting all Completed maintenance
+        $('#Completed').on('click', function () {
+            $('#MainPanel2').removeClass('active');
+            $('#MainPanel3').removeClass('active');
+            $('#MainPanel1').removeClass('active');
+
+            $(".card-title").html("All Completed Requests");
+
+            $.ajax({
+                type: "get",
+                cache: false,
+                url: "/Invoice/GetCompletedRequestMaintenance",
                 success: function (data) {
                     $("#divContent").html(data);
                     toastr.success('All Approved Request Maintenance List', 'Success', { "hideDuration": 3000 });

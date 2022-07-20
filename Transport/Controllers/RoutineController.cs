@@ -46,6 +46,10 @@ namespace Transport.Controllers
             try
             {
                 bool check = model.VehicleId != 0 ? true : false; /// check if VehicleId is not zero
+                var raw = routineService.routineMaintenanceVehicle();
+                model.AllVehicles = raw.AllVehicles;
+                model.RoutineActivity = raw.RoutineActivity;
+
                 if (check)
                 {
                     var isChecked = routineService.CheckRoutineMaintenanceVehicleSpareParts(model);
@@ -56,8 +60,10 @@ namespace Transport.Controllers
 
                         return RedirectToAction("ViewRoutineMaintenance", new { RoutineId = results.VehicleRoutineMaintenanceId });
                     }
+                    
                     return View(model);
                 }
+                ViewBag.PageError = "Kindly select a vehicle";
                 return View(model);
 
             }
