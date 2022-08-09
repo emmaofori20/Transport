@@ -42,7 +42,7 @@
                         <div class="card-body">
                             <form method="post" enctype="multipart/form-data" asp-action="AddNewVehicle" asp-controller="Vehicle" id="my_Form" class="steps-validation wizard-circle">
                                 <!-- Step 1 -->
-                                <h6><i class="step-icon la la-home"></i>Step 1</h6>
+                                <h6><i class="step-icon la la-folder"></i>Step 1</h6>
                                 <fieldset>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -129,22 +129,22 @@
                                     
                                 </fieldset>
                                 <!-- Step 2 -->
-                                <h6><i class="step-icon la la-pencil"></i>Step 2</h6>
+                                <h6><i class="step-icon la la-bus"></i>Step 2</h6>
                                 <fieldset>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label asp-for="@Model.MakeId">Make of Vehicle :</label>
                                                 <span class="danger">*</span>
-                                                <select class="custom-select form-control required" asp-for="@Model.MakeId" asp-items="@Model.Makes">
+                                                <select class="custom-select form-control required"  id="selectMake" asp-for="@Model.MakeId" asp-items="@Model.Makes">
                                                     <option value="">Select Make...</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label asp-for="@Model.ModelId">Model of Vehicle :</label>
                                                 <span class="danger">*</span>
-                                                <select class="custom-select form-control required" asp-for="@Model.ModelId" asp-items="@Model.Models">
-                                                    <option value="">Select Model...</option>
+                                                <select class="custom-select form-control required" id="modelList" asp-for="@Model.ModelId" asp-items="@Model.Models">
+                                                    <option value="">Select Make First...</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -192,7 +192,7 @@
                                     </div>
                                 </fieldset>
                                 <!-- Step 3 -->
-                                <h6><i class="step-icon la la-tv"></i>Step 3</h6>
+                                <h6><i class="step-icon la la-cogs"></i>Step 3</h6>
                                 <fieldset>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -304,6 +304,7 @@
                                             </div><br />
                                         </div>
                                     </div>
+                                   </div>
                                 </fieldset>
                                 <!-- Step 4 -->
                                 <h6><i class="step-icon la la-image"></i>Step 4</h6>
@@ -366,17 +367,16 @@
                                         <div class="row">
                                             @{
                                                 var photosectionselectlist = new SelectList(Model.PhotoSections, "PhotoSectionId", "PhotoSectionName");
-
                                             }
                                             @for (int i = 0; i <= Model.PhotoItems.Count() - 1; i++)
                                             {
 
-                                            <div class="col-md-3">
+                                            <div class="col-md-3 ">
                                                 <div class="text-center" style="max-width: 100%; max-height: 100% ">
-                                                    <img src="@Model.PhotoItems[i].PhotoFile" class="img-fluid" style="height: 150px" id="img_Preview" alt="">
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="file" multiple asp-for="@Model.PhotoItems[i].PhotoFile" id="img_File" />
+                                                    <img src="@Model.PhotoItems[i].PhotoFile" class="img-fluid" id="preview-@i"  style="height: 150px" alt="">
+                                                </div> 
+                                                <div class="form-group ImageSelectContainer">
+                                                    <input type="file" asp-for="@Model.PhotoItems[i].PhotoFile" class="img-input" data-preview-item="preview-@i" />
                                                     <label>Photo Section :</label>
                                                     <span class="danger">*</span>
                                                     <input class="form-control" value="@Model.PhotoItems[i].PhotoSectionName" disabled />
@@ -433,20 +433,62 @@
 <script>
     $("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 </script>
-<script>
+
+
+<script> 
     function readURL(input) {
+
+        var previewitem = $(input).attr('data-preview-item');
+        console.log(previewitem);
+        console.log(input.files[0]);
+
         if (input.files && input.files[0]) {
             var reader = new FileReader();
-
             reader.onload = function (e) {
-                $('#img_Preview').attr('src', e.target.result);
+                $('#' + previewitem).attr('src', e.target.result);
             }
-
             reader.readAsDataURL(input.files[0]);
+        } else {
+            $('#preview').attr('src', '');
         }
     }
 
-    $("#img_File").change(function () {
+    $(".img-input").change(function () {
+
         readURL(this);
     });
+</script>
+<script>
+
+    
+    $("#selectMake").on("change", function () {
+        let makeId = $(this).val();
+
+        $.ajax(
+            {
+                url: '@Url.Action("GetModelsByMake")',
+                data: { MakeId: makeId },
+                cache: false,
+                type: "GET",
+                success: function (data) {
+                    /*console.log(data);*/
+                    var markup = "<option value = '0' > Select Model...</option> ";
+                    for (var i = 0; i < data.length; i++) {
+                        markup += "<option value=" + data[i].value + ">" + data[i].text + "</option>";
+                    }
+                    console.log(markup);
+                    $('#modelList').html(markup).show();
+                },
+                error: function (response) {
+                    alert("error: " + response);
+                }
+            });
+    });
+
+
+
+
+
+
+
 </script>

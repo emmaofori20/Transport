@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Transport.Models.Data;
 using Transport.Repositories.IRepository;
+using Transport.ViewModels;
 
 namespace Transport.Repositories
 {
@@ -16,11 +17,33 @@ namespace Transport.Repositories
             _context = context;
         }
 
-        public SelectList GetAllModels() 
-        {
-            return new SelectList(_context.Models
-                            .Select(s => new { Id = s.ModelId, Text = $"{s.ModelName}" }), "Id", "Text");
+        //public SelectList GetAllModels() 
+        //{
+        //    return new SelectList(_context.Models
+        //                    .Select(s => new { Id = s.ModelId, Text = $"{s.ModelName}" }), "Id", "Text");
 
+        //}
+
+        public List<ModelViewModel> AllModels() 
+        {
+            List<ModelViewModel> allModels = new List<ModelViewModel>();
+            allModels = _context.Models.Select(m => new ModelViewModel()
+            {
+                ModelId = m.ModelId,
+                ModelName = m.ModelName,
+                MakeId = m.MakeId
+            }).ToList();
+
+            return allModels;
+        } 
+
+        public SelectList GetAllModelsByMakeId(int MakeId)
+        {
+            List<ModelViewModel> ListOfModelsByMake = new List<ModelViewModel>();
+            ListOfModelsByMake = AllModels().Where(m => m.MakeId == MakeId).ToList();
+            SelectList listOfMakes = new SelectList(ListOfModelsByMake, "ModelId", "ModelName", 0);
+            return listOfMakes;
+            
         }
     }
 }

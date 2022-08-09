@@ -882,7 +882,7 @@ namespace Transport.Models.Data
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
-                entity.Property(e => e.PhotoFile).IsRequired();
+                entity.Property(e => e.PhotoByte).IsRequired();
 
                 entity.Property(e => e.PhotoName)
                     .IsRequired()

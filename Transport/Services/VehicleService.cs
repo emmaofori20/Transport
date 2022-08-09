@@ -112,7 +112,7 @@ namespace Transport.Services
 
 
         public AddVehicleViewModel setAllList()
-        {
+        { 
             var setVehicle = new AddVehicleViewModel
             {
                 Colleges = _collegeRepository.GetColleges(),
@@ -123,7 +123,6 @@ namespace Transport.Services
                 Statuses = _vehicleStatusRepository.GetAllVehicleStatuses(),
                 TyreSizes = _tyreSizeRepository.GetTyreSizes(),
                 Countries = _countryRepository.GetAllCountries(),
-                Models = _modelRepository.GetAllModels(),
                 VehicleTypes = _vehicleTypeRepository.GetVehicleTypes(),
                 FuelTypes = _fuelTypeRepository.GetAllFuelTypes(),
                 Colours = _colourRepository.GetColours(),
@@ -140,6 +139,16 @@ namespace Transport.Services
             }
 
             return setVehicle;
+        }
+
+        public AddVehicleViewModel listOfModelsByMake(int MakeId)
+        {
+            var listOfModels = new AddVehicleViewModel
+            {
+                Models = _modelRepository.GetAllModelsByMakeId(MakeId),
+            };
+
+            return listOfModels;
         }
 
         public async Task<UpdateVehicleViewModel> GetVehicleToUpdate(int Id) 

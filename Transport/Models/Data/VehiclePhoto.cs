@@ -9,7 +9,7 @@ namespace Transport.Models.Data
     {
         public int VehiclePhotoId { get; set; }
         public string PhotoName { get; set; }
-        public byte[] PhotoFile { get; set; }
+        public byte[] PhotoByte { get; set; }
         public DateTime CreatedOn { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }

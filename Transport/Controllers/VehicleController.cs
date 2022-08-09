@@ -78,6 +78,15 @@ namespace Transport.Controllers
             return View(results);
         }
 
+
+        [HttpGet]
+        public IActionResult GetModelsByMake(int MakeId)
+        {
+            var results = _vehicleService.listOfModelsByMake(MakeId);
+
+            return Json(results.Models);
+        }
+
         // POST: VehicleController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -85,13 +94,16 @@ namespace Transport.Controllers
         
         {
             //var results = _vehicleService.setAllList();
+
             
                 try
                 {
 
                     var result = await _vehicleService.AddNewVehicle(vehicleModel);
 
-                    return RedirectToAction(nameof(VehicleList));
+                
+
+                return RedirectToAction(nameof(GetVehicleDetails),new { Id =  result});
                 }
                 catch (Exception ex)
                 {
@@ -118,7 +130,7 @@ namespace Transport.Controllers
             ViewBag.UseOfVehicle = results.VehicleUses;
             ViewBag.TyreSizes = results.TyreSizes;
             ViewBag.Countries = results.Countries;
-            ViewBag.Models = results.Models;
+            
             ViewBag.VehicleTypes = results.VehicleTypes;
             ViewBag.FuelTypes = results.FuelTypes;
             ViewBag.Colours = results.Colours;
@@ -130,6 +142,8 @@ namespace Transport.Controllers
             try
             {
                 var result = await _vehicleService.GetVehicleToUpdate(Id);
+                var models = _vehicleService.listOfModelsByMake(result.MakeId).Models;
+                ViewBag.Models = models;
                 return View(result);
             }
 
@@ -174,8 +188,9 @@ namespace Transport.Controllers
             {
 
                 var resultId = await _vehicleService.UpdateVehicle(UpdateModel);
+                
 
-                return RedirectToAction(nameof(VehicleList));
+                return RedirectToAction(nameof(GetVehicleDetails), new { Id = resultId });
             }
             catch (Exception ex)
             {

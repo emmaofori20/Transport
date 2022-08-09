@@ -112,7 +112,7 @@ namespace Transport.Repositories
                         VehiclePhotoId = x.VehiclePhotoId,
                         PhotoSectionId = x.PhotoSectionId,
                         PhotoName = x.PhotoName,
-                        PhotoFile = x.PhotoFile,
+                        PhotoByte = x.PhotoByte,
                     }).ToList()
                 };
                 return vehicleDetailViewModel;
@@ -187,7 +187,7 @@ namespace Transport.Repositories
                     {
                         VehicleId = newVehicle.VehicleId,
                         PhotoSectionId = item.PhotoSectionId,
-                        PhotoFile = ConvertToByte(item.PhotoFile),
+                        PhotoByte = ConvertToByte(item.PhotoFile),
                         PhotoName = item.PhotoFile.FileName,
                         CreatedBy = "User",
                         CreatedOn = DateTime.UtcNow
@@ -285,7 +285,7 @@ namespace Transport.Repositories
                     {
                         PhotoSectionId = x.PhotoSectionId,
                         PhotoSectionName = x.PhotoSection.PhotoSectionName,
-                        PhotoFile = x.PhotoFile,
+                        PhotoByte = x.PhotoByte,
                     }).ToList()
 
                 };
@@ -356,18 +356,19 @@ namespace Transport.Repositories
                 _context.Vehicles.Update(vehicle);
                 _context.SaveChanges();
 
+                var vehiclePhotoItems = _context.VehiclePhotos.Where(x => x.VehicleId == vehicle.VehicleId).ToList();
+
                 foreach (var item in model.PhotoItems)
                 {
-                    VehiclePhoto Photo = new VehiclePhoto
-                    {
-                        VehicleId = vehicle.VehicleId,
-                        PhotoSectionId = item.PhotoSectionId,
-                        PhotoFile = item.PhotoFile,
-                        UpdatedBy = "User",
-                        UpdatedOn = DateTime.Now
-                    };
+                    var currentPhoto = vehiclePhotoItems.Where(x => x.PhotoSectionId == item.PhotoSectionId).FirstOrDefault();
 
-                    _context.Vehicles.Update(vehicle);
+                    if (item.PhotoFile != null)
+                    {
+                        currentPhoto.PhotoByte = ConvertToByte(item.PhotoFile);
+                        _context.VehiclePhotos.Update(currentPhoto);
+                    }
+
+                   
                 };
 
             };

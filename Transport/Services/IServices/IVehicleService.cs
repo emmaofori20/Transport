@@ -11,6 +11,7 @@ namespace Transport.Services.IServices
         Task<VehicleDetailViewModel> GetVehicleById(int Id);
         Task <int> AddNewVehicle(AddVehicleViewModel model);
         public AddVehicleViewModel setAllList();
+        public AddVehicleViewModel listOfModelsByMake(int MakeId);
         Task<UpdateVehicleViewModel> GetVehicleToUpdate(int Id);
         Task<int> UpdateVehicle(UpdateVehicleViewModel model);
         public void DeleteVehicle(int Id);

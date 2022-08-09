@@ -124,7 +124,8 @@ namespace Transport.ViewModels
     {
         public int PhotoSectionId { get; set; }
         public string PhotoSectionName { get; set; }
-        public byte[] PhotoFile { get; set; }
+        public byte[] PhotoByte { get; set; }
+        public IFormFile PhotoFile { get; set; }
     }
 
 }
