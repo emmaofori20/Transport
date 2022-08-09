@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,5 +21,7 @@ namespace Transport.Services.IServices
         public void DeleteVehicleRequestMaintenance(int RequestId);
 
         public void EdiVehicleRequestMaintenance(VehicleMaintenanceRequestDetailsViewModel model,int RequestId);
+
+        public void UploadFiles(List<IFormFile> formFiles, int RequestId);
     }
 }

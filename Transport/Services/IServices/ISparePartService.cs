@@ -9,7 +9,7 @@ namespace Transport.Services.IServices
 {
     public interface ISparePartService
     {
-        public (List<SparePartQuantity>, List<SparePartQuantity> spareparts) GetAllSpareParts();
+        public (List<SparePartQuantity>, List<SparePartQuantity> AllSparePartsHistory) GetAllSpareParts();
 
         public void AddSparePart( SparePartViewModel model);
 

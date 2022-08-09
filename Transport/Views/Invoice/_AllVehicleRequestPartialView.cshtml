@@ -36,13 +36,13 @@
                                                 @if (@Model.VehicleMaintenanceRequests[i].Status == "Approved")
                                                 {
                                                     <td>
-                                                        <span class="badge badge-default badge-success badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
+                                                        <span class="badge badge-default badge-info badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
                                                     </td>
                                                 }
                                                 else if (@Model.VehicleMaintenanceRequests[i].Status == "Completed")
                                                 {
                                                     <td>
-                                                        <span class="badge badge-default badge-light badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
+                                                        <span class="badge badge-success badge-light badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
                                                     </td>
                                                 }
                                                 else if (@Model.VehicleMaintenanceRequests[i].Status == "Invalid")
@@ -54,7 +54,7 @@
                                                 else
                                                 {
                                                     <td>
-                                                        <span class="badge badge-default badge-info badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
+                                                        <span class="badge badge-default badge-primary badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
                                                     </td>
                                                 }
 

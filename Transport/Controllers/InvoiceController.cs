@@ -129,6 +129,31 @@ namespace Transport.Controllers
             }
         }
 
+        //Gets all Approved list for all completed vehicles
+        public PartialViewResult GetCompletedRequestMaintenance()
+        {
+            try
+            {
+                List<VehicleMaintenanceRequestsViewModel> results = requestService.GetAllVehicleMaintenanceRequest().Item1;
+                var CompletedVehicleRequest = new RequestVehicleViewModel
+                {
+                    VehicleMaintenanceRequests = results.Where(x => x.Status == "Completed").ToList(),
+                };
+                return PartialView("_CompletedVehicleRequestPartialView", CompletedVehicleRequest);
+            }
+            catch (Exception err)
+            {
+
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+
+                return PartialView();
+
+            }
+        }
+
 
         //Sets a list to approved
         public void ApproveRequestMaintenance(int RequestId)

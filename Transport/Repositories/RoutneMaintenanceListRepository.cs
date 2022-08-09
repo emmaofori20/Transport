@@ -11,16 +11,22 @@ namespace Transport.Repositories
     public class RoutneMaintenanceListRepository: IRoutneMaintenanceListRepository
     {
         private readonly TransportDbContext _context;
+        private readonly ISparePartQuantityRepository sparePartQuantityRepository;
 
-        public RoutneMaintenanceListRepository(TransportDbContext context)
+        public RoutneMaintenanceListRepository(TransportDbContext context, ISparePartQuantityRepository sparePartQuantityRepository)
         {
             this._context = context;
+            this.sparePartQuantityRepository = sparePartQuantityRepository;
         }
 
         public void AddRoutineMaintenanceLsit(RoutineActivityCheck Activity, int RoutineMaintenanceId)
         {
             if (Activity.Isokay && Activity.IsRequiredSparePart)
             {
+                ////Substract the quantity of spareparts used for the activity and proceed
+                sparePartQuantityRepository.UpdateSparePartQuantityAfterRoutineMaintenanceActivity(Activity);
+                ////Substract the quantity of spareparts used for the activity and proceed
+
                 var RoutineActivity = new RoutineMaintenanceList
                 {
                     VehicleRoutineMaintenanceId = RoutineMaintenanceId,

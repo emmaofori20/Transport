@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Transport.Models.Data;
 
 namespace Transport.ViewModels
 {
@@ -18,9 +20,8 @@ namespace Transport.ViewModels
         public DateTime Date { get; set; }
         public int RequestId { get; set; }
         public List<VehicleMaintananceSparepartViewModel> spareParts { get; set; }
-
-       
+        public List<IFormFile> ReceiptFiles { get; set; }
+        public List<VehicleRequestPhotoReceipt> ReceiptImages { get; set; }
     }
-
    
 }

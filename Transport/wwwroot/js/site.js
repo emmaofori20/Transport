@@ -9,11 +9,11 @@ $(document).ready(function () {
 });
 
 $(".nav-item").click(function () {
-   showLoader();
+   //showLoader();
 });
 
 $(".dropdown-item").click(function () {
-    showLoader();
+   //showLoader();
 })
 
 ///////////////////////LOADER QUERY////////////////////////////////

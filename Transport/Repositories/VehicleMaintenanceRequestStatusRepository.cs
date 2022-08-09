@@ -22,7 +22,7 @@ namespace Transport.Repositories.IRepository
             VehicleMaintenanceRequestStatus ApproveVehicleMaintenanceRequest = new VehicleMaintenanceRequestStatus
             {
                 VehicleMaintenanceRequestId = RequestId,
-                MaintenanceStatusId = 3001,
+                StatusId = 2005,
                 CreatedBy = "AdminTest",
                 CreatedOn = DateTime.Now,
                 UpdatedBy = "ApprovedAdmin",
@@ -35,12 +35,12 @@ namespace Transport.Repositories.IRepository
 
         public VehicleMaintenanceRequestStatus GetVehicleMaintenanceRequestStatus(int RequestId)
         {
-           var result= _context.VehicleMaintenanceRequestStatuses.Include(x => x.MaintenanceStatus)
+           var result= _context.VehicleMaintenanceRequestStatuses.Include(x => x.Status)
                         .OrderByDescending(x=>x.CreatedOn)
                         .FirstOrDefault(x=>x.VehicleMaintenanceRequestId == RequestId);
            return result;
         }
-
+        // setting a request to invalid
         public void InvalidVehicleMaintenanceRequest(int RequestId)
         {
             var results = _context.VehicleMaintenanceRequestStatuses.Where(x => x.VehicleMaintenanceRequestId == RequestId)
@@ -50,7 +50,7 @@ namespace Transport.Repositories.IRepository
             {
                 results.UpdatedBy = "Invalid Engineer";
                 results.UpdatedOn = DateTime.Now;
-                results.MaintenanceStatusId = 3003;
+                results.StatusId = 2007;
             }
             _context.VehicleMaintenanceRequestStatuses.Update(results);
             _context.SaveChanges();
@@ -64,7 +64,7 @@ namespace Transport.Repositories.IRepository
                 VehicleMaintenanceRequestId = vehicleMaintenanceRequestId,
                 CreatedBy="AdminTest",
                 CreatedOn=DateTime.Now,
-                MaintenanceStatusId = 3000
+                StatusId = 2003
                 
             };
 
@@ -82,9 +82,26 @@ namespace Transport.Repositories.IRepository
             {
                 results.UpdatedBy = "UNApproved Engineer";
                 results.UpdatedOn = DateTime.Now;
-                results.MaintenanceStatusId = 3000;
+                results.StatusId = 2003;
             }
             _context.VehicleMaintenanceRequestStatuses.Update(results);
+            _context.SaveChanges();
+        }
+
+        //Completing a request
+        public void CompleteVehicleMaintenanceRequest (int RequestId)
+        {
+            VehicleMaintenanceRequestStatus ApproveVehicleMaintenanceRequest = new VehicleMaintenanceRequestStatus
+            {
+                VehicleMaintenanceRequestId = RequestId,
+                StatusId = 2006,
+                CreatedBy = "AdminTest",
+                CreatedOn = DateTime.Now,
+                UpdatedBy = "ApprovedAdmin",
+                UpdatedOn = DateTime.Now
+            };
+
+            _context.VehicleMaintenanceRequestStatuses.Add(ApproveVehicleMaintenanceRequest);
             _context.SaveChanges();
         }
     }

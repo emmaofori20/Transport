@@ -18,5 +18,6 @@ namespace Transport.Repositories.IRepository
         //Removing/Unapproing a RequestMaintenance
         public void UnApproveVehicleMaintenance(int RequestId);
         public void InvalidVehicleMaintenanceRequest(int RequestId);
+        public void CompleteVehicleMaintenanceRequest(int RequestId);
     }
 }

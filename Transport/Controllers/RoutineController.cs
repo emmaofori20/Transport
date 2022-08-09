@@ -46,12 +46,24 @@ namespace Transport.Controllers
             try
             {
                 bool check = model.VehicleId != 0 ? true : false; /// check if VehicleId is not zero
+                var raw = routineService.routineMaintenanceVehicle();
+                model.AllVehicles = raw.AllVehicles;
+                model.RoutineActivity = raw.RoutineActivity;
+
                 if (check)
                 {
-                    routineService.AddRoutineMaintenanceVehicle(model);
+                    var isChecked = routineService.CheckRoutineMaintenanceVehicleSpareParts(model);
+                    //to continue ischecked must be 
+                    if (!isChecked)
+                    {
+                        var results = routineService.AddRoutineMaintenanceVehicle(model);
 
-                   return  RedirectToAction("ViewRoutineMaintenance");
+                        return RedirectToAction("ViewRoutineMaintenance", new { RoutineId = results.VehicleRoutineMaintenanceId });
+                    }
+                    
+                    return View(model);
                 }
+                ViewBag.PageError = "Kindly select a vehicle";
                 return View(model);
 
             }

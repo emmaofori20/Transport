@@ -20,7 +20,7 @@ namespace Transport.Repositories
 
         public VehicleMaintenanceRequest GetMaintenanceRequest(int RequestId)
         {
-            return _context.VehicleMaintenanceRequests.Include(x=>x.Vehicle)
+            return _context.VehicleMaintenanceRequests.Include(x=>x.Vehicle).Include(x=>x.VehicleRequestPhotoReceipts)
                 .Where(x => x.VehicleMaintenanceRequestId == RequestId)
                 .FirstOrDefault();
         }
@@ -31,7 +31,7 @@ namespace Transport.Repositories
                 .Include(x=>x.Vehicle)
                 .Include(x=>x.VehicleMaintenanceSpareparts)
                 .Include(x => x.VehicleMaintenanceRequestStatuses)
-                .ThenInclude(x => x.MaintenanceStatus)
+                .ThenInclude(x => x.Status)
                 .Where(x=>x.IsDeleted != true)
                 .ToList();
         }

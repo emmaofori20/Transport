@@ -47,6 +47,7 @@ namespace Transport.Repositories
                 SparePartId = SparePartName.SparePartId,
                 Quantity = model.SparePartQuantity,
                 IsDeleted = false,
+                QuantityLeft = model.SparePartQuantity,
                 CreatedBy= SparePartName.CreatedBy,
                 CreatedOn =SparePartName.CreatedOn,
                 UpdatedOn =SparePartName.UpdatedOn,
@@ -75,6 +76,7 @@ namespace Transport.Repositories
 
         public void UpdateSpareQuantity(SparePartViewModel model)
         {
+
             SparePartQuantity sparePartQuantity = _context.SparePartQuantities.Where(x => x.SparePartId == model.SparePartId).FirstOrDefault();
             if(sparePartQuantity != null)
             {
@@ -82,19 +84,19 @@ namespace Transport.Repositories
                 var SparePartQuanity = new SparePartQuantity
                 {
                     SparePartId = model.SparePartId,
-                    Quantity = model.SparePartQuantity,
+                    Quantity = (int)(model.SparePartQuantity + sparePartQuantity.QuantityLeft),
+                    QuantityLeft = model.SparePartQuantity + sparePartQuantity.QuantityLeft,
                     CreatedBy = "Admin",
                     CreatedOn = DateTime.Now,
                  
 
                 };
 
-                _context.SparePartQuantities.Update(SparePartQuanity);
+                _context.SparePartQuantities.Add(SparePartQuanity);
                 _context.SaveChanges();
 
             }
         }
-
         public void DeleteSparePart(int sparePartId)
         {
             var sparePartQuantity = _context.SparePartQuantities.Where(x => x.SparePartId == sparePartId).ToList();
@@ -113,6 +115,34 @@ namespace Transport.Repositories
                
 
                
+
+            }
+        }
+        public void UpdateSparePartQuantityAfterRoutineMaintenanceActivity(RoutineActivityCheck Activity)
+        {
+            var res = GetSpareParts();
+
+            List<SparePartQuantity> sparePartQuantities = new List<SparePartQuantity>();
+
+            var number = res.Select(x => x.SparePartId).Distinct().ToList();/// Selecting only distinct Spare Part Id from the response(res)
+
+            for (int i = 0; i < number.Count(); i++)
+            {
+                /////Selecting Current CreatedON which distinct Id////////// 
+                sparePartQuantities.Add(res.OrderByDescending(x => x.CreatedOn).FirstOrDefault(x => x.SparePartId == number[i]));
+                /////Selecting Current CreatedON which distinct Id////////// 
+
+            }
+            SparePartQuantity sparePartQuantity = sparePartQuantities.Where(x => x.SparePartId == Activity.SparePartId).FirstOrDefault();
+            if (sparePartQuantity != null)
+            {
+
+                sparePartQuantity.QuantityLeft = (int?)(sparePartQuantity.QuantityLeft - Activity.Quantity);
+                sparePartQuantity.UpdatedBy = "UpdatedRoutineAdmin";
+                sparePartQuantity.UpdatedOn = DateTime.Now;
+
+                _context.SparePartQuantities.Update(sparePartQuantity);
+                _context.SaveChanges();
 
             }
         }

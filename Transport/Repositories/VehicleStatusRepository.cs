@@ -20,7 +20,7 @@ namespace Transport.Repositories
 
         public SelectList GetAllVehicleStatuses()
         {
-            return new SelectList(_context.Statuses
+            return new SelectList(_context.Statuses.Where(x=>x.VisibleToVehicle == true)
                .Select(s => new { Id = s.StatusId, Text = $"{s.StatusName}" }), "Id", "Text");
         }
     }

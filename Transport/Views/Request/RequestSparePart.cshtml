@@ -117,7 +117,7 @@
 
         console.log('the list',List);
         $.ajax({
-            url: '/Request/RequestSparePart',
+            url: '/Request/RequestSparePart/',
             dataType: 'html',
             method: 'post',
             data: { 'model': List, 'Id': ListId},
@@ -126,6 +126,7 @@
                 window.location.href = `/Request/RequestSparePartDetails?ListId=${ListId}`;
             },
             error: function (err) {
+                toastr.error('Your Request list was not sent. Please try again later ', 'Error Occured', { "hideDuration": 3000 });
                 console.log(err, "err");
             }
         })

@@ -9,9 +9,7 @@ namespace Transport.Services.IServices
     {
         public void ApproveInvoice(int RequestId);
         public void InvalidInvoice(int RequestId);
-
-        public void CompleteInvoice();
-
+        public void CompleteInvoice(int RequestId);
         public void UnApprovedInvoice(int RequestId);
     }
 }

@@ -10,6 +10,7 @@ namespace Transport.Models.Data
         public int SparePartQuantityId { get; set; }
         public int SparePartId { get; set; }
         public int Quantity { get; set; }
+        public int? QuantityLeft { get; set; }
         public DateTime CreatedOn { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }

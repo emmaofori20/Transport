@@ -33,19 +33,36 @@ $(".icons-tab-steps").steps({
         finish: 'Submit'
     },
     onFinished: function (event, currentIndex) {
-        $("#my_Form").submit();
+        finish: 'Submit'
+    },
+    onFinished: function (event, currentIndex) {
+        alert("Form submitted.");
     }
-
-    ///////////////Passing final data to the controller using ajax////////
-
-
-    /*alert("Form submitted.");*/
-
 });
+
+////from maintenance spareparts
+//$(".steps").steps({
+//    headerTag: "h6",
+//    bodyTag: "fieldset",
+//    transitionEffect: "fade",
+//    titleTemplate: '<span class="step">#index#</span> #title#',
+//    labels: {
+//        finish: 'Submit'
+//    },
+//    onFinished: function (event, currentIndex) {
+//        $("#my_Form").submit();
+//    }
+
+//    ///////////////Passing final data to the controller using ajax////////
+
+
+//    /*alert("Form submitted.");*/
+
+//});
 
 
 //from maintenance spareparts
-$(".steps").steps(
+$(".mysteps").steps(
     {
     headerTag: "h6",
     bodyTag: "fieldset",
@@ -111,7 +128,7 @@ $(".steps").steps(
 
                 },
                 error: function (err) {
-                    console.log(err, "err");
+                    toastr.error('Your Request list was not sent. Please try again later ', 'Error Occured', { "hideDuration": 3000 });
                 }
             })
         }

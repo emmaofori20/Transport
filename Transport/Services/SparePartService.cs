@@ -29,7 +29,7 @@ namespace Transport.Services
             //throw new NotImplementedException();
         }
 
-        public (List<SparePartQuantity>, List<SparePartQuantity> spareparts) GetAllSpareParts()
+        public (List<SparePartQuantity>, List<SparePartQuantity> AllSparePartsHistory) GetAllSpareParts()
         {
             var res = sparePartQuantityRepository.GetSpareParts();
 

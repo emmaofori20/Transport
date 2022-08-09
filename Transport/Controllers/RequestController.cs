@@ -250,12 +250,30 @@ namespace Transport.Controllers
         {
         }
 
-        public void UploadReceipts(IEnumerable<IFormFile> DocumentPhotos)
+        public IActionResult UploadReceipts(VehicleMaintenanceRequestDetailsViewModel model)
         {
-
-            if (DocumentPhotos != null)
-            { 
+            try
+            {
+                if (model.ReceiptFiles.Count == 0)
+                {
+                    return RedirectToAction("RequestSparePartDetails", new { ListId = model.RequestId });
+                }
+                else
+                {
+                    requestService.UploadFiles(model.ReceiptFiles, model.RequestId);
+                    return RedirectToAction("RequestSparePartDetails", new { ListId = model.RequestId });
+                }
             }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+            
+            
          }
     }
     

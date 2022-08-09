@@ -32,7 +32,7 @@
                                 </td>
                                 <td>@Model.VehicleMaintenanceRequests[i].MaintainedBy</td>
                                 <td>
-                                    <span class="badge badge-default badge-success badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
+                                    <span class="badge badge-default badge-info badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
                                 </td>
                                 <td>Ghc @Model.VehicleMaintenanceRequests[i].MaintenanceCost</td>
                                 <td>
@@ -103,13 +103,15 @@ else
             type: "get",
             cache: false,
             success: function (data) {
-                console.log('i work')
+                toastr.success('Request Unapproved', 'Success', { "hideDuration": 3000 });
                // location.reload();// reloads the entire page
                 $("#divContent").load('@Url.Action("GetApproveRequestMaintenance", "Invoice")');//keeps the page still
                // console.log('stay on page')
             },
             error: function (err) {
                 console.log('An error occured')
+                toastr.error('We could not access the server', 'Error', { "hideDuration": 3000 });
+
 
             }
         });

@@ -14,7 +14,7 @@ namespace Transport.Models.Data
         public string CreatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public string UpdatedBy { get; set; }
-        public int VehicleId { get; set; }
+        public int? VehicleId { get; set; }
         public int PhotoSectionId { get; set; }
 
         public virtual PhotoSection PhotoSection { get; set; }
