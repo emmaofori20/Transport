@@ -24,7 +24,7 @@ namespace Transport.Repositories
             if (Activity.Isokay && Activity.IsRequiredSparePart)
             {
                 ////Substract the quantity of spareparts used for the activity and proceed
-                sparePartQuantityRepository.UpdateSparePartQuantityAfterRoutineMaintenanceActivity(Activity);
+                sparePartQuantityRepository.SubtractSparePartQuantityAfterRoutineMaintenanceActivity(Activity);
                 ////Substract the quantity of spareparts used for the activity and proceed
 
                 var RoutineActivity = new RoutineMaintenanceList
@@ -62,6 +62,7 @@ namespace Transport.Repositories
                     VehicleRoutineMaintenanceId = RoutineMaintenanceId,
                     RoutineMaintenanceActivityId = Activity.ActivityId,
                     IsRoutineCheck =false,
+                    IsSparePartUsed =false,
                     CreatedBy = "Admin",
                     CreatedOn = DateTime.Now
                 };

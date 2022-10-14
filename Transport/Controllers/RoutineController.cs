@@ -48,7 +48,7 @@ namespace Transport.Controllers
                 bool check = model.VehicleId != 0 ? true : false; /// check if VehicleId is not zero
                 var raw = routineService.routineMaintenanceVehicle();
                 model.AllVehicles = raw.AllVehicles;
-                model.RoutineActivity = raw.RoutineActivity;
+                model.SparePartsUsed = raw.SparePartsUsed;
 
                 if (check)
                 {
@@ -60,7 +60,7 @@ namespace Transport.Controllers
 
                         return RedirectToAction("ViewRoutineMaintenance", new { RoutineId = results.VehicleRoutineMaintenanceId });
                     }
-                    
+                    ViewBag.SparePartError = "Spare parts used is more than spare parts left in the inventory ";
                     return View(model);
                 }
                 ViewBag.PageError = "Kindly select a vehicle";
@@ -121,9 +121,16 @@ namespace Transport.Controllers
                 bool check = model.VehicleId != 0 ? true : false; /// check if VehicleId is not zero
                 if (check)
                 {
-                    routineService.EditRoutineMaintenanceVehicle(model);
-
-                    return RedirectToAction("ViewRoutineMaintenance", new { RoutineId = model.RoutineId});
+                    //second check to monito sparepart quantities
+                    bool SparepartQuantity = routineService.CheckSparePartQuanityBeforeEdit(model);
+                    if (!SparepartQuantity)
+                    {
+                        routineService.SubstractAndAddSparePartQuantity(model);
+                        routineService.EditRoutineMaintenanceVehicle(model);
+                        return RedirectToAction("ViewRoutineMaintenance", new { RoutineId = model.RoutineId });
+                    }
+                    ViewBag.SparePartError = "Spare parts used is more than spare parts left in the inventory ";
+                    return View(model);
                 }
                 return View(model);
             }

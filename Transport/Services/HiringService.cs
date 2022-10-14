@@ -24,8 +24,11 @@ namespace Transport.Services
             this.requestService = requestService;
         }
 
+
+        //Approving a hire request
         public void ApproveHireRequest(List<ApproveHireRequest> model)
         {
+            //For the number of busses requested for hiring
             for (int i = 0; i < model.Count; i++)
             {
                 hirerRepository.ApprovedHire(model[i]);
@@ -77,30 +80,42 @@ namespace Transport.Services
             return hirerDetailsViewModels;
         }
 
+        //Getting a single hire details
         public ApproveHiringRequestViewModel GetSingleHireDetails(int HirerId)
         {
             //Get the HIre details
             var AllHireDetails = GetAllHirers();
             HireDetailsViewModel singleHireDetails = AllHireDetails.Where(x => x.HirerId == HirerId).FirstOrDefault();
-            ApproveHireRequest _approveHireRequest = new ApproveHireRequest()
+            var AllHiring = hirerRepository.AllHiring().Where(x => x.HirerId == HirerId).ToList();
+            List<ApproveHireRequest> AllApprovedHireRequests = new List<ApproveHireRequest>();
+            //Getting all approved hiring details
+            for (int i = 0; i < AllHiring.Count; i++)
             {
-                
-                HirerId = singleHireDetails.HirerId,
-                HireCostFee = singleHireDetails.DistanceCalculatedFromOrginCost,
-                Vehicles = new SelectList(requestService
-                                                    .GetAllVehicleMaintenanceRequest().Item2
-                                                    .Select(s => new { VehicleId = s.VehicleId, RegistrationNumber = $"{s.RegistrationNumber}", ChasisNumber = $"{s.ChasisNumber}" }), "VehicleId", "RegistrationNumber", "ChasisNumber"),
-                //WashingFee = (decimal)hirerRepository.GetAllHirers()
-                //                                .FirstOrDefault(x =>x.HirerId == HirerId).Hirings
-                //                                .Where(x=>x.HirerId==HirerId).FirstOrDefault().WashingFee,
-                //DriverFee = (decimal)hirerRepository.GetAllHirers()
-                //                                .FirstOrDefault(x => x.HirerId == HirerId).Hirings
-                //                                .Where(x => x.HirerId == HirerId).FirstOrDefault().DriverHireFee,
-            };
+                ApproveHireRequest _approveHireRequest = new ApproveHireRequest()
+                {
+
+                    HirerId = singleHireDetails.HirerId,
+                    HireCostFee = singleHireDetails.DistanceCalculatedFromOrginCost,
+                    Vehicles = new SelectList(requestService
+                                        .GetAllVehicleMaintenanceRequest().Item2
+                                        .Select(s => new { VehicleId = s.VehicleId, RegistrationNumber = $"{s.RegistrationNumber}", ChasisNumber = $"{s.ChasisNumber}" }), "VehicleId", "RegistrationNumber", "ChasisNumber"),
+                    WashingFee = (decimal)AllHiring[i].WashingFee,
+                    DriverFee = (decimal)AllHiring[i].DriverHireFee ,
+                    VehicleId = AllHiring[i].VehicleId,
+                    RegistrationNumber = AllHiring[i].Vehicle.RegistrationNumber,
+                    TotalPrice =AllHiring[i].TotalHirePrice
+                };
+                AllApprovedHireRequests.Add(_approveHireRequest);
+
+            }
             ApproveHiringRequestViewModel approveHiringRequestViewModel = new ApproveHiringRequestViewModel
             {
                 hireDetails = singleHireDetails,
-                approveHireRequest = _approveHireRequest
+                approveHireRequest = AllApprovedHireRequests,
+                Vehicles = new SelectList(requestService
+                                        .GetAllVehicleMaintenanceRequest().Item2
+                                        .Select(s => new { VehicleId = s.VehicleId, RegistrationNumber = $"{s.RegistrationNumber}", ChasisNumber = $"{s.ChasisNumber}" }), "VehicleId", "RegistrationNumber", "ChasisNumber"),
+
             };
           
             return approveHiringRequestViewModel;

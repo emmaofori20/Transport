@@ -82,6 +82,7 @@ namespace Transport
             services.AddTransient<IVehicleRoutineMaintenanceRepository, VehicleRoutineMaintenanceRepository>();
             services.AddTransient<IHirerRepository, HirerRepository>();
             services.AddTransient<IVehicleTypeForHireRepository, VehicleTypeForHireRepository>();
+            services.AddTransient<ITransportStaffRepository, TransportStaffRepository>();
             //Adding Services
             services.AddScoped<IRequestService, RequestService>();
             services.AddScoped<IVehicleService, VehicleService>();
@@ -89,6 +90,7 @@ namespace Transport
             services.AddScoped<ISparePartService, SparePartService>();
             services.AddScoped<IRoutineService, RoutineService>();
             services.AddScoped<IHiringService, HiringService>();
+            services.AddScoped<IAdminService, AdminService>();
 
         }
 

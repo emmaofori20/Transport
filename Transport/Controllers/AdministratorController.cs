@@ -4,14 +4,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Transport.Services.IServices;
 
 namespace Transport.Controllers
 {
     public class AdministratorController : Controller
     {
+        private readonly IAdminService adminService;
+
+        public AdministratorController(IAdminService adminService)
+        {
+            this.adminService = adminService;
+        }
         // GET: AdministratorController
+        
         public ActionResult Index()
         {
+            var res = adminService.GetAllTransportStaff();
             return View();
         }
 

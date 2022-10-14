@@ -106,56 +106,57 @@
                     <hr>
 
                     <h6 style=" font-weight: 800; text-align:center">Hiring Costs</h6>
-
-                    @if (Model.hireDetails.Status == "Approved")
+                    @* IF THE HIRING HAS BEEN APPROVED BY THE TRANSPORT UNIT *@
+                    @if (@Model.hireDetails.Status == "Approved")
                     {
-                        <div class="col-md-12">
-                            <input asp-for="@Model.hireDetails.HirerId" hidden id="ApproveId" />
+                      <div class="col-md-12">
+                    <input asp-for="@Model.hireDetails.HirerId" hidden id="ApproveId" />
 
-                            <form id="List" class="d-flex flex-wrap">
-                                @for (int i = 0; i < requests.Count; i++)
-                                {
-                                    <div class="p-2 ">
-                                        <h6>Diver @i </h6>
-                                        <input asp-for="@requests[i].HirerId" value="@Model.hireDetails.HirerId" hidden id="ApproveId" />
+                    <form id="List" class="d-flex flex-wrap">
+                        @for (int i = 0; i < @Model.approveHireRequest.Count; i++)
+                        {
+                            <div class="p-2 ">
+                                <h6 style="display:none">@{int num = i + 1;}</h6>
+                                <h6>Diver @num  </h6>
+                                <input asp-for="@Model.approveHireRequest[i].HirerId" value="@Model.hireDetails.HirerId" hidden id="ApproveId" />
 
-                                        <div>
-                                            <div class="form-group">
-                                                <label>Bus Hiring Price</label>
-                                                <input id="cost_@i" asp-for="@requests[i].HireCostFee" value="@Model.hireDetails.DistanceCalculatedFromOrginCost" class="form-control" readonly />
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Driver Price</label>
-                                                <input asp-for="@requests[i].DriverFee" class="form-control" readonly />
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Washing fee</label>
-                                                <input asp-for="@requests[i].WashingFee" class="form-control" readonly />
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Assign vehicle</label>
-                                                <select style="width: 200px !important" id="select_@i" class="select2 form-control" asp-items="@Model.approveHireRequest.Vehicles" asp-for="@requests[i].VehicleId">
-                                                    <option>Select Vehicle</option>
-                                                </select>
-                                                <span class="text-danger" asp-validation-for="approveHireRequest.VehicleId">  </span>
-                                            </div>
-                                        </div>
-                                        <hr>
-
+                                <div>
+                                    <div class="form-group">
+                                        <label>Bus Hiring Price (GHC)</label>
+                                        <input id="cost_@i" asp-for="@Model.approveHireRequest[i].HireCostFee" value="@Model.hireDetails.DistanceCalculatedFromOrginCost" class="form-control" readonly />
                                     </div>
-                                }
+                                    <div class="form-group">
+                                        <label>Driver Price (GHC)</label>
+                                        <input asp-for="@Model.approveHireRequest[i].DriverFee" class="form-control" readonly />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Washing fee (GHC)</label>
+                                        <input asp-for="@Model.approveHireRequest[i].WashingFee" class="form-control" readonly />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Assigned vehicle </label>
+                                        <input asp-for="@Model.approveHireRequest[i].RegistrationNumber" class="form-control" readonly />
+                                    </div>
+                                    <div class="form-group">
+                                        <label><strong>Total Price:</strong> GHC @Model.approveHireRequest[i].TotalPrice </label>
+                                    </div>
+                                </div>
+                                <hr>
 
-                            </form>
+                            </div>
+                        }
+                    </form>
 
+                    <label><strong>TOTAL GRAND PRICE:</strong> GHC @Model.approveHireRequest.Sum(x => x.TotalPrice)</label>
 
-                        </div>
+                </div>
 
                     }
                     else
                     {
                         <div class="col-md-12">
                             <input asp-for="@Model.hireDetails.HirerId" hidden id="ApproveId" />
-
+                            @* WHEN THE HIRING HAS NOT BEEN APPROVED BY THE TRANSPORT UNIT *@
                             <form id="List" class="d-flex flex-wrap">
                                 @for (int i = 0; i < requests.Count; i++)
                                 {
@@ -178,10 +179,12 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Assign vehicle</label>
-                                                <select style="width: 200px !important" id="select_@i" class="select2 form-control" asp-items="@Model.approveHireRequest.Vehicles" asp-for="@requests[i].VehicleId">
+                                                @*<select style="width: 200px !important" id="select_@i" class="select2 form-control" asp-items="@Model.Vehicles" asp-for="@requests[i].VehicleId">
+                                                    <option>Select Vehicle</option>
+                                                </select>*@<select style="width: 200px !important"  class="select2 form-control" asp-items="@Model.Vehicles" asp-for="@requests[i].VehicleId">
                                                     <option>Select Vehicle</option>
                                                 </select>
-                                                <span class="text-danger" asp-validation-for="approveHireRequest.VehicleId">  </span>
+                                                <span class="text-danger" asp-validation-for="approveHireRequest[i].VehicleId">  </span>
                                             </div>
                                         </div>
                                         <hr>
@@ -250,11 +253,14 @@
                 success: function (response) {
                     //toastr.success(response.Value, 'Success!');
                     // $('#justification-txt').html("Kindly provide your justification");
+                    toastr.success('Hiring Approved', 'Success', { "hideDuration": 3000 });
                     window.location.href ="/Hiring/HiringDashboard";
 
                     //reload();
                 },
                 error: function (xhr) {
+                    toastr.error('We could not acesses the server', 'Error', { "hideDuration": 3000 });
+
                     //$("#declinationmodal-details").show();
                     //$("#declinationLoaderSection").hide();
                     //toastr.error("Something went wrong! " + response.Value, 'Error!');

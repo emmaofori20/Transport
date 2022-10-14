@@ -16,5 +16,7 @@ namespace Transport.Services.IServices
         public void EditRoutineMaintenanceVehicle(RoutineMaintenanceVehicleViewModel model);
         public void DeleteRoutineMaintenanceVehicle(int RoutineId);
         public bool CheckRoutineMaintenanceVehicleSpareParts(RoutineMaintenanceVehicleViewModel model);
+        public bool CheckSparePartQuanityBeforeEdit(RoutineMaintenanceVehicleViewModel model);
+        public void SubstractAndAddSparePartQuantity(RoutineMaintenanceVehicleViewModel model);
     }
 }

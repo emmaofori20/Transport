@@ -118,7 +118,7 @@ namespace Transport.Repositories
 
             }
         }
-        public void UpdateSparePartQuantityAfterRoutineMaintenanceActivity(RoutineActivityCheck Activity)
+        public void SubtractSparePartQuantityAfterRoutineMaintenanceActivity(RoutineActivityCheck Activity)
         {
             var res = GetSpareParts();
 
@@ -146,6 +146,40 @@ namespace Transport.Repositories
 
             }
         }
+        public void AddSparePartQuantityAfterRoutineMaintenanceActivity(RoutineActivityCheck Activity)
+        {
+            var res = GetSpareParts();
+
+            List<SparePartQuantity> sparePartQuantities = new List<SparePartQuantity>();
+
+            var number = res.Select(x => x.SparePartId).Distinct().ToList();/// Selecting only distinct Spare Part Id from the response(res)
+
+            for (int i = 0; i < number.Count(); i++)
+            {
+                /////Selecting Current CreatedON which distinct Id////////// 
+                sparePartQuantities.Add(res.OrderByDescending(x => x.CreatedOn).FirstOrDefault(x => x.SparePartId == number[i]));
+                /////Selecting Current CreatedON which distinct Id////////// 
+
+            }
+            SparePartQuantity sparePartQuantity = sparePartQuantities.Where(x => x.SparePartId == Activity.SparePartId).FirstOrDefault();
+            if (sparePartQuantity != null)
+            {
+
+                sparePartQuantity.QuantityLeft = (int?)(sparePartQuantity.QuantityLeft + Activity.Quantity);
+                sparePartQuantity.UpdatedBy = "UpdatedRoutineAdmin";
+                sparePartQuantity.UpdatedOn = DateTime.Now;
+
+                _context.SparePartQuantities.Update(sparePartQuantity);
+                _context.SaveChanges();
+
+            }
+        }
+
+
+
+
+
+
 
         /////////////////////////Routine Activities//////////////////////
         ///

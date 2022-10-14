@@ -14,6 +14,7 @@ namespace Transport.Services
     {
         private readonly IRoutineMaintenanceActivityRepository routineMaintenanceActivityRepository;
         private readonly IRequestService requestService;
+        private readonly ISparePartQuantityRepository sparePartQuantityRepository;
         private readonly ISparePartService sparePartService;
         private readonly IVehicleRoutineMaintenanceRepository vehicleRoutineMaintenanceRepository;
         private readonly IRoutneMaintenanceListRepository routneMaintenanceListRepository;
@@ -27,6 +28,7 @@ namespace Transport.Services
         {
             this.routineMaintenanceActivityRepository = routineMaintenanceActivityRepository;
             this.requestService = requestService;
+            this.sparePartQuantityRepository = sparePartQuantityRepository;
             this.sparePartService = sparePartService;
             this.vehicleRoutineMaintenanceRepository = vehicleRoutineMaintenanceRepository;
             this.routneMaintenanceListRepository = routneMaintenanceListRepository;
@@ -182,12 +184,127 @@ namespace Transport.Services
             //check vehicleId if has been changed
             vehicleRoutineMaintenanceRepository.EditRoutineMaintenanceRequest(model);
 
+            //continue function when all is true
             for (int i = 0; i < model.RoutineActivity.Count; i++)
             {
                 routneMaintenanceListRepository.EditRoutineMaintenanceList(model.RoutineActivity[i], model.RoutineId);
             }
         }
 
+        public bool CheckSparePartQuanityBeforeEdit(RoutineMaintenanceVehicleViewModel model)
+        {
+            //// getting previous routine maintenance data
+            var routinemaintenance = ViewRoutineVehicleMaintenance(model.RoutineId);
+
+            //Getting all current spareparts
+            var AllCurrentSpareParts = sparePartService.GetAllSpareParts().Item1;
+            List<bool> checks = new List<bool>();
+
+            // Check if spareparts quantity has changed
+            for (int i = 0; i < model.RoutineActivity.Count; i++)
+            {
+                //check if the activities are the same
+                if (model.RoutineActivity[i] == routinemaintenance.RoutineActivity[i])
+                {
+                    //check if the previous spare part quantity is the same as the incoming spare part quantity
+                    if (model.RoutineActivity[i].Quantity > routinemaintenance.RoutineActivity[i].Quantity)
+                    {
+                        //Checking if the spareparts are of the same ID and the quantity left is greater than the quantity requested
+                        bool query = AllCurrentSpareParts.Any(x => x.SparePartId == model.RoutineActivity[i].SparePartId
+                                                           && x.QuantityLeft <= model.RoutineActivity[i].Quantity - routinemaintenance.RoutineActivity[i].Quantity);
+                        checks.Add(query);
+
+                    }
+                    else if (model.RoutineActivity[i].Quantity < routinemaintenance.RoutineActivity[i].Quantity)
+                    {
+                        //Checking if the spareparts are of the same ID and the quantity left is less than the quantity requested
+                        bool query = AllCurrentSpareParts.Any(x => x.SparePartId == model.RoutineActivity[i].SparePartId
+                                                           && x.QuantityLeft <= routinemaintenance.RoutineActivity[i].Quantity - model.RoutineActivity[i].Quantity);
+                        checks.Add(query);
+
+                    }
+                    else
+                    {
+                        //Checking if the spareparts are of the same ID and the quantity left is equal the quantity requested
+                        bool query = AllCurrentSpareParts.Any(x => x.SparePartId == model.RoutineActivity[i].SparePartId
+                                                           && x.QuantityLeft == model.RoutineActivity[i].Quantity);
+                        checks.Add(query);
+
+                    }
+
+                }
+
+            }
+
+            return checks.Any(x => x == true);/// if any of them is true then the code should not continue
+        }
+
+        public void SubstractAndAddSparePartQuantity(RoutineMaintenanceVehicleViewModel model)
+        {
+            //// getting previous routine maintenance data
+            var routinemaintenance = ViewRoutineVehicleMaintenance(model.RoutineId);
+
+            //Getting all current spareparts
+            for (int i = 0; i < model.RoutineActivity.Count; i++)
+            {
+                //check if the activities are the same and id sparepart required ticked
+                if (model.RoutineActivity[i].ActivityId == routinemaintenance.RoutineActivity[i].ActivityId && model.RoutineActivity[i].IsRequiredSparePart == true)
+                {
+                    //check if the previous spare part quantity is the same as the incoming spare part quantity
+                    if (model.RoutineActivity[i].Quantity > routinemaintenance.RoutineActivity[i].Quantity)
+                    {
+                        RoutineActivityCheck routineActivityCheck = new RoutineActivityCheck()
+                        {
+                            ActivityId = model.RoutineActivity[i].ActivityId,
+                            ActivityName = model.RoutineActivity[i].ActivityName,
+                            Isokay = model.RoutineActivity[i].Isokay,
+                            IsRequiredSparePart = model.RoutineActivity[i].IsRequiredSparePart,
+                            SparePartId = model.RoutineActivity[i].SparePartId,
+                            SparePartName = model.RoutineActivity[i].SparePartName,
+                            Quantity = model.RoutineActivity[i].Quantity-routinemaintenance.RoutineActivity[i].Quantity 
+                        };
+                        sparePartQuantityRepository.SubtractSparePartQuantityAfterRoutineMaintenanceActivity(routineActivityCheck);
+
+                    }
+                    else if (model.RoutineActivity[i].Quantity < routinemaintenance.RoutineActivity[i].Quantity)
+                    {
+                        RoutineActivityCheck routineActivityCheck = new RoutineActivityCheck()
+                        {
+                            ActivityId = model.RoutineActivity[i].ActivityId,
+                            ActivityName = model.RoutineActivity[i].ActivityName,
+                            Isokay = model.RoutineActivity[i].Isokay,
+                            IsRequiredSparePart = model.RoutineActivity[i].IsRequiredSparePart,
+                            SparePartId = model.RoutineActivity[i].SparePartId,
+                            SparePartName = model.RoutineActivity[i].SparePartName,
+                            Quantity = routinemaintenance.RoutineActivity[i].Quantity - model.RoutineActivity[i].Quantity
+                        };
+                        sparePartQuantityRepository.AddSparePartQuantityAfterRoutineMaintenanceActivity(routineActivityCheck);
+                    }
+                    else
+                    {
+                      
+
+                    }
+
+                }else 
+                {
+                    RoutineActivityCheck routineActivityCheck = new RoutineActivityCheck()
+                    {
+                        ActivityId = model.RoutineActivity[i].ActivityId,
+                        ActivityName = model.RoutineActivity[i].ActivityName,
+                        Isokay = model.RoutineActivity[i].Isokay,
+                        IsRequiredSparePart = model.RoutineActivity[i].IsRequiredSparePart,
+                        SparePartId = model.RoutineActivity[i].SparePartId,
+                        SparePartName = model.RoutineActivity[i].SparePartName,
+                        Quantity = routinemaintenance.RoutineActivity[i].Quantity 
+                    };
+                    sparePartQuantityRepository.AddSparePartQuantityAfterRoutineMaintenanceActivity(routineActivityCheck);
+                }
+                
+
+            }
+
+        }
         public void DeleteRoutineMaintenanceVehicle(int RoutineId)
         {
             vehicleRoutineMaintenanceRepository.DeleteRoutineMaintenanceRequest(RoutineId);

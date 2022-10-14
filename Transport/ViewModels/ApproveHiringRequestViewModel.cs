@@ -10,8 +10,9 @@ namespace Transport.ViewModels
     public class ApproveHiringRequestViewModel
     {
         public HireDetailsViewModel hireDetails { get; set; }
+        public SelectList Vehicles { get; set; }
 
-        public ApproveHireRequest approveHireRequest { get; set; }
+        public List<ApproveHireRequest> approveHireRequest { get; set; }
 
     }
 
@@ -24,5 +25,7 @@ namespace Transport.ViewModels
         [Required]
         public int VehicleId { get; set; }
         public SelectList Vehicles { get; set; }
+        public string RegistrationNumber { get; set; }
+        public decimal TotalPrice { get; set; }
     }
 }

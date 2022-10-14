@@ -25,11 +25,15 @@ namespace Transport.Repositories
                 .Include(x => x.HirerHiringStatuses).ThenInclude(x => x.Status).ToList();
         }
 
+        public List<Hiring> AllHiring()
+        {
+            return _context.Hirings.ToList();
+        }
+
         public List<HirerHiringStatus> GetAllHireHiringStatus()
         {
             return _context.HirerHiringStatuses.ToList();
         }
-
 
         public void SetHirerDetails(HireDetailsViewModel model)
         {
@@ -94,6 +98,7 @@ namespace Transport.Repositories
         }
         public void ApprovedHire(ApproveHireRequest model)
         {
+            //We set each vehicle in the hirings table
             var hiring = new Hiring()
             {
                 HirerId = model.HirerId,

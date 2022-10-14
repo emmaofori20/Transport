@@ -148,3 +148,18 @@
 
    
 </script>
+
+<script>
+    $(document).ready(function () {
+        var vehicleError = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.PageError))');
+        var sparePartError = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.SparePartError))');
+
+        if (vehicleError !== null) {
+            toastr.error(vehicleError, 'Error', { "hideDuration": 3000 });
+        } else if (sparePartError !== null) {
+            toastr.error(sparePartError, 'Error', { "hideDuration": 3000 });
+
+        }
+        console.log("ViewBAg",vehicleError, sparePartError)
+    });
+</script>
