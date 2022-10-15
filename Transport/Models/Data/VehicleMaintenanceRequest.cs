@@ -9,8 +9,8 @@ namespace Transport.Models.Data
     {
         public VehicleMaintenanceRequest()
         {
+            VehicleMaintenanceRequestItems = new HashSet<VehicleMaintenanceRequestItem>();
             VehicleMaintenanceRequestStatuses = new HashSet<VehicleMaintenanceRequestStatus>();
-            VehicleMaintenanceSpareparts = new HashSet<VehicleMaintenanceSparepart>();
             VehicleRequestPhotoReceipts = new HashSet<VehicleRequestPhotoReceipt>();
         }
 
@@ -24,8 +24,8 @@ namespace Transport.Models.Data
         public bool? IsDeleted { get; set; }
 
         public virtual Vehicle Vehicle { get; set; }
+        public virtual ICollection<VehicleMaintenanceRequestItem> VehicleMaintenanceRequestItems { get; set; }
         public virtual ICollection<VehicleMaintenanceRequestStatus> VehicleMaintenanceRequestStatuses { get; set; }
-        public virtual ICollection<VehicleMaintenanceSparepart> VehicleMaintenanceSpareparts { get; set; }
         public virtual ICollection<VehicleRequestPhotoReceipt> VehicleRequestPhotoReceipts { get; set; }
     }
 }

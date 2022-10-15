@@ -1,0 +1,60 @@
+﻿@model HiringTableMatrixViewModel
+<style>
+    .table th, .table td {
+        padding: 0.75rem .5rem;
+    }
+</style>
+
+<form method="post" asp-action="SaveHiringPricesDetails" asp-controller="Hiring">
+    <div class="card-content">
+        <div class="card-body" style="background:white">
+            <div class="table-responsive">
+                <table class=" table table-striped table-bordered zero-configuration ">
+                    <tr>
+                        <th rowspan="2"> Type of Vehicle</th>
+                        <th colspan="@Model.BusHiringDistances.Count" style="text-align:center"> Distance(in Kilometers)</th>
+                    </tr>
+                    <tr>
+                        @foreach (var item in Model.BusHiringDistances)
+                        {
+                            <th>@item.MinimumDistance - @item.MaximumDistance</th>
+                        }
+                    </tr>
+                    @for (int y = 0; y < Model.VehicleTypeForHires.Count; y++)
+                    {
+                        <tr>
+                            <th>@Model.VehicleTypeForHires[y].VehicleType</th>
+                            @for (int i = 0; i < Model.BusHiringDistances.Count; i++)
+                            {
+                                if (Model.BusHiringDistances[i].BusHiringDistanceId == Model.BusPricesForDistanceAndVehicleType[ i+y].BusHiringDistanceId
+                                    && Model.VehicleTypeForHires[y].VehicleTypeForHireId == Model.BusPricesForDistanceAndVehicleType[i+y].VehicleTypeForHireId)
+                                {
+                                    <td> <input asp-for="@Model.BusPricesForDistanceAndVehicleType[y+i].Price" style="width:90%" /> </td>
+
+                                }
+                                else
+                                {
+                                    <td> <input style="width:90%" /> </td>
+
+                                }
+                                
+                            }
+
+                            @{ 
+                                
+                            }
+                        </tr>
+                    }
+
+                </table>
+            </div>
+
+            <div>
+                <a class="btn btn-primary">Back</a>
+
+                <button type="submit" class="btn btn-success">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+</form>

@@ -15,16 +15,62 @@ namespace Transport.Services
         private readonly IVehicleTypeForHireRepository vehicleTypeForHireRepository;
         private readonly IHirerRepository hirerRepository;
         private readonly IRequestService requestService;
+        private readonly IBusHiringDistanceRepository busHiringDistanceRepository;
+        private readonly IBusHiringPricesRepository busHiringPrices;
 
         public HiringService(IVehicleTypeForHireRepository vehicleTypeForHireRepository,
-            IHirerRepository hirerRepository,IRequestService requestService)
+            IHirerRepository hirerRepository,IRequestService requestService, 
+            IBusHiringDistanceRepository busHiringDistanceRepository,
+            IBusHiringPricesRepository busHiringPrices)
         {
             this.vehicleTypeForHireRepository = vehicleTypeForHireRepository;
             this.hirerRepository = hirerRepository;
             this.requestService = requestService;
+            this.busHiringDistanceRepository = busHiringDistanceRepository;
+            this.busHiringPrices = busHiringPrices;
         }
 
+        public HiringTableMatrixViewModel GetHiringTableMatrix()
+        {
+            List<BusHiringPriceViewModel> _busHiringPrices = new List<BusHiringPriceViewModel>();
+            var VehicleTypeForHires = vehicleTypeForHireRepository.GetVehicleTypeForHire();
+            var BusHiringDistances = busHiringDistanceRepository.GetBusHiringDistance();
+            var BusHiringPrices = busHiringPrices.GetBusHiringPrice();
 
+            for (int i = 0; i < BusHiringDistances.Count; i++)
+            {
+                for (int y= 0; y < VehicleTypeForHires.Count; y++)
+                {
+                    var bushiringprice = BusHiringPrices
+                            .Where(x => x.VehicleTypeForHireId == VehicleTypeForHires[y].VehicleTypeForHireId
+                            && x.BusHiringDistanceId == BusHiringDistances[i].BusHiringDistanceId).FirstOrDefault();
+          
+                    var newitem = new BusHiringPriceViewModel()
+                    {
+                        BusHiringDistanceId = BusHiringDistances[i].BusHiringDistanceId,
+                        VehicleTypeForHireId = VehicleTypeForHires[y].VehicleTypeForHireId,
+                        BusHirngPriceId = bushiringprice == null ? 0 : bushiringprice.BusHiringPriceId ,
+                        Price = bushiringprice == null? 0: bushiringprice.Price
+                    };
+                    _busHiringPrices.Add(newitem);
+                }
+            }
+            return new HiringTableMatrixViewModel()
+            {
+                VehicleTypeForHires = vehicleTypeForHireRepository.GetVehicleTypeForHire(),
+                BusHiringDistances = busHiringDistanceRepository.GetBusHiringDistance(),
+                BusHiringPrices = busHiringPrices.GetBusHiringPrice(),
+                BusPricesForDistanceAndVehicleType = _busHiringPrices
+            };
+        }
+
+        public void SaveHiringPricesDetails(HiringTableMatrixViewModel model)
+        {
+            foreach (var item in model.Prices)
+            {
+
+            }
+        }
         //Approving a hire request
         public void ApproveHireRequest(List<ApproveHireRequest> model)
         {

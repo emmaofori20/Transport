@@ -8,11 +8,11 @@ using Transport.Repositories.IRepository;
 
 namespace Transport.Repositories
 {
-    public class VehicleMaintenanceSparePartRepository: IVehicleMaintenanceSparePartRepository
+    public class VehicleMaintenanceRequestItemRepository : IVehicleMaintenanceRequestItemRepository
     {
         private readonly TransportDbContext _context;
 
-        public VehicleMaintenanceSparePartRepository(TransportDbContext context)
+        public VehicleMaintenanceRequestItemRepository(TransportDbContext context)
         {
             _context = context;
 
@@ -20,7 +20,7 @@ namespace Transport.Repositories
 
         public void AddVehicleMaintenanceSparePart(VehicleMaintananceSparepartViewModel sparePart, int ListId)
         {
-            VehicleMaintenanceSparepart vehicleMaintenanceSparepart = new VehicleMaintenanceSparepart
+            VehicleMaintenanceRequestItem vehicleMaintenanceSparepart = new VehicleMaintenanceRequestItem
             {
                 Quantity =sparePart.Quantity,
                 NameOfPart = sparePart.SparePartName,
@@ -30,7 +30,7 @@ namespace Transport.Repositories
                 CreatedOn= DateTime.Now
             };
 
-            _context.VehicleMaintenanceSpareparts.Add(vehicleMaintenanceSparepart);
+            _context.VehicleMaintenanceRequestItems.Add(vehicleMaintenanceSparepart);
             _context.SaveChanges();
         }
 
@@ -41,15 +41,15 @@ namespace Transport.Repositories
 
             foreach (var item in results)
             {
-                _context.VehicleMaintenanceSpareparts.Remove(item);
+                _context.VehicleMaintenanceRequestItems.Remove(item);
                 _context.SaveChanges();
 
             }
         }
 
-        public List<VehicleMaintenanceSparepart> GetList(int Id)
+        public List<VehicleMaintenanceRequestItem> GetList(int Id)
         {
-            var results = _context.VehicleMaintenanceSpareparts.Where(x => x.VehicleMaintenanceRequestId == Id).ToList();
+            var results = _context.VehicleMaintenanceRequestItems.Where(x => x.VehicleMaintenanceRequestId == Id).ToList();
             return results;
         }
     }

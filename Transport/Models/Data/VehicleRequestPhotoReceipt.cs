@@ -8,9 +8,10 @@ namespace Transport.Models.Data
     public partial class VehicleRequestPhotoReceipt
     {
         public int VehicleRequestRecieptId { get; set; }
-        public byte[] ReceiptPhotoFile { get; set; }
+        public string ReceiptPhotoStreamFileId { get; set; }
         public DateTime CreatedOn { get; set; }
         public string CreatedBy { get; set; }
+        public string FileName { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public string UpdatedBy { get; set; }
         public int VehicleMaintenanceRequestId { get; set; }

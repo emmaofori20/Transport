@@ -25,7 +25,7 @@ namespace Transport.Repositories
             {
                 CreatedBy = "Admin",
                 CreatedOn = DateTime.Now,
-                ReceiptPhotoFile = ConvertToByte(formFile),
+                //ReceiptPhotoFile = ConvertToByte(formFile),
                 VehicleMaintenanceRequestId = VehicleRequestId
                 
             };

@@ -17,6 +17,8 @@ namespace Transport.Models.Data
         {
         }
 
+        public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public virtual DbSet<ApplicationUserRole> ApplicationUserRoles { get; set; }
         public virtual DbSet<BusHiringDistance> BusHiringDistances { get; set; }
         public virtual DbSet<BusHiringPrice> BusHiringPrices { get; set; }
         public virtual DbSet<College> Colleges { get; set; }
@@ -34,6 +36,9 @@ namespace Transport.Models.Data
         public virtual DbSet<PermAxleLoad> PermAxleLoads { get; set; }
         public virtual DbSet<PhotoSection> PhotoSections { get; set; }
         public virtual DbSet<Quantity> Quantities { get; set; }
+        public virtual DbSet<RequestType> RequestTypes { get; set; }
+        public virtual DbSet<RequestTypeCharge> RequestTypeCharges { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<RoutineMaintenanceActivity> RoutineMaintenanceActivities { get; set; }
         public virtual DbSet<RoutineMaintenanceList> RoutineMaintenanceLists { get; set; }
         public virtual DbSet<SparePart> SpareParts { get; set; }
@@ -45,8 +50,8 @@ namespace Transport.Models.Data
         public virtual DbSet<Vehicle> Vehicles { get; set; }
         public virtual DbSet<VehicleDocument> VehicleDocuments { get; set; }
         public virtual DbSet<VehicleMaintenanceRequest> VehicleMaintenanceRequests { get; set; }
+        public virtual DbSet<VehicleMaintenanceRequestItem> VehicleMaintenanceRequestItems { get; set; }
         public virtual DbSet<VehicleMaintenanceRequestStatus> VehicleMaintenanceRequestStatuses { get; set; }
-        public virtual DbSet<VehicleMaintenanceSparepart> VehicleMaintenanceSpareparts { get; set; }
         public virtual DbSet<VehiclePhoto> VehiclePhotos { get; set; }
         public virtual DbSet<VehicleRequestPhotoReceipt> VehicleRequestPhotoReceipts { get; set; }
         public virtual DbSet<VehicleRoutineMaintenance> VehicleRoutineMaintenances { get; set; }
@@ -57,17 +62,60 @@ namespace Transport.Models.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           
+          
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "Latin1_General_CI_AS");
+            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<ApplicationUser>(entity =>
+            {
+                entity.HasKey(e => e.ApplicationUserId)
+                    .IsClustered(false);
+
+                entity.ToTable("ApplicationUser");
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<ApplicationUserRole>(entity =>
+            {
+                entity.HasKey(e => e.ApplicationUserRoleId)
+                    .IsClustered(false);
+
+                entity.ToTable("ApplicationUserRole");
+
+                entity.HasOne(d => d.ApplicationUser)
+                    .WithMany(p => p.ApplicationUserRoles)
+                    .HasForeignKey(d => d.ApplicationUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ApplicationUserRole_ApplicationUser");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.ApplicationUserRoles)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ApplicationUserRole_Role");
+            });
 
             modelBuilder.Entity<BusHiringDistance>(entity =>
             {
                 entity.HasKey(e => e.BusHiringDistanceId)
-                    .HasName("PK52")
                     .IsClustered(false);
 
                 entity.ToTable("BusHiringDistance");
@@ -86,7 +134,6 @@ namespace Transport.Models.Data
             modelBuilder.Entity<BusHiringPrice>(entity =>
             {
                 entity.HasKey(e => e.BusHiringPriceId)
-                    .HasName("PK53")
                     .IsClustered(false);
 
                 entity.Property(e => e.CreatedBy)
@@ -105,13 +152,13 @@ namespace Transport.Models.Data
                     .WithMany(p => p.BusHiringPrices)
                     .HasForeignKey(d => d.BusHiringDistanceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefBusHiringDistance52");
+                    .HasConstraintName("FK_BusHiringPrices_BusHiringDistance");
 
                 entity.HasOne(d => d.VehicleTypeForHire)
                     .WithMany(p => p.BusHiringPrices)
                     .HasForeignKey(d => d.VehicleTypeForHireId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefVehicleTypeForHIre53");
+                    .HasConstraintName("FK_BusHiringPrices_VehicleTypeForHire");
             });
 
             modelBuilder.Entity<College>(entity =>
@@ -139,7 +186,6 @@ namespace Transport.Models.Data
             modelBuilder.Entity<Colour>(entity =>
             {
                 entity.HasKey(e => e.ColourId)
-                    .HasName("PK39")
                     .IsClustered(false);
 
                 entity.ToTable("Colour");
@@ -162,7 +208,6 @@ namespace Transport.Models.Data
             modelBuilder.Entity<Country>(entity =>
             {
                 entity.HasKey(e => e.CountryId)
-                    .HasName("PK46")
                     .IsClustered(false);
 
                 entity.ToTable("Country");
@@ -202,12 +247,17 @@ namespace Transport.Models.Data
                 entity.Property(e => e.UpdatedBy).HasMaxLength(255);
 
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.HasOne(d => d.College)
+                    .WithMany(p => p.Departments)
+                    .HasForeignKey(d => d.CollegeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Department_College");
             });
 
             modelBuilder.Entity<FailedEmail>(entity =>
             {
                 entity.HasKey(e => e.FailedEmailId)
-                    .HasName("PK54")
                     .IsClustered(false);
 
                 entity.ToTable("FailedEmail");
@@ -230,7 +280,6 @@ namespace Transport.Models.Data
             modelBuilder.Entity<FuelType>(entity =>
             {
                 entity.HasKey(e => e.FuelTypeId)
-                    .HasName("PK38")
                     .IsClustered(false);
 
                 entity.ToTable("FuelType");
@@ -253,7 +302,6 @@ namespace Transport.Models.Data
             modelBuilder.Entity<Hirer>(entity =>
             {
                 entity.HasKey(e => e.HirerId)
-                    .HasName("PK36")
                     .IsClustered(false);
 
                 entity.ToTable("Hirer");
@@ -304,13 +352,12 @@ namespace Transport.Models.Data
                     .WithMany(p => p.Hirers)
                     .HasForeignKey(d => d.VehicleTypeForHireId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefVehicleTypeForHIre48");
+                    .HasConstraintName("FK_Hirer_VehicleTypeForHire");
             });
 
             modelBuilder.Entity<HirerHiringStatus>(entity =>
             {
                 entity.HasKey(e => e.HirerHiringStatusId)
-                    .HasName("PK37")
                     .IsClustered(false);
 
                 entity.ToTable("HirerHiringStatus");
@@ -329,12 +376,12 @@ namespace Transport.Models.Data
                     .WithMany(p => p.HirerHiringStatuses)
                     .HasForeignKey(d => d.HirerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefHirer50");
+                    .HasConstraintName("FK_HirerHiringStatus_Hirer");
 
                 entity.HasOne(d => d.Status)
                     .WithMany(p => p.HirerHiringStatuses)
                     .HasForeignKey(d => d.StatusId)
-                    .HasConstraintName("RefStatus47");
+                    .HasConstraintName("FK_HirerHiringStatus_Status");
             });
 
             modelBuilder.Entity<Hiring>(entity =>
@@ -370,13 +417,19 @@ namespace Transport.Models.Data
                     .WithMany(p => p.Hirings)
                     .HasForeignKey(d => d.HirerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefHirer51");
+                    .HasConstraintName("FK_Hiring_Hirer");
+
+                entity.HasOne(d => d.TransportStaff)
+                    .WithMany(p => p.Hirings)
+                    .HasForeignKey(d => d.TransportStaffId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Hiring_TransportStaff");
 
                 entity.HasOne(d => d.Vehicle)
                     .WithMany(p => p.Hirings)
                     .HasForeignKey(d => d.VehicleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_VehicleHiring");
+                    .HasConstraintName("FK_Hiring_Vehicle");
             });
 
             modelBuilder.Entity<Insurance>(entity =>
@@ -426,7 +479,6 @@ namespace Transport.Models.Data
             modelBuilder.Entity<Model>(entity =>
             {
                 entity.HasKey(e => e.ModelId)
-                    .HasName("PK45")
                     .IsClustered(false);
 
                 entity.ToTable("Model");
@@ -449,13 +501,12 @@ namespace Transport.Models.Data
                     .WithMany(p => p.Models)
                     .HasForeignKey(d => d.MakeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefMake73");
+                    .HasConstraintName("FK_Model_Make");
             });
 
             modelBuilder.Entity<PermAxleLoad>(entity =>
             {
                 entity.HasKey(e => e.PermAxleLoadId)
-                    .HasName("PK44")
                     .IsClustered(false);
 
                 entity.ToTable("PermAxleLoad");
@@ -476,7 +527,6 @@ namespace Transport.Models.Data
             modelBuilder.Entity<PhotoSection>(entity =>
             {
                 entity.HasKey(e => e.PhotoSectionId)
-                    .HasName("PK49")
                     .IsClustered(false);
 
                 entity.ToTable("PhotoSection");
@@ -487,7 +537,6 @@ namespace Transport.Models.Data
             modelBuilder.Entity<Quantity>(entity =>
             {
                 entity.HasKey(e => e.QuantityId)
-                    .HasName("PK42")
                     .IsClustered(false);
 
                 entity.ToTable("Quantity");
@@ -503,10 +552,63 @@ namespace Transport.Models.Data
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<RequestType>(entity =>
+            {
+                entity.HasKey(e => e.RequestTypeId)
+                    .IsClustered(false);
+
+                entity.ToTable("RequestType");
+
+                entity.Property(e => e.RequestTypeName)
+                    .IsRequired()
+                    .HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<RequestTypeCharge>(entity =>
+            {
+                entity.HasKey(e => e.RequestTypeChargeId)
+                    .IsClustered(false);
+
+                entity.ToTable("RequestTypeCharge");
+
+                entity.Property(e => e.ActiveFrom).HasColumnType("datetime");
+
+                entity.Property(e => e.ActiveTo).HasColumnType("datetime");
+
+                entity.Property(e => e.ChargeName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.ChargeValue).HasColumnType("decimal(18, 2)");
+
+                entity.HasOne(d => d.RequestType)
+                    .WithMany(p => p.RequestTypeCharges)
+                    .HasForeignKey(d => d.RequestTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RequestTypeCharge_RequestType");
+            });
+
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.HasKey(e => e.RoleId)
+                    .IsClustered(false);
+
+                entity.ToTable("Role");
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.RoleName).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<RoutineMaintenanceActivity>(entity =>
             {
                 entity.HasKey(e => e.RoutineMaintenanceActivityId)
-                    .HasName("PK34")
                     .IsClustered(false);
 
                 entity.ToTable("RoutineMaintenanceActivity");
@@ -527,7 +629,6 @@ namespace Transport.Models.Data
             modelBuilder.Entity<RoutineMaintenanceList>(entity =>
             {
                 entity.HasKey(e => e.RoutineMaintenanceListId)
-                    .HasName("PK35")
                     .IsClustered(false);
 
                 entity.ToTable("RoutineMaintenanceList");
@@ -546,18 +647,18 @@ namespace Transport.Models.Data
                     .WithMany(p => p.RoutineMaintenanceLists)
                     .HasForeignKey(d => d.RoutineMaintenanceActivityId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefRoutineMaintenanceActivity41");
+                    .HasConstraintName("FK_RoutineMaintenanceList_RoutineMaintenanceActivity");
 
                 entity.HasOne(d => d.SparePart)
                     .WithMany(p => p.RoutineMaintenanceLists)
                     .HasForeignKey(d => d.SparePartId)
-                    .HasConstraintName("RefSparePart42");
+                    .HasConstraintName("FK_RoutineMaintenanceList_SparePart");
 
                 entity.HasOne(d => d.VehicleRoutineMaintenance)
                     .WithMany(p => p.RoutineMaintenanceLists)
                     .HasForeignKey(d => d.VehicleRoutineMaintenanceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefVehicleRoutineMaintenance40");
+                    .HasConstraintName("FK_RoutineMaintenanceList_VehicleRoutineMaintenance");
             });
 
             modelBuilder.Entity<SparePart>(entity =>
@@ -585,7 +686,6 @@ namespace Transport.Models.Data
             modelBuilder.Entity<SparePartQuantity>(entity =>
             {
                 entity.HasKey(e => e.SparePartQuantityId)
-                    .HasName("PK25")
                     .IsClustered(false);
 
                 entity.ToTable("SparePartQuantity");
@@ -604,7 +704,7 @@ namespace Transport.Models.Data
                     .WithMany(p => p.SparePartQuantities)
                     .HasForeignKey(d => d.SparePartId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefSparePart29");
+                    .HasConstraintName("FK_SparePartQuantity_SparePart");
             });
 
             modelBuilder.Entity<Status>(entity =>
@@ -632,7 +732,6 @@ namespace Transport.Models.Data
             modelBuilder.Entity<TransmissionType>(entity =>
             {
                 entity.HasKey(e => e.TransmissionTypeId)
-                    .HasName("PK43")
                     .IsClustered(false);
 
                 entity.ToTable("TransmissionType");
@@ -687,7 +786,6 @@ namespace Transport.Models.Data
             modelBuilder.Entity<TyreSize>(entity =>
             {
                 entity.HasKey(e => e.TyreSizeId)
-                    .HasName("PK41")
                     .IsClustered(false);
 
                 entity.ToTable("TyreSize");
@@ -770,135 +868,134 @@ namespace Transport.Models.Data
                     .WithMany(p => p.VehicleAxleCountNavigations)
                     .HasForeignKey(d => d.AxleCount)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefQuantity69");
+                    .HasConstraintName("FK_Vehicle_Quantity");
 
                 entity.HasOne(d => d.College)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.CollegeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CollegeVehicle");
+                    .HasConstraintName("FK_Vehicle_College");
 
                 entity.HasOne(d => d.Colour)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.ColourId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefColour46");
+                    .HasConstraintName("FK_Vehicle_Colour");
 
                 entity.HasOne(d => d.Country)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.CountryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefCountry61");
+                    .HasConstraintName("FK_Vehicle_Country");
 
                 entity.HasOne(d => d.CylinderCountNavigation)
                     .WithMany(p => p.VehicleCylinderCountNavigations)
                     .HasForeignKey(d => d.CylinderCount)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefQuantity72");
+                    .HasConstraintName("FK_Vehicle_Quanti4");
 
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.DepartmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_DepartmentVehicle");
+                    .HasConstraintName("FK_Vehicle_Department");
 
                 entity.HasOne(d => d.FrontPermAxleLoadNavigation)
                     .WithMany(p => p.VehicleFrontPermAxleLoadNavigations)
                     .HasForeignKey(d => d.FrontPermAxleLoad)
-                    .HasConstraintName("RefPermAxleLoad59");
+                    .HasConstraintName("FK_Vehicle_PermAxleL45");
 
                 entity.HasOne(d => d.FrontTyreSizeNavigation)
                     .WithMany(p => p.VehicleFrontTyreSizeNavigations)
                     .HasForeignKey(d => d.FrontTyreSize)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefTyreSize48");
+                    .HasConstraintName("FK_Vehicle_TyreSi7");
 
                 entity.HasOne(d => d.FuelType)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.FuelTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefFuelType45");
+                    .HasConstraintName("FK_Vehicle_FuelType");
 
                 entity.HasOne(d => d.Insurance)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.InsuranceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_InsuranceVehicle");
+                    .HasConstraintName("FK_Vehicle_Insurance");
 
                 entity.HasOne(d => d.Make)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.MakeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MakeVehicle");
+                    .HasConstraintName("FK_Vehicle_Make");
 
                 entity.HasOne(d => d.MiddlePermAxleLoadNavigation)
                     .WithMany(p => p.VehicleMiddlePermAxleLoadNavigations)
                     .HasForeignKey(d => d.MiddlePermAxleLoad)
-                    .HasConstraintName("RefPermAxleLoad58");
+                    .HasConstraintName("FK_Vehicle_PermAxleL44");
 
                 entity.HasOne(d => d.MiddleTyreSizeNavigation)
                     .WithMany(p => p.VehicleMiddleTyreSizeNavigations)
                     .HasForeignKey(d => d.MiddleTyreSize)
-                    .HasConstraintName("RefTyreSize51");
+                    .HasConstraintName("FK_Vehicle_TyreSi8");
 
                 entity.HasOne(d => d.Model)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.ModelId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefModel79");
+                    .HasConstraintName("FK_Vehicle_Model");
 
                 entity.HasOne(d => d.PersonCountNavigation)
                     .WithMany(p => p.VehiclePersonCountNavigations)
                     .HasForeignKey(d => d.PersonCount)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefQuantity70");
+                    .HasConstraintName("FK_Vehicle_Quanti2");
 
                 entity.HasOne(d => d.RearPermAxleLoadNavigation)
                     .WithMany(p => p.VehicleRearPermAxleLoadNavigations)
                     .HasForeignKey(d => d.RearPermAxleLoad)
-                    .HasConstraintName("RefPermAxleLoad60");
+                    .HasConstraintName("FK_Vehicle_PermAxleLoad");
 
                 entity.HasOne(d => d.RearTyreSizeNavigation)
                     .WithMany(p => p.VehicleRearTyreSizeNavigations)
                     .HasForeignKey(d => d.RearTyreSize)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefTyreSize47");
+                    .HasConstraintName("FK_Vehicle_TyreSize");
 
                 entity.HasOne(d => d.Status)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.StatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_StatusVehicle");
+                    .HasConstraintName("FK_Vehicle_Status");
 
                 entity.HasOne(d => d.TransmissionType)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.TransmissionTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefTransmissionType53");
+                    .HasConstraintName("FK_Vehicle_TransmissionType");
 
                 entity.HasOne(d => d.VehicleType)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.VehicleTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefVehicleType44");
+                    .HasConstraintName("FK_Vehicle_VehicleType");
 
                 entity.HasOne(d => d.VehicleUse)
                     .WithMany(p => p.Vehicles)
                     .HasForeignKey(d => d.VehicleUseId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefVehicleUse38");
+                    .HasConstraintName("FK_Vehicle_VehicleUse");
 
                 entity.HasOne(d => d.WheelCountNavigation)
                     .WithMany(p => p.VehicleWheelCountNavigations)
                     .HasForeignKey(d => d.WheelCount)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefQuantity71");
+                    .HasConstraintName("FK_Vehicle_Quanti3");
             });
 
             modelBuilder.Entity<VehicleDocument>(entity =>
             {
                 entity.HasKey(e => e.VehicleDocumentId)
-                    .HasName("PK47")
                     .IsClustered(false);
 
                 entity.ToTable("VehicleDocument");
@@ -923,13 +1020,12 @@ namespace Transport.Models.Data
                     .WithMany(p => p.VehicleDocuments)
                     .HasForeignKey(d => d.VehicleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefVehicle63");
+                    .HasConstraintName("FK_VehicleDocument_Vehicle");
             });
 
             modelBuilder.Entity<VehicleMaintenanceRequest>(entity =>
             {
                 entity.HasKey(e => e.VehicleMaintenanceRequestId)
-                    .HasName("PK_VehicleMaintenance")
                     .IsClustered(false);
 
                 entity.ToTable("VehicleMaintenanceRequest");
@@ -950,46 +1046,15 @@ namespace Transport.Models.Data
                     .WithMany(p => p.VehicleMaintenanceRequests)
                     .HasForeignKey(d => d.VehicleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_VehicleVehicleMaintenance");
+                    .HasConstraintName("FK_VehicleMaintenanceRequest_Vehicle");
             });
 
-            modelBuilder.Entity<VehicleMaintenanceRequestStatus>(entity =>
+            modelBuilder.Entity<VehicleMaintenanceRequestItem>(entity =>
             {
-                entity.HasKey(e => e.VehicleMaintenanceRequestStatusId)
-                    .HasName("PK28")
+                entity.HasKey(e => e.VehicleMaintenanceRequestItemId)
                     .IsClustered(false);
 
-                entity.ToTable("VehicleMaintenanceRequestStatus");
-
-                entity.Property(e => e.CreatedBy)
-                    .IsRequired()
-                    .HasMaxLength(255);
-
-                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
-
-                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
-
-                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Status)
-                    .WithMany(p => p.VehicleMaintenanceRequestStatuses)
-                    .HasForeignKey(d => d.StatusId)
-                    .HasConstraintName("RefStatus46");
-
-                entity.HasOne(d => d.VehicleMaintenanceRequest)
-                    .WithMany(p => p.VehicleMaintenanceRequestStatuses)
-                    .HasForeignKey(d => d.VehicleMaintenanceRequestId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefVehicleMaintenanceRequest31");
-            });
-
-            modelBuilder.Entity<VehicleMaintenanceSparepart>(entity =>
-            {
-                entity.HasKey(e => e.VehicleMaitenanceSparepartId)
-                    .HasName("PK24")
-                    .IsClustered(false);
-
-                entity.ToTable("VehicleMaintenanceSparepart");
+                entity.ToTable("VehicleMaintenanceRequestItem");
 
                 entity.Property(e => e.Amount).HasColumnType("money");
 
@@ -1009,17 +1074,57 @@ namespace Transport.Models.Data
                     .HasColumnType("datetime")
                     .HasColumnName("UpdatedON");
 
+                entity.HasOne(d => d.RequestTypeCharge)
+                    .WithMany(p => p.VehicleMaintenanceRequestItems)
+                    .HasForeignKey(d => d.RequestTypeChargeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_VehicleMaintenanceRequestItem_RequestTypeCharge");
+
+                entity.HasOne(d => d.RequestType)
+                    .WithMany(p => p.VehicleMaintenanceRequestItems)
+                    .HasForeignKey(d => d.RequestTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_VehicleMaintenanceRequestItem_RequestType");
+
                 entity.HasOne(d => d.VehicleMaintenanceRequest)
-                    .WithMany(p => p.VehicleMaintenanceSpareparts)
+                    .WithMany(p => p.VehicleMaintenanceRequestItems)
                     .HasForeignKey(d => d.VehicleMaintenanceRequestId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefVehicleMaintenanceRequest28");
+                    .HasConstraintName("FK_VehicleMaintenanceRequestItem_VehicleMaintenanceRequest");
+            });
+
+            modelBuilder.Entity<VehicleMaintenanceRequestStatus>(entity =>
+            {
+                entity.HasKey(e => e.VehicleMaintenanceRequestStatusId)
+                    .IsClustered(false);
+
+                entity.ToTable("VehicleMaintenanceRequestStatus");
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.VehicleMaintenanceRequestStatuses)
+                    .HasForeignKey(d => d.StatusId)
+                    .HasConstraintName("FK_VehicleMaintenanceRequestStatus_Status");
+
+                entity.HasOne(d => d.VehicleMaintenanceRequest)
+                    .WithMany(p => p.VehicleMaintenanceRequestStatuses)
+                    .HasForeignKey(d => d.VehicleMaintenanceRequestId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_VehicleMaintenanceRequestStatus_VehicleMaintenanceRequest");
             });
 
             modelBuilder.Entity<VehiclePhoto>(entity =>
             {
                 entity.HasKey(e => e.VehiclePhotoId)
-                    .HasName("PK31")
                     .IsClustered(false);
 
                 entity.ToTable("VehiclePhoto");
@@ -1044,18 +1149,17 @@ namespace Transport.Models.Data
                     .WithMany(p => p.VehiclePhotos)
                     .HasForeignKey(d => d.PhotoSectionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefPhotoSection82");
+                    .HasConstraintName("FK_VehiclePhoto_PhotoSection");
 
                 entity.HasOne(d => d.Vehicle)
                     .WithMany(p => p.VehiclePhotos)
                     .HasForeignKey(d => d.VehicleId)
-                    .HasConstraintName("RefVehicle80");
+                    .HasConstraintName("FK_VehiclePhoto_Vehicle");
             });
 
             modelBuilder.Entity<VehicleRequestPhotoReceipt>(entity =>
             {
                 entity.HasKey(e => e.VehicleRequestRecieptId)
-                    .HasName("PK33")
                     .IsClustered(false);
 
                 entity.ToTable("VehicleRequestPhotoReceipt");
@@ -1066,6 +1170,10 @@ namespace Transport.Models.Data
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
+                entity.Property(e => e.FileName).HasMaxLength(255);
+
+                entity.Property(e => e.ReceiptPhotoStreamFileId).HasMaxLength(255);
+
                 entity.Property(e => e.UpdatedBy).HasMaxLength(255);
 
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
@@ -1074,13 +1182,12 @@ namespace Transport.Models.Data
                     .WithMany(p => p.VehicleRequestPhotoReceipts)
                     .HasForeignKey(d => d.VehicleMaintenanceRequestId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefVehicleMaintenanceRequest39");
+                    .HasConstraintName("FK_VehicleRequestPhotoReceipt_VehicleMaintenanceRequest");
             });
 
             modelBuilder.Entity<VehicleRoutineMaintenance>(entity =>
             {
                 entity.HasKey(e => e.VehicleRoutineMaintenanceId)
-                    .HasName("PK30")
                     .IsClustered(false);
 
                 entity.ToTable("VehicleRoutineMaintenance");
@@ -1099,7 +1206,7 @@ namespace Transport.Models.Data
                     .WithMany(p => p.VehicleRoutineMaintenances)
                     .HasForeignKey(d => d.VehicleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("RefVehicle34");
+                    .HasConstraintName("FK_VehicleRoutineMaintenance_Vehicle");
             });
 
             modelBuilder.Entity<VehicleTransportStaff>(entity =>
@@ -1127,19 +1234,18 @@ namespace Transport.Models.Data
                     .WithMany(p => p.VehicleTransportStaffs)
                     .HasForeignKey(d => d.TransportStaffId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_TransportStaffVehicleTransportStaff");
+                    .HasConstraintName("FK_VehicleTransportStaff_TransportStaff");
 
                 entity.HasOne(d => d.Vehicle)
                     .WithMany(p => p.VehicleTransportStaffs)
                     .HasForeignKey(d => d.VehicleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_VehicleVehicleTransportStaff");
+                    .HasConstraintName("FK_VehicleTransportStaff_Vehicle");
             });
 
             modelBuilder.Entity<VehicleType>(entity =>
             {
                 entity.HasKey(e => e.VehicleTypeId)
-                    .HasName("PK40")
                     .IsClustered(false);
 
                 entity.ToTable("VehicleType");
@@ -1162,7 +1268,6 @@ namespace Transport.Models.Data
             modelBuilder.Entity<VehicleTypeForHire>(entity =>
             {
                 entity.HasKey(e => e.VehicleTypeForHireId)
-                    .HasName("PK50")
                     .IsClustered(false);
 
                 entity.ToTable("VehicleTypeForHire");
@@ -1185,7 +1290,6 @@ namespace Transport.Models.Data
             modelBuilder.Entity<VehicleUse>(entity =>
             {
                 entity.HasKey(e => e.VehicleUseId)
-                    .HasName("PK32")
                     .IsClustered(false);
 
                 entity.ToTable("VehicleUse");

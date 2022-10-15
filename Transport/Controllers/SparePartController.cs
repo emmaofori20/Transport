@@ -11,6 +11,7 @@ using Transport.ViewModels;
 
 namespace Transport.Controllers
 {
+    //The Controller Handels all  sparepart and routineActivities
     public class SparePartController : Controller
     {
         private readonly ISparePartService sparePartService;
@@ -19,6 +20,8 @@ namespace Transport.Controllers
         {
             this.sparePartService = sparePartService;
         }
+
+        #region SparePartMethods
         // GET: SparePartController
         public IActionResult Index()
         {
@@ -173,13 +176,10 @@ namespace Transport.Controllers
                 return View("Error", error);
             }
         }
-        /// <summary>
-        /// 
-        /// 
-        /// 
-        /// 
-        /// For Routine Actives
-        /// 
+
+        #endregion
+
+        #region RoutineActivities
 
         public IActionResult CreateRoutineActivity()
         {
@@ -270,6 +270,7 @@ namespace Transport.Controllers
            
         }
 
-        
+        #endregion RoutineActivities
+
     }
 }

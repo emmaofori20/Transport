@@ -113,5 +113,26 @@ namespace Transport.Controllers
                 return View("Error", error);
             }
         }
+
+        public IActionResult ViewHiringTableMatrix()
+        {
+            var res = hiringService.GetHiringTableMatrix();
+            return View(res);
+        }
+
+        public IActionResult SaveHiringPricesDetails(HiringTableMatrixViewModel model)
+        {
+            try
+            {
+                hiringService.SaveHiringPricesDetails(model);
+                return RedirectToAction("HiringDashboard");
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
     }
 }

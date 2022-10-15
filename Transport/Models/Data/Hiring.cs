@@ -20,8 +20,10 @@ namespace Transport.Models.Data
         public decimal? WashingFee { get; set; }
         public decimal? DriverHireFee { get; set; }
         public decimal? HireCostFee { get; set; }
+        public int TransportStaffId { get; set; }
 
         public virtual Hirer Hirer { get; set; }
+        public virtual TransportStaff TransportStaff { get; set; }
         public virtual Vehicle Vehicle { get; set; }
     }
 }

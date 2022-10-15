@@ -16,13 +16,13 @@ namespace Transport.Services
     {
         private readonly IVehicleMaintenanceRequestRepository vehicleMaintenanceRequestRepository;
         private readonly IVehicleMaintenanceRequestStatusRepository vehicleMaintenanceRequestStatusRepository;
-        private readonly IVehicleMaintenanceSparePartRepository vehicleMaintenanceSparePartRepository;
+        private readonly IVehicleMaintenanceRequestItemRepository vehicleMaintenanceSparePartRepository;
         private readonly IVehicleRepository vehicleRepository;
         private readonly IVehicleRequestPhotoReceiptRepository vehicleRequestPhotoReceiptRepository;
 
         public RequestService(IVehicleMaintenanceRequestRepository vehicleMaintenanceRequestRepository, 
                                IVehicleMaintenanceRequestStatusRepository vehicleMaintenanceRequestStatusRepository,
-                                IVehicleMaintenanceSparePartRepository vehicleMaintenanceSparePartRepository,
+                                IVehicleMaintenanceRequestItemRepository vehicleMaintenanceSparePartRepository,
                                 IVehicleRepository vehicleRepository,
                                 IVehicleRequestPhotoReceiptRepository vehicleRequestPhotoReceiptRepository)
         {
@@ -116,13 +116,13 @@ namespace Transport.Services
                                             .OrderByDescending(x => x.CreatedOn)
                                             .FirstOrDefault(x => x.VehicleMaintenanceRequestId == AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId)
                                             .Status.StatusName,// getting status name
-                    spareParts = AllvehicleMaintenanceRequest[i].VehicleMaintenanceSpareparts
+                    spareParts = AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestItems
                                             .Where(x=>x.VehicleMaintenanceRequestId == AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId)
                                             .Count(),//getting total list of spareprt to display number
                     RequestId = AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId,
                     Date = AllvehicleMaintenanceRequest[i].CreatedOn,
                     MaintainedBy = AllvehicleMaintenanceRequest[i].CreatedBy,
-                    MaintenanceCost = AllvehicleMaintenanceRequest[i].VehicleMaintenanceSpareparts
+                    MaintenanceCost = AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestItems
                     .Where(x => x.VehicleMaintenanceRequestId == AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId)
                     .Sum(c=>c.Amount*c.Quantity)
                 };

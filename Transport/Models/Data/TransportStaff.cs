@@ -9,6 +9,7 @@ namespace Transport.Models.Data
     {
         public TransportStaff()
         {
+            Hirings = new HashSet<Hiring>();
             VehicleTransportStaffs = new HashSet<VehicleTransportStaff>();
         }
 
@@ -22,6 +23,7 @@ namespace Transport.Models.Data
         public DateTime? UpdatedOn { get; set; }
         public string UpdatedBy { get; set; }
 
+        public virtual ICollection<Hiring> Hirings { get; set; }
         public virtual ICollection<VehicleTransportStaff> VehicleTransportStaffs { get; set; }
     }
 }

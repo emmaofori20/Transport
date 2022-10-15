@@ -29,7 +29,7 @@ namespace Transport.Repositories
         {
             return _context.VehicleMaintenanceRequests
                 .Include(x=>x.Vehicle)
-                .Include(x=>x.VehicleMaintenanceSpareparts)
+                .Include(x=>x.VehicleMaintenanceRequestItems)
                 .Include(x => x.VehicleMaintenanceRequestStatuses)
                 .ThenInclude(x => x.Status)
                 .Where(x=>x.IsDeleted != true)
@@ -56,7 +56,7 @@ namespace Transport.Repositories
             var VehicleMaintenanceRepuest = _context.VehicleMaintenanceRequests
                                         .Where(x=>x.VehicleMaintenanceRequestId == RequestId)
                                         .Include(x => x.VehicleMaintenanceRequestStatuses)
-                                        .Include(x => x.VehicleMaintenanceSpareparts).FirstOrDefault();
+                                        .Include(x => x.VehicleMaintenanceRequestItems).FirstOrDefault();
 
             if (VehicleMaintenanceRepuest != null)
             {
