@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Transport.Models.Data;
 using Transport.ViewModels;
 
 namespace Transport.Repositories.IRepository
 {
     public interface ITransportStaffRepository
     {
-        public List<TransportStaffViewModel> GetAll();
+        //public List<TransportStaffViewModel> GetAll();
+
+        public List<TransportStaff> GetAllTransportStaff();
     }
 }

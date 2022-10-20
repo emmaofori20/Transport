@@ -17,17 +17,20 @@ namespace Transport.Services
         private readonly IRequestService requestService;
         private readonly IBusHiringDistanceRepository busHiringDistanceRepository;
         private readonly IBusHiringPricesRepository busHiringPrices;
+        private readonly ITransportStaffRepository transportStaff;
 
         public HiringService(IVehicleTypeForHireRepository vehicleTypeForHireRepository,
             IHirerRepository hirerRepository,IRequestService requestService, 
             IBusHiringDistanceRepository busHiringDistanceRepository,
-            IBusHiringPricesRepository busHiringPrices)
+            IBusHiringPricesRepository busHiringPrices,
+            ITransportStaffRepository transportStaff)
         {
             this.vehicleTypeForHireRepository = vehicleTypeForHireRepository;
             this.hirerRepository = hirerRepository;
             this.requestService = requestService;
             this.busHiringDistanceRepository = busHiringDistanceRepository;
             this.busHiringPrices = busHiringPrices;
+            this.transportStaff = transportStaff;
         }
 
         public HiringTableMatrixViewModel GetHiringTableMatrix()
@@ -37,18 +40,18 @@ namespace Transport.Services
             var BusHiringDistances = busHiringDistanceRepository.GetBusHiringDistance();
             var BusHiringPrices = busHiringPrices.GetBusHiringPrice();
 
-            for (int i = 0; i < BusHiringDistances.Count; i++)
+            for (int i = 0; i < VehicleTypeForHires.Count; i++)
             {
-                for (int y= 0; y < VehicleTypeForHires.Count; y++)
+                for (int y= 0; y < BusHiringDistances.Count; y++)
                 {
                     var bushiringprice = BusHiringPrices
-                            .Where(x => x.VehicleTypeForHireId == VehicleTypeForHires[y].VehicleTypeForHireId
-                            && x.BusHiringDistanceId == BusHiringDistances[i].BusHiringDistanceId).FirstOrDefault();
+                            .Where(x => x.VehicleTypeForHireId == VehicleTypeForHires[i].VehicleTypeForHireId
+                            && x.BusHiringDistanceId == BusHiringDistances[y].BusHiringDistanceId).FirstOrDefault();
           
                     var newitem = new BusHiringPriceViewModel()
                     {
-                        BusHiringDistanceId = BusHiringDistances[i].BusHiringDistanceId,
-                        VehicleTypeForHireId = VehicleTypeForHires[y].VehicleTypeForHireId,
+                        BusHiringDistanceId = BusHiringDistances[y].BusHiringDistanceId,
+                        VehicleTypeForHireId = VehicleTypeForHires[i].VehicleTypeForHireId,
                         BusHirngPriceId = bushiringprice == null ? 0 : bushiringprice.BusHiringPriceId ,
                         Price = bushiringprice == null? 0: bushiringprice.Price
                     };
@@ -66,9 +69,9 @@ namespace Transport.Services
 
         public void SaveHiringPricesDetails(HiringTableMatrixViewModel model)
         {
-            foreach (var item in model.Prices)
+            foreach (var item in model.BusPricesForDistanceAndVehicleType)
             {
-
+                busHiringPrices.saveBusHiringPrice(item);
             }
         }
         //Approving a hire request
@@ -79,7 +82,10 @@ namespace Transport.Services
             {
                 hirerRepository.ApprovedHire(model[i]);
             }
-            hirerRepository.SetHirerHiringStatusToApproved(model[0].HirerId);
+
+            //Setting the Hirer's status to Approved 
+            //functions also updates the TotalCost for hiring for hirer
+            hirerRepository.SetHirerHiringStatusToApproved(model[0]);
         }
 
         public List<HireDetailsViewModel> GetAllHirers()
@@ -90,35 +96,36 @@ namespace Transport.Services
             //////PREPARING LIST FOR A SINGLE Hire LIST//////
             for (int i = 0; i < AllHiringRequest.Count; i++)
             {
-                var singleHireDetails = new HireDetailsViewModel()
-                {
-                    OrganisationName = AllHiringRequest[i].OrganisationName,
-                    ContactName = AllHiringRequest[i].ContactName,
-                    PostalAddress = AllHiringRequest[i].PostalAddress,
-                    PrimaryContactNumber = AllHiringRequest[i].PrimaryContactNumber,
-                    OtherContactNumber = AllHiringRequest[i].OtherContactNumber,
-                    Email = AllHiringRequest[i].Email,
-                    StartDate = AllHiringRequest[i].StartDate,
-                    StartTime = AllHiringRequest[i].StartTime,
-                    FinishDate = AllHiringRequest[i].FinishDate,
-                    FinishTime = AllHiringRequest[i].FinishTime,
-                    PurposeOfHire = AllHiringRequest[i].PurposeOfHire,
-                    Destination = AllHiringRequest[i].Destination,
-                    NoOfBusses = (int)AllHiringRequest[i].NoOfBusses,
-                    HirerId = AllHiringRequest[i].HirerId,
-                    NoOfPassangers = (int)AllHiringRequest[i].NoOfPassengers,
-                    VehicleTypeForHireType = AllHiringRequest[i].VehicleTypeForHire.VehicleType,
-                    VehicleTypeForHireId = AllHiringRequest[i].VehicleTypeForHireId,
-                    DistanceCalculatedFromOrginCost = (decimal)AllHiringRequest[i].DistanceCalaculatedFromOriginCost,
-                    DistanceCalculatedFromOrigin = AllHiringRequest[i].DistanceCalculatedFromOrigin,
+                var singleHireDetails = new HireDetailsViewModel();
+
+                singleHireDetails.OrganisationName = AllHiringRequest[i].OrganisationName;
+                singleHireDetails.ContactName = AllHiringRequest[i].ContactName;
+                singleHireDetails.PostalAddress = AllHiringRequest[i].PostalAddress;
+                singleHireDetails.PrimaryContactNumber = AllHiringRequest[i].PrimaryContactNumber;
+                singleHireDetails.OtherContactNumber = AllHiringRequest[i].OtherContactNumber;
+                singleHireDetails.Email = AllHiringRequest[i].Email;
+                singleHireDetails.StartDate = AllHiringRequest[i].StartDate;
+                singleHireDetails.StartTime = AllHiringRequest[i].StartTime;
+                singleHireDetails.FinishDate = AllHiringRequest[i].FinishDate;
+                singleHireDetails.FinishTime = AllHiringRequest[i].FinishTime;
+                singleHireDetails.PurposeOfHire = AllHiringRequest[i].PurposeOfHire;
+                singleHireDetails.Destination = AllHiringRequest[i].Destination;
+                singleHireDetails.NoOfBusses = (int)AllHiringRequest[i].NoOfBusses;
+                     singleHireDetails.HirerId = AllHiringRequest[i].HirerId;
+                     singleHireDetails.NoOfPassangers = (int)AllHiringRequest[i].NoOfPassengers;
+                     singleHireDetails.VehicleTypeForHireType = AllHiringRequest[i].VehicleTypeForHire.VehicleType;
+                     singleHireDetails.VehicleTypeForHireId = AllHiringRequest[i].VehicleTypeForHireId;
+                     singleHireDetails.DistanceCalculatedFromOrginCost = (decimal)AllHiringRequest[i].DistanceCalaculatedFromOriginCost;
+                     singleHireDetails.DistanceCalculatedFromOrigin = (decimal)AllHiringRequest[i].DistanceCalculatedFromOrigin;
                     ////////Getting Status Name/////////////////
-                    Status = AllHiringRequest[i].HirerHiringStatuses.OrderByDescending(x=>x.CreatedOn)
-                                .FirstOrDefault(x=>x.HirerId == AllHiringRequest[i].HirerId).Status.StatusName,
+                     singleHireDetails.Status = AllHiringRequest[i].HirerHiringStatuses.OrderByDescending(x => x.CreatedOn)
+                                .Where(x => x.HirerId == AllHiringRequest[i].HirerId).FirstOrDefault().Status.StatusName;
                     ////////Getting Status Name/////////////////
-                    CreatedOn = DateTime.Now,
-                    CreatedBy = AllHiringRequest[i].ContactName,
-                    
-                };
+                     singleHireDetails.CreatedOn = DateTime.Now;
+                     singleHireDetails.CreatedBy = AllHiringRequest[i].ContactName;
+                     singleHireDetails.TotalHiringCost = (decimal)AllHiringRequest[i].TotalHiringCost ;
+
+            
                 hirerDetailsViewModels.Add(singleHireDetails);
 
 
@@ -141,15 +148,14 @@ namespace Transport.Services
                 {
 
                     HirerId = singleHireDetails.HirerId,
-                    HireCostFee = singleHireDetails.DistanceCalculatedFromOrginCost,
-                    Vehicles = new SelectList(requestService
-                                        .GetAllVehicleMaintenanceRequest().Item2
-                                        .Select(s => new { VehicleId = s.VehicleId, RegistrationNumber = $"{s.RegistrationNumber}", ChasisNumber = $"{s.ChasisNumber}" }), "VehicleId", "RegistrationNumber", "ChasisNumber"),
+                    CalculatedCost = singleHireDetails.TotalHiringCost,
                     WashingFee = (decimal)AllHiring[i].WashingFee,
                     DriverFee = (decimal)AllHiring[i].DriverHireFee ,
                     VehicleId = AllHiring[i].VehicleId,
+                    DriverId = AllHiring[i].TransportStaffId,
                     RegistrationNumber = AllHiring[i].Vehicle.RegistrationNumber,
-                    TotalPrice =AllHiring[i].TotalHirePrice
+                    DriverName = AllHiring[i].TransportStaff.Othernames + " " + AllHiring[i].TransportStaff.Surname,
+                    
                 };
                 AllApprovedHireRequests.Add(_approveHireRequest);
 
@@ -161,7 +167,9 @@ namespace Transport.Services
                 Vehicles = new SelectList(requestService
                                         .GetAllVehicleMaintenanceRequest().Item2
                                         .Select(s => new { VehicleId = s.VehicleId, RegistrationNumber = $"{s.RegistrationNumber}", ChasisNumber = $"{s.ChasisNumber}" }), "VehicleId", "RegistrationNumber", "ChasisNumber"),
-
+                Drivers = new SelectList(transportStaff
+                                        .GetAllTransportStaff()
+                                        .Select(d => new { TransportStaffId = d.TransportStaffId, FullName = $"{d.Othernames +" "+ d.Surname }", }), "TransportStaffId", "FullName")
             };
           
             return approveHiringRequestViewModel;

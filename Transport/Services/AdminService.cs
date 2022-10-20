@@ -16,9 +16,14 @@ namespace Transport.Services
         {
             this.transportStaffRepository = transportStaffRepository;
         }
+
         public List<TransportStaffViewModel> GetAllTransportStaff()
         {
-            return transportStaffRepository.GetAll();
+            throw new NotImplementedException();
         }
+        //public List<TransportStaffViewModel> GetAllTransportStaff()
+        //{
+        //    //return transportStaffRepository.GetAll();
+        //}
     }
 }

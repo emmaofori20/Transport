@@ -44,5 +44,7 @@ namespace Transport.ViewModels
         public string Status { get; set; }
         public decimal DistanceCalculatedFromOrigin { get; set; }
         public decimal DistanceCalculatedFromOrginCost { get; set; }
+
+        public decimal TotalHiringCost { get; set; }
     }
 }

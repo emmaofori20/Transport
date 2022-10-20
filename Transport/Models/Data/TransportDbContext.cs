@@ -344,6 +344,8 @@ namespace Transport.Models.Data
 
                 entity.Property(e => e.StartDate).HasColumnType("date");
 
+                entity.Property(e => e.TotalHiringCost).HasColumnType("decimal(18, 0)");
+
                 entity.Property(e => e.UpdatedBy).HasMaxLength(255);
 
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");

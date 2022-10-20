@@ -100,9 +100,10 @@ namespace Transport.Controllers
                 if (ModelState.IsValid)
                 {
                     hiringService.ApproveHireRequest(requests);
-                    return RedirectToAction(" HiringDashboard");
+                    return RedirectToAction("HiringDashboard");
                 }
-                return View();
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                return View(requests);
             }
             catch (Exception err)
             {
@@ -128,11 +129,19 @@ namespace Transport.Controllers
                 return RedirectToAction("HiringDashboard");
 
             }
-            catch (Exception ex)
+            catch (Exception err)
             {
-
-                throw;
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
             }
+        }
+
+        public IActionResult CompletedHireRequest(CompletedHireRequest model)
+        {
+            return View();
         }
     }
 }

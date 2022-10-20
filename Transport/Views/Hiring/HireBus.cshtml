@@ -172,7 +172,7 @@
                                     <button type="button" class="btn btn-warning mr-1">
                                         <i class="ft-x"></i> Cancel
                                     </button>
-                                    <button  id="SubmitForm" class="btn btn-primary">
+                                    <button id="SubmitForm" type="button"  class="btn btn-primary">
                                         <i class="la la-check-square-o"></i> Hire Bus
                                     </button>
                                 </div>
@@ -180,6 +180,7 @@
                         </div>
                     </div>
                 </div>
+
 
             </div><!--end row-->
         </div><!--end container-->
@@ -221,101 +222,118 @@
     </script>
 
     <script>
-        const settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": "https://distanceto.p.rapidapi.com/get?route=Accra&car=true",
-            "method": "GET",
-            "headers": {
-                "X-RapidAPI-Key": "b59eb93d68mshcaea6b33b4ef4d5p13a9edjsnf40cd5f5c0ab",
-                "X-RapidAPI-Host": "distanceto.p.rapidapi.com"
-            }
-        };
+    
         //Setting defualt origin
         var defaultOrigin = "KNUST, Kumasi, Ghana";
 
-        $(function () {
-            // add input listeners
-            //google.maps.event.addDomListener(window, "load", function () {
+        //$(function () {
+        //    // add input listeners
+        //    //google.maps.event.addDomListener(window, "load", function () {
                
-            //    var to_places = new google.maps.places.Autocomplete(
-            //        document.getElementById("Destination")
-            //    );
+        //    //    var to_places = new google.maps.places.Autocomplete(
+        //    //        document.getElementById("Destination")
+        //    //    );
 
-            //    google.maps.event.addListener(
-            //        to_places,
-            //        "place_changed",
-            //        function () {
-            //            var to_place = to_places.getPlace();
-            //            var to_address = to_place.formatted_address;
-            //            $("#Destination").val(to_address);
-            //        }
-            //    );
-            //});
-            // calculate distance
-            function calculateDistance() {
-                //Setting defualt origin
-                var defaultOrigin = "KNUST, Kumasi, Ghana";
-                //Setting defualt origin
-                var origin = defaultOrigin;
-                var destination = $("#Destination").val();
-                var service = new google.maps.DistanceMatrixService();
-                service.getDistanceMatrix(
-                    {
-                        origins: [origin],
-                        destinations: [destination],
-                        travelMode: google.maps.TravelMode.DRIVING,
-                        unitSystem: google.maps.UnitSystem.IMPERIAL, // miles and feet.
-                        // unitSystem: google.maps.UnitSystem.metric, // kilometers and meters.
-                        avoidHighways: false,
-                        avoidTolls: false,
-                    },
-                    callback
-                );
-            }
-            // get distance results
-            function callback(response, status) {
-                if (status != google.maps.DistanceMatrixStatus.OK) {
-                    $("#result").html(err);
-                } else {
-                    var origin = response.originAddresses[0];
-                    console.log(origin);
-                    var destination = response.destinationAddresses[0];
-                    console.log(destination);
-                    if (response.rows[0].elements[0].status === "ZERO_RESULTS") {
-                        $("#result").html(
-                            "Better get on a plane. There are no roads between " +
-                            origin +
-                            " and " +
-                            destination
-                        );
-                    } else {
-                        var distance = response.rows[0].elements[0].distance;
-                        console.log(distance);
-                        var duration = response.rows[0].elements[0].duration;
-                        console.log(duration);
-                        console.log(response.rows[0].elements[0].distance);
-                        var distance_in_kilo = distance.value / 1000; // the kilom
-                        var distance_in_mile = distance.value / 1609.34; // the mile
-                        console.log(distance_in_kilo,"in kilo");
-                        document.getElementById("DistanceCalculated").value = 354 ;
-                        /////////////////////////////FINAL FORM SUBMISSION..............////////
-                        $("#SubmitHireForm").submit();
-                        /////////////////////////////FINAL FORM SUBMISSION..............////////
+        //    //    google.maps.event.addListener(
+        //    //        to_places,
+        //    //        "place_changed",
+        //    //        function () {
+        //    //            var to_place = to_places.getPlace();
+        //    //            var to_address = to_place.formatted_address;
+        //    //            $("#Destination").val(to_address);
+        //    //        }
+        //    //    );
+        //    //});
+        //    // calculate distance
+        //    function calculateDistance() {
+        //        //Setting defualt origin
+        //        var defaultOrigin = "KNUST, Kumasi, Ghana";
+        //        //Setting defualt origin
+        //        var origin = defaultOrigin;
+        //        var destination = $("#Destination").val();
+        //        var service = new google.maps.DistanceMatrixService();
+        //        service.getDistanceMatrix(
+        //            {
+        //                origins: [origin],
+        //                destinations: [destination],
+        //                travelMode: google.maps.TravelMode.DRIVING,
+        //                unitSystem: google.maps.UnitSystem.IMPERIAL, // miles and feet.
+        //                // unitSystem: google.maps.UnitSystem.metric, // kilometers and meters.
+        //                avoidHighways: false,
+        //                avoidTolls: false,
+        //            },
+        //            callback
+        //        );
+        //    }
+        //    // get distance results
+        //    function callback(response, status) {
+        //        if (status != google.maps.DistanceMatrixStatus.OK) {
+        //            $("#result").html(err);
+        //        } else {
+        //            var origin = response.originAddresses[0];
+        //            console.log(origin);
+        //            var destination = response.destinationAddresses[0];
+        //            console.log(destination);
+        //            if (response.rows[0].elements[0].status === "ZERO_RESULTS") {
+        //                $("#result").html(
+        //                    "Better get on a plane. There are no roads between " +
+        //                    origin +
+        //                    " and " +
+        //                    destination
+        //                );
+        //            } else {
+        //                var distance = response.rows[0].elements[0].distance;
+        //                console.log(distance);
+        //                var duration = response.rows[0].elements[0].duration;
+        //                console.log(duration);
+        //                console.log(response.rows[0].elements[0].distance);
+        //                var distance_in_kilo = distance.value / 1000; // the kilom
+        //                var distance_in_mile = distance.value / 1609.34; // the mile
+        //                console.log(distance_in_kilo,"in kilo");
+        //                document.getElementById("DistanceCalculated").value = 354 ;
+        //                /////////////////////////////FINAL FORM SUBMISSION..............////////
+        //                $("#SubmitHireForm").submit();
+        //                /////////////////////////////FINAL FORM SUBMISSION..............////////
 
-                    }
+        //            }
+        //        }
+        //    }
+        //    // print results on submit the form
+        //    $("#SubmitForm").click(function (e) {
+        //        //e.preventDefault();
+        //        //calculateDistance();
+        //        $.ajax({
+        //            url: "https://api.distancematrix.ai/maps/api/distancematrix/json?origins=51.4822656,-0.1933769&destinations=51.4994794,-0.1269979&departure_time=now&key=HNqVj7GygSXglQlVglErhJKYLxqPi",
+        //            type: 'GET',
+        //            dataType: 'json', // added data type
+        //            success: function (res) {
+        //                console.log(res);
+        //                alert(res);
+        //            }
+        //        });
+
+        //    });
+        //});
+
+
+        $("#SubmitForm").click(function (e) {
+            var destination = $("#Destination").val();
+            var DistanceApiUrl = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${defaultOrigin}&destinations=${destination}&departure_time=now&key=HNqVj7GygSXglQlVglErhJKYLxqPi`;
+
+            $.ajax({
+                url: DistanceApiUrl,
+                type: 'GET',
+                dataType: 'json', // added data type
+                success: function (res) {
+                    var calculatedDistance = res.rows[0].elements[0].distance.value / 1000;// convert to kilometers
+                    document.getElementById("DistanceCalculated").value = calculatedDistance;
+                    $("#SubmitHireForm").submit();
+
                 }
-            }
-            // print results on submit the form
-            $("#SubmitForm").click(function (e) {
-                //e.preventDefault();
-                //calculateDistance();
-                $.ajax(settings).done(function (response) {
-                    console.log(response);
-                });
-
             });
+
         });
+
         
     </script>
 </body>

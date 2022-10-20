@@ -17,13 +17,18 @@ namespace Transport.Repositories
         {
             _context = context;
         }
-        public List<TransportStaffViewModel> GetAll()
-        {
-            var result = _context.LoadStoredProc("usp_GetAllTransportStaff")
-                
-                .ExecuteStoredProc<TransportStaffViewModel>().ToList();
 
-            return result;
-    }
+        public List<TransportStaff> GetAllTransportStaff()
+        {
+            return _context.TransportStaffs.ToList();
+        }
+        //public List<TransportStaffViewModel> GetAll()
+        //{
+        //    var result = _context.LoadStoredProc("usp_GetAllTransportStaff")
+
+        //        .ExecuteStoredProc<TransportStaffViewModel>().ToList();
+
+        //    return result;
+        //}
     }
 }

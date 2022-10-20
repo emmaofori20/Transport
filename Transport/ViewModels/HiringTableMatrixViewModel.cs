@@ -12,6 +12,5 @@ namespace Transport.ViewModels
         public List<BusHiringDistance> BusHiringDistances { get; set; }
         public List<BusHiringPriceViewModel> BusPricesForDistanceAndVehicleType { get; set; }
         public List<BusHiringPrice> BusHiringPrices { get; set; }
-        public List<decimal> Prices { get; set; }
     }
 }

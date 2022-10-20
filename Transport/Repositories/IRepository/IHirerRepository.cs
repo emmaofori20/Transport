@@ -14,6 +14,6 @@ namespace Transport.Repositories.IRepository
         public List<Hirer> GetAllHirers();
         public List<Hiring> AllHiring();
         public void ApprovedHire(ApproveHireRequest model);
-        public void SetHirerHiringStatusToApproved(int hirerId);
+        public void SetHirerHiringStatusToApproved(ApproveHireRequest hirer);
     }
 }
