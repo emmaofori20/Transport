@@ -154,7 +154,6 @@ namespace Transport.Controllers
             }
         }
 
-
         //Sets a list to approved
         public void ApproveRequestMaintenance(int RequestId)
         {
@@ -209,5 +208,75 @@ namespace Transport.Controllers
             }
 
         }
+
+
+        #region RequestTypes
+        public IActionResult ViewRequestType()
+        {
+            var res = new RequestTypesViewModel();
+            res.RequestTypes = invoiceService.GetRequestTypes();
+            return View(res);
+        }
+
+        [HttpPost]
+        public IActionResult CreateRequestType(RequestTypesViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    invoiceService.CreateRequestType(model);
+                    return RedirectToAction("ViewRequestType");
+                }
+               return RedirectToAction("ViewRequestType");
+
+
+            }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+        }
+
+        public IActionResult EditRequestType(int RequestTypeId)
+        {
+            var res = invoiceService.GetSingleRequestType(RequestTypeId);
+            var results = new RequestTypeNameAndChargeViewModel
+            {
+                RequestTypeId = res.RequestTypeId,
+                RequestTypeName = res.RequestTypeName,
+                RequestTypeChargeName = res.RequestTypeCharges.FirstOrDefault(x=>x.IsActive == true && x.RequestTypeId == RequestTypeId).ChargeName,
+                RequestTypeChargeValue = res.RequestTypeCharges.FirstOrDefault(x=>x.IsActive == true && x.RequestTypeId == RequestTypeId).ChargeValue,
+                RequestTypeChargeId = res.RequestTypeCharges.FirstOrDefault(x=>x.IsActive == true && x.RequestTypeId == RequestTypeId).RequestTypeChargeId,
+            };
+            return View(results);
+        }
+        [HttpPost]
+        public IActionResult EditRequestType(RequestTypeNameAndChargeViewModel model )
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    invoiceService.EditRequestType(model);
+                    return RedirectToAction("ViewRequestType");
+                }
+                return View(model);
+
+            }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
+            }
+        }
+        #endregion
     }
 }

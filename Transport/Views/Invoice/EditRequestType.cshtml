@@ -1,0 +1,34 @@
+﻿@model RequestTypeNameAndChargeViewModel
+@{
+    ViewData["Title"] = "EditRequestType";
+}
+
+<h1>EditRequestType</h1>
+<div>
+    <div class="card-body" style="background-color:white; width:90%">
+        <form asp-action="EditRequestType" method="post" asp-controller="Invoice">
+            <input asp-for="RequestTypeId" hidden />
+            <input asp-for="RequestTypeChargeId" hidden />
+            <div class="form-group">
+                <label>Request Type Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" asp-for="RequestTypeName" placeholder="RequestType Name">
+                <span asp-validation-for="RequestTypeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>RequestType Charge Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" asp-for="RequestTypeChargeName" placeholder="Charge Name">
+                <span asp-validation-for="RequestTypeChargeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>RequestType ChargeValue (%) <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" asp-for="RequestTypeChargeValue" placeholder="Charge Value" style="width:50%">
+                <span asp-validation-for="RequestTypeChargeValue" class="text-danger"></span>
+            </div>
+
+            <div class="modal-footer">
+                <a asp-controller="Invoice" asp-action="ViewRequestType" class="btn btn-secondary" >Close</a>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
