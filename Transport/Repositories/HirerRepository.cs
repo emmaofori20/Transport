@@ -117,6 +117,7 @@ namespace Transport.Repositories
                 CreatedOn = DateTime.Now,
                 VehicleId = model.VehicleId,
                 TransportStaffId = model.DriverId,
+                TimeReturned = DateTime.Now
             };
 
             _context.Hirings.Add(hiring);
@@ -148,6 +149,47 @@ namespace Transport.Repositories
                 _context.Hirers.Update(res);
                 _context.SaveChanges();
             }
+        }
+
+        public void CompleteHire(CompletedHireRequest model)
+        {
+            var res = _context.Hirings.Where(x => x.HirerId == model.HirerId).ToList();
+            if(res!= null)
+            {
+                foreach (var item in res)
+                {
+                    item.TimeReturned = model.DateTimeReturned;
+                    item.UpdatedBy = "Admni";
+                    item.UpdatedOn = DateTime.Now;
+                    _context.Update(item);
+                    _context.SaveChanges();
+                };
+
+                //set status to completed
+                _context.HirerHiringStatuses.Add(new HirerHiringStatus
+                {
+                    HirerId = model.HirerId,
+                    StatusId = 2006,
+                    CreatedBy = "AdminHire",
+                    CreatedOn = DateTime.Now,
+                });
+                _context.SaveChanges();
+            }
+        }
+
+        public void InvalidHire(ApproveHireRequest model)
+        {
+            var hirerHiringStatus = new HirerHiringStatus()
+            {
+                HirerId = model.HirerId,
+                StatusId = 2007,
+                CreatedBy = "AdminHire",
+                CreatedOn = DateTime.Now,
+
+            };
+
+            _context.HirerHiringStatuses.Add(hirerHiringStatus);
+            _context.SaveChanges();
         }
     }
 }

@@ -139,9 +139,22 @@ namespace Transport.Controllers
             }
         }
 
+        [HttpPost]
         public IActionResult CompletedHireRequest(CompletedHireRequest model)
         {
-            return View();
+            
+            if (ModelState.IsValid)
+            {
+                hiringService.CompleteHireRequest(model);
+            }
+            return RedirectToAction("HiringDashboard");
+        }
+
+        public IActionResult InvalidHireRequest(List<ApproveHireRequest> requests)
+        {
+            hiringService.InvalidHireRequest(requests);
+
+            return RedirectToAction("HiringDashboard");
         }
     }
 }

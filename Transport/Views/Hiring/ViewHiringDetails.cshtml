@@ -125,66 +125,129 @@
                     @* IF THE HIRING HAS BEEN APPROVED BY THE TRANSPORT UNIT *@
                     @if (@Model.hireDetails.Status == "Approved")
                     {
-                <div class="col-md-12">
-                    <input asp-for="@Model.hireDetails.HirerId" hidden id="ApproveId" />
+                        <div class="col-md-12">
+                            <input asp-for="@Model.hireDetails.HirerId" hidden id="ApproveId" />
 
-                    <div class="d-flex flex-wrap">
-                        @for (int i = 0; i < @Model.approveHireRequest.Count; i++)
-                        {
-                            <div class="p-2 ">
-                                <h6 style="display:none">@{int num = i + 1;}</h6>
-                                <h6>Diver @num  </h6>
-                                <input asp-for="@Model.approveHireRequest[i].HirerId" value="@Model.hireDetails.HirerId" hidden id="ApproveId" />
+                            <div class="d-flex flex-wrap">
+                                @for (int i = 0; i < @Model.approveHireRequest.Count; i++)
+                                {
+                                    <div class="p-2 ">
+                                        <h6 style="display:none">@{int num = i + 1;}</h6>
+                                        <h6>Diver @num  </h6>
+                                        <input asp-for="@Model.approveHireRequest[i].HirerId" value="@Model.hireDetails.HirerId" hidden id="ApproveId" />
 
-                                <div>
+                                        <div>
 
-                                    <div class="form-group">
-                                        <label>Driver Price (GHC)</label>
-                                        <input asp-for="@Model.approveHireRequest[i].DriverFee" class="form-control" readonly />
+                                            <div class="form-group">
+                                                <label>Driver Price (GHC)</label>
+                                                <input asp-for="@Model.approveHireRequest[i].DriverFee" class="form-control" readonly />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Washing fee (GHC)</label>
+                                                <input asp-for="@Model.approveHireRequest[i].WashingFee" class="form-control" readonly />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Assigned vehicle </label>
+                                                <input asp-for="@Model.approveHireRequest[i].RegistrationNumber" class="form-control" readonly />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Assigned Driver</label>
+                                                <input asp-for="@Model.approveHireRequest[i].DriverName" class="form-control" readonly />
+                                            </div>
+
+                                        </div>
+                                        <hr>
+
                                     </div>
+                                }
+                            </div>
+
+                            <h1 style="display:flex">
+                                <em>TOTAL GRAND PRICE:</em>
+                                <strong>GHC @Model.approveHireRequest[0].CalculatedCost</strong>
+                            </h1>
+                            <hr />
+                            <div class="row" style="grid-gap:10px; align-items:center">
+                                <form method="post" id="CompletedTripDetails">
+                                    <input asp-for="@Model.completedHireRequest.HirerId" hidden value="@Model.hireDetails.HirerId" />
                                     <div class="form-group">
-                                        <label>Washing fee (GHC)</label>
-                                        <input asp-for="@Model.approveHireRequest[i].WashingFee" class="form-control" readonly />
+                                        <label>Datetime Bus(es) Returned </label>
+                                        <input type="datetime-local" id="dateTime" asp-for="completedHireRequest.DateTimeReturned" class="form-control" />
                                     </div>
-                                    <div class="form-group">
-                                        <label>Assigned vehicle </label>
-                                        <input asp-for="@Model.approveHireRequest[i].RegistrationNumber" class="form-control" readonly />
+
+                                </form>
+                                <div class="form-actions center" style="text-align:center">
+                                    <button class="btn btn-success " id="CompletedTrip" onclick="CompleteTrip()">
+                                        <i class="la la-check-square-o"></i> Completed Trip
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    }
+                    else if (@Model.hireDetails.Status == "Completed")
+                    {
+                        <div class="col-md-12">
+                            <input asp-for="@Model.hireDetails.HirerId" hidden id="ApproveId" />
+
+                            <div class="d-flex flex-wrap">
+                                @for (int i = 0; i < @Model.approveHireRequest.Count; i++)
+                                {
+                                    <div class="p-2 ">
+                                        <h6 style="display:none">@{int num = i + 1;}</h6>
+                                        <h6>Diver @num  </h6>
+                                        <input asp-for="@Model.approveHireRequest[i].HirerId" value="@Model.hireDetails.HirerId" hidden id="ApproveId" />
+
+                                        <div>
+
+                                            <div class="form-group">
+                                                <label>Driver Price (GHC)</label>
+                                                <input asp-for="@Model.approveHireRequest[i].DriverFee" class="form-control" readonly />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Washing fee (GHC)</label>
+                                                <input asp-for="@Model.approveHireRequest[i].WashingFee" class="form-control" readonly />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Assigned vehicle </label>
+                                                <input asp-for="@Model.approveHireRequest[i].RegistrationNumber" class="form-control" readonly />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Assigned Driver</label>
+                                                <input asp-for="@Model.approveHireRequest[i].DriverName" class="form-control" readonly />
+                                            </div>
+
+                                        </div>
+                                        <hr>
+
                                     </div>
+                                }
+                            </div>
+
+                            <h1 style="display:flex">
+                                <em>TOTAL GRAND PRICE:</em>
+                                <strong>GHC @Model.approveHireRequest[0].CalculatedCost</strong>
+                            </h1>
+                            <hr />
+                            <div class="row" style="grid-gap:10px; align-items:center">
+                                <div id="CompletedTripDetails">
                                     <div class="form-group">
-                                        <label>Assigned Driver</label>
-                                        <input asp-for="@Model.approveHireRequest[i].DriverName" class="form-control" readonly />
+                                        <label>Datetime Bus(es) Returned </label>
+                                        <input asp-for="@Model.approveHireRequest[0].DateTimeReturned" readonly class="form-control" />
                                     </div>
 
                                 </div>
-                                <hr>
+
 
                             </div>
-                        }
-                    </div>
 
-                    <h1 style="display:flex">
-                        <em>TOTAL GRAND PRICE:</em>
-                        <strong>GHC @Model.approveHireRequest[0].CalculatedCost</strong>
-                    </h1>
-                    <hr />
-                    <form method="post" id="CompletedTripDetails">
-                        <input asp-for="completedHireRequest.HirerId" hidden value="@Model.approveHireRequest[0].HirerId" />
-                        <div class="form-group">
-                            <label>Datetime Bus Returned </label>
-                            <input type="datetime-local" asp-for="completedHireRequest.DateTimeReturned"  class="form-control" />
                         </div>
-                        
-                    </form>
-                    <div class="form-actions center" style="text-align:center">
-                        @*<button type="button" class="btn btn-warning mr-1">
-                            <i class="ft-x"></i> Set Invalid
-                        </button>*@
-                        <button class="btn btn-success" id="CompletedTrip">
-                            <i class="la la-check-square-o"></i> Completed Trip
-                        </button>
-                    </div>
-
-                </div>
+                    }
+                    else if (@Model.hireDetails.Status == "Invalid")
+                    {
+                        <h5 class="text-danger" style=" font-weight: 800; text-align:center; ">Hire is set to In-valid</h5>
 
                     }
                     else
@@ -245,7 +308,7 @@
                                 </div>
 
                                 <div class="form-actions center" style="text-align:center">
-                                    <button type="button" class="btn btn-warning mr-1">
+                                    <button type="button" class="btn btn-warning mr-1" id="InvalidButton">
                                         <i class="ft-x"></i> Set Invalid
                                     </button>
                                     <button class="btn btn-primary" type="submit" id="ApproveButton">
@@ -272,15 +335,15 @@
 </div>
 
 <script src="~/lib/jquery/jquery.min.js"></script>
-<script src="~/lib/select2/js/select2.js" defer></script>
+@*<script src="~/lib/select2/js/select2.js" defer></script>*@
 <script>
 
     $(document).ready(function () {
         //select all select tag and initialise select2 library
-        $('select.select2').each(function (index) {
-            console.log(index);
-            $("#select_" + index).select2();
-        });
+        //$('select.select2').each(function (index) {
+        //    console.log(index);
+        //    $("#select_" + index).select2();
+        //});
 
         //Calculate initial prices
         //That is number of days by the price for a vehicle
@@ -289,13 +352,14 @@
         document.getElementById('TotalCalculatedPriceToSend').value = calc;
         $('.CalculatePriceFromInput').on("change.add", calculateSum);
 
+        //Approve function
         $('#ApproveButton').click(function () {
 
             var tt = $('#List').serialize();
             console.log(tt);
             var TotalCalculatedHiringCost = document.getElementById('TotalCalculatedPrice').value;
-            var url = '/Hiring/ProceedToApproveHire';
-
+            var url = 'Hiring/ProceedToApproveHire';
+            var completeUrl = baseUrl + url;
             $.ajax({
                 type: "POST",
                 dataType: "json",
@@ -303,7 +367,7 @@
                     toastr.info('Approving data', 'Approving', { "hideDuration": 3000 });
 
                 },
-                url: url,
+                url: completeUrl,
                 data: tt,
                 headers: {
                 },
@@ -321,6 +385,35 @@
 
         });
 
+        //Invvalid function
+        $('#InvalidButton').click(function () {
+            var tt = $('#List').serialize();
+            console.log(tt);
+            var url = 'Hiring/InvalidHireRequest';
+            var completeUrl = baseUrl + url;
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                beforeSend: function () {
+                    toastr.info('sending data', 'Invalid', { "hideDuration": 3000 });
+
+                },
+                url: completeUrl,
+                data: tt,
+                headers: {
+                },
+                success: function (response) {
+
+                    toastr.success('Set invalid', 'Done', { "hideDuration": 3000 });
+                    window.location.href = "/Hiring/HiringDashboard";
+
+                },
+                error: function (xhr) {
+                    toastr.error('We could not acesses the server\n Something went wrong', 'Error', { "hideDuration": 3000 });
+
+                }
+            });        });
+
         //Calculates the sum of input values
         function calculateSum() {
             var totalPrice = 0;
@@ -333,9 +426,43 @@
             document.getElementById('TotalCalculatedPrice').value = parseFloat(calc) + parseFloat(totalPrice);
         }
 
-        $('#CompletedTrip').click(function () {
-            console.log("I work")
-        })
     })
+
+    function CompleteTrip() {
+
+        var Formdata = $('#CompletedTripDetails').serializeArray();
+        $('#CompletedTripDetails').serialize();
+        var requestToken = Formdata.pop();// remove array last element
+        let data = {
+            "HirerId":@Model.hireDetails.HirerId,
+            "DateTimeReturned": document.getElementById("dateTime").value
+        }
+        console.log(data);
+        var url = 'Hiring/CompletedHireRequest';
+        var completeUrl = baseUrl + url;
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            beforeSend: function (xhr) {
+                toastr.info('Data is being sent', 'Sending', { "hideDuration": 3000 });
+
+            },
+            url: completeUrl,
+            data: data,
+            headers: {
+            },
+            success: function (response) {
+
+                toastr.success('Completed', 'Success', { "hideDuration": 3000 });
+                window.location.href = "/Hiring/HiringDashboard";
+
+            },
+            error: function (xhr) {
+                toastr.error('We could not acesses the server\n Something went wrong', 'Error', { "hideDuration": 3000 });
+
+            }
+        });
+
+    }
 
 </script>

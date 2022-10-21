@@ -28,6 +28,7 @@ namespace Transport.ViewModels
         public string RegistrationNumber { get; set; }
         public string DriverName { get; set; }
         public decimal TotalPrice { get; set; }
+        public DateTime DateTimeReturned { get; set; }
     }
 
     public class CompletedHireRequest

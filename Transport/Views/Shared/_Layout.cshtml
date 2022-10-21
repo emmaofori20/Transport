@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string baseUrl = AppHttpContext.AppBaseUrl(Context) + "/";
+
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -250,6 +254,8 @@
 
     @await RenderSectionAsync("Scripts", required: false);
     <script>
+        var baseUrl = '@baseUrl';
+
         $(function () {
             $('.nav-item a').click(function (e) {
                 $('.active').removeClass('active');

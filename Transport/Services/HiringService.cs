@@ -155,7 +155,7 @@ namespace Transport.Services
                     DriverId = AllHiring[i].TransportStaffId,
                     RegistrationNumber = AllHiring[i].Vehicle.RegistrationNumber,
                     DriverName = AllHiring[i].TransportStaff.Othernames + " " + AllHiring[i].TransportStaff.Surname,
-                    
+                    DateTimeReturned = (DateTime)AllHiring[i].TimeReturned
                 };
                 AllApprovedHireRequests.Add(_approveHireRequest);
 
@@ -189,6 +189,16 @@ namespace Transport.Services
             };
 
             return hireBusViewModel;
+        }
+
+        public void CompleteHireRequest(CompletedHireRequest model)
+        {
+            hirerRepository.CompleteHire(model);
+        }
+
+        public void InvalidHireRequest(List<ApproveHireRequest> model)
+        {
+            hirerRepository.InvalidHire(model[0]);
         }
     }
 }

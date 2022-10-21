@@ -8,14 +8,7 @@ namespace Transport.Utils
 {
     public class AppHttpContext
     {
-        private static IHttpContextAccessor _httpContextAccessor;
+        public static string AppBaseUrl(HttpContext Current) => $"{Current.Request.Scheme}://{Current.Request.Host}{Current.Request.PathBase}";
 
-        public static void Configure(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
-
-        public static HttpContext Current => _httpContextAccessor.HttpContext;
-        public static string AppBaseUrl => $"{Current.Request.Scheme}://{Current.Request.Host}{Current.Request.PathBase}";
     }
 }
