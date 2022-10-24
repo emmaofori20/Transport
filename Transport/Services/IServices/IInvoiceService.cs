@@ -18,5 +18,6 @@ namespace Transport.Services.IServices
         public void CreateRequestType(RequestTypesViewModel model);
         public RequestType GetSingleRequestType(int RequestTypeId);
         public void EditRequestType(RequestTypeNameAndChargeViewModel model);
+        public void DeleteRequestType(int RequestTypeId);
     }
 }

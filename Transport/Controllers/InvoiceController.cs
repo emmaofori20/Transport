@@ -277,6 +277,12 @@ namespace Transport.Controllers
                 return View("Error", error);
             }
         }
+
+        public IActionResult DeleteRequestType(int RequestTypeId)
+        {
+            invoiceService.DeleteRequestType(RequestTypeId);
+            return RedirectToAction("ViewRequestType");
+        }
         #endregion
     }
 }

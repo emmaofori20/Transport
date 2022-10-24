@@ -22,7 +22,10 @@ namespace Transport.Repositories
         {
             var res = new RequestType
             {
-                RequestTypeName = model.NewReqestTypeNameAndCharge.RequestTypeName
+                RequestTypeName = model.NewReqestTypeNameAndCharge.RequestTypeName,
+                IsDeleted = false,
+                CreatedBy = "Admin",
+                CreatedOn = DateTime.Now
             };
             _context.RequestTypes.Add(res);
             _context.SaveChanges();
@@ -47,7 +50,7 @@ namespace Transport.Repositories
 
         public List<RequestType> GetAllRequestType()
         {
-           return _context.RequestTypes.Include(x => x.RequestTypeCharges).ToList();
+           return _context.RequestTypes.Include(x => x.RequestTypeCharges).Where(x=>x.IsDeleted == false).ToList();
         }
 
         public void EditRequestType(RequestTypeNameAndChargeViewModel model)
@@ -70,6 +73,20 @@ namespace Transport.Repositories
                     //Add new value
                     AddRequestTypeCharge(model);
                 }
+            }
+        }
+
+        public void DeleteRequestType(int RequestId)
+        {
+            var res = _context.RequestTypes.Find(RequestId);
+            if (res != null)
+            {
+                res.IsDeleted = true;
+                res.UpdatedBy = "UpdatedAdmin";
+                res.UpdatedOn = DateTime.Now;
+                _context.RequestTypes.Update(res);
+                _context.SaveChanges();
+                
             }
         }
     }

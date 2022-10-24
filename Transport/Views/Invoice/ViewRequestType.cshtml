@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "ViewRequestType";
 }
+<link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/datatables.min.css">
 
 <div style="display: flex; justify-content: space-between; padding-bottom: 20px;">
     <h1>Request Types</h1>
@@ -91,9 +92,9 @@
                                                 <i class="la la-pencil"></i> Edit
                                             </a>
 
-                                            <a asp-controller="SparePart" asp-action="Invoice" asp-route-RequestTypeId="@item.RequestTypeId" class="dropdown-item">
+                                            <button onclick="ConfirmDeleteForRequestType(@item.RequestTypeId)" asp-route-RequestTypeId="@item.RequestTypeId" class="dropdown-item">
                                                 <i class="la la-trash"></i> Delete
-                                            </a>
+                                            </button>
 
 
                                         </span>
@@ -121,5 +122,77 @@
 </div>
 
 <script src="~/app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
+<script src="~/app-assets/vendors/js/tables/datatable/datatables.min.js" type="text/javascript" defer></script>
+<!-- END PAGE VENDOR JS-->
+<script src="~/app-assets/js/scripts/tables/datatables/datatable-basic.js" type="text/javascript" defer></script>
+
 <script src="~/app-assets/vendors/js/extensions/sweetalert.min.js" type="text/javascript"></script>
 <script src="~/app-assets/js/scripts/extensions/sweet-alerts.js" type="text/javascript"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#invoices-list').DataTable();
+
+        //$('#DeleteButton').on('click', function () {
+        //    console.log("i work")
+        //})
+    });
+
+
+
+
+    ///////////SWEET ALERT FOR ROUTINE MAINTENANCE/////////////
+
+    function ConfirmDeleteForRequestType(ev) {
+        var url = 'Invoice/DeleteRequestType';
+        var completeUrl = baseUrl + url;
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this file!",
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    text: "No, cancel plx!",
+                    value: null,
+                    visible: true,
+                    className: "",
+                    closeModal: false,
+                },
+                confirm: {
+                    text: "Yes, delete it!",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: false
+                }
+            }
+        })
+            .then((isConfirm) => {
+                if (isConfirm) {
+                    console.log('ajax deleted', ev);
+                    $.ajax({
+                        url: completeUrl,
+                        dataType: 'html',
+                        method: 'get',
+                        data: { 'RequestTypeId': ev },
+                        success: function (res) {
+                            console.log('Sucess');
+                            swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                            window.location.href = baseUrl +"Invoice/ViewRequestType";
+
+
+                        },
+                        error: function (err) {
+                            console.log(err, "err");
+                            swal("Error!", "We could not access the server.", "error");
+
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "Your file is safe", "error");
+                }
+            });
+
+    };
+
+</script>

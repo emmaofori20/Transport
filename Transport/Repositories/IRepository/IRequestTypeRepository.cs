@@ -13,5 +13,6 @@ namespace Transport.Repositories.IRepository
         public void CreateRequestType(RequestTypesViewModel model);
 
         public void EditRequestType(RequestTypeNameAndChargeViewModel model);
+        public void DeleteRequestType(int RequestId);
     }
 }

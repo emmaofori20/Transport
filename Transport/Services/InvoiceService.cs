@@ -66,6 +66,11 @@ namespace Transport.Services
         {
             requestTypeRepository.EditRequestType(model);
         }
+
+        public void DeleteRequestType(int RequestTypeId)
+        {
+            requestTypeRepository.DeleteRequestType(RequestTypeId);
+        }
         #endregion
     }
 }
