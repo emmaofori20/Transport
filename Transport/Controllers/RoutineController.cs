@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using Transport.ViewModels;
 
 namespace Transport.Controllers
 {
+    [Authorize(Policy = "CustomAuthorization")]
     public class RoutineController : Controller
     {
         private readonly IRoutineService routineService;

@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using Transport.Data;
@@ -17,6 +22,8 @@ using Transport.Repositories;
 using Transport.Repositories.IRepository;
 using Transport.Services;
 using Transport.Services.IServices;
+using Transport.Handlers;
+using Transport.Utils;
 
 namespace Transport
 {
@@ -32,16 +39,93 @@ namespace Transport
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<TransportDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            var dbContext = services.BuildServiceProvider()
+                .GetService<TransportDbContext>();
+
+            services.AddHttpContextAccessor();
+
+            /*a custom authorization policy "MustBeQuestionAuthorRequirement"*/
+            services.AddAuthorization(
+                options => options.AddPolicy("CustomAuthorization", policy => policy.Requirements.Add(new CustomAuthorizationRequirement())));
+
+            services.AddScoped<IAuthorizationHandler, CustomAuthorizationHandler>();
+
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+            // implements the cookie event handler
+            services.AddTransient<CookieEventHandler>();
+
+            // demo version of a state management to keep track of logout notifications
+            services.AddSingleton<LogoutSessionManager>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = "oidc";
+            })
+                .AddCookie(options =>
+                {
+                    options.EventsType = typeof(CookieEventHandler);
+                })
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.Authority = Configuration.GetSection("IdentityServer")["Authority"];
+                    options.RequireHttpsMetadata = false;
+
+                    options.ClientId = Configuration.GetSection("IdentityServer")["ClientId"];
+                    options.ClientSecret = Configuration.GetSection("IdentityServer")["Secret"];
+
+                    options.ResponseType = "code";
+
+                    options.Scope.Clear();
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+                    //options.Scope.Add("scope1");
+                    options.Scope.Add("offline_access");
+                    //options.Scope.Add("271ffa58-680a-42b9-918e-9468228c3f42_api");
+
+                    // not mapped by default
+                    options.ClaimActions.MapJsonKey("website", "website");
+
+                    // keeps id_token smaller
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.SaveTokens = true;
+
+                    //options.TokenValidationParameters = new TokenValidationParameters
+                    //{
+                    //    NameClaimType = "name",
+                    //    RoleClaimType = "role"
+                    //};
+
+                    CustomHandlers cHandler = new CustomHandlers(dbContext);
+
+                    options.Events = new OpenIdConnectEvents
+                    {
+                        OnTicketReceived = cHandler.InitializeUserClaims
+                    };
+                });
+
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromMinutes(15);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+
+
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddControllersWithViews();
             services.AddMemoryCache();
             //Adding the repositories
@@ -55,6 +139,7 @@ namespace Transport
             services.AddTransient<ICollegeRepository, CollegeRepository>();
             services.AddTransient<IDepartmentRepository, DepartmentRepository>();
             services.AddTransient<IMakeRepository,MakeRepository>();
+            services.AddTransient<IModelRepository, ModelRepository>();
             services.AddTransient<IVehicleRepository, VehicleRepository>();
             services.AddTransient<IVehicleStatusRepository, VehicleStatusRepository>();
             services.AddTransient<IVehicleUseRepository, VehicleUseRepository>();
@@ -63,7 +148,6 @@ namespace Transport
             services.AddTransient<ICollegeRepository, CollegeRepository>();
             services.AddTransient<IColourRepository, ColourRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
-            services.AddTransient<IModelRepository, ModelRepository>();
             services.AddTransient<IVehicleStatusRepository, VehicleStatusRepository>();
             services.AddTransient<IVehicleTypeRepository, VehicleTypeRepository>();
             services.AddTransient<IVehicleUseRepository, VehicleUseRepository>();
@@ -112,7 +196,7 @@ namespace Transport
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthentication();
@@ -122,8 +206,7 @@ namespace Transport
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Dashboard}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

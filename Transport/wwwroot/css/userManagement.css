@@ -1,0 +1,8 @@
+﻿.status {
+    font-size: 2rem;
+    margin: 2px 2px 0 0;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 10px;
+    padding-bottom: 5px;
+}

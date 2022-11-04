@@ -7,6 +7,7 @@ namespace Transport.Repositories.IRepository
 {
     public interface IDepartmentRepository
     {
-        public SelectList GetDepartments();
+        public List<DepartmentViewModel> AllDepartments();
+        public SelectList GetAllDepartmentsByCollegeId(int CollegeId);
     }
 }

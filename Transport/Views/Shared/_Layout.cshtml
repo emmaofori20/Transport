@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@{
+    bool isAuthorized = Context.Session.Get<bool>(SessionValueKeys.isAuthorized);
+    string otherNames = Context.Session.Get<string>(SessionValueKeys.otherNames);
+    string baseUrl = AppHttpContext.AppBaseUrl(Context) + "/";
+
+}
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -55,31 +63,38 @@
                         <li class="nav-item nav-search">
                             <a class="nav-link nav-link-search" href="#"><i class="ficon ft-search"></i></a>
                             <div class="search-input">
-                                <input class="input" type="text" placeholder="search...">
+                                <input class="input" type="text" placeholder="Search...">
                             </div>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav float-right">
                         <li class="dropdown dropdown-user nav-item">
-                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                            <div class="dropdown-toggle nav-link dropdown-user-link" data-toggle="dropdown" style="cursor:pointer">
                                 <span class="mr-1">
                                     Hello,
-                                    <span class="user-name text-bold-700">John Doe</span>
+                                    <span class="user-name text-bold-700">@otherNames</span>
                                 </span>
-                                <span class="avatar avatar-online">
+                                @*<span class="avatar avatar-online">
                                     <img src="~/app-assets/images/portrait/small/avatar-s-19.png" alt="avatar"><i></i>
-                                </span>
-                            </a>
+                                </span>*@
+                            </div>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#"><i class="ft-user"></i> Edit Profile</a>
+
+                                @*Add Divider class to div this div for more items on drop down*@
+                                <a class="dropdown-item" href="#" onclick="document.querySelector('#logoutForm').submit()"><i class="ft-power"></i> Logout
+                                <form asp-area="Identity" hidden asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                                    <input type="submit"  value="Logout" />
+                                </form>
+                                </a>
+                                @*<a class="dropdown-item" href="#"><i class="ft-user"></i> Edit Profile</a>
                                 <a class="dropdown-item" href="#"><i class="ft-mail"></i> My Inbox</a>
                                 <a class="dropdown-item" href="#"><i class="ft-check-square"></i> Task</a>
-                                <a class="dropdown-item" href="#"><i class="ft-message-square"></i> Chats</a>
-                                <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="ft-power"></i> Logout</a>
+                                <a class="dropdown-item" href="#"><i class="ft-message-square"></i> Chats</a>*@
+
                             </div>
                         </li>
 
-                        <li class="dropdown dropdown-notification nav-item">
+                        @*<li class="dropdown dropdown-notification nav-item">
 
                             <a class="nav-link nav-link-label" href="#" data-toggle="dropdown">
                                 <i class="ficon ft-bell"></i>
@@ -154,7 +169,7 @@
                                 </li>
                                 <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center" href="javascript:void(0)">Read all notifications</a></li>
                             </ul>
-                        </li>
+                        </li>*@
                     </ul>
                 </div>
             </div>
@@ -186,7 +201,7 @@
                     <a asp-action="Index" asp-controller="SparePart"><i class="la la-cogs"></i><span class="menu-title" data-i18n="nav.dash.main">Spare Parts</span></a>
                 </li>
                 <li class=" nav-item">
-                    <a asp-action="Index" asp-controller="Administrator"><i class="la la-users"></i><span class="menu-title" data-i18n="nav.dash.main">Administrators</span></a>
+                    <a asp-action="Index" asp-controller="Admin"><i class="la la-users"></i><span class="menu-title" data-i18n="nav.dash.main">Administrators</span></a>
                 </li>
                 <li class=" nav-item">
                     <a asp-action="HiringDashboard" asp-controller="Hiring"><i class="la la-deviantart"></i><span class="menu-title" data-i18n="nav.dash.main">Hiring</span></a>
@@ -224,6 +239,10 @@
     </div>
 
 
+    <script>
+        var baseUrl = '@baseUrl';
+        var otherNames = '@otherNames';
+    </script>
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

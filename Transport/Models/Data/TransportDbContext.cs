@@ -62,7 +62,9 @@ namespace Transport.Models.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-          
+            if (!optionsBuilder.IsConfigured)
+            {
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -80,7 +82,11 @@ namespace Transport.Models.Data
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
-                entity.Property(e => e.Name)
+                entity.Property(e => e.OtherNames)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.SurName)
                     .IsRequired()
                     .HasMaxLength(255);
 
@@ -343,6 +349,8 @@ namespace Transport.Models.Data
                 entity.Property(e => e.PurposeOfHire).HasMaxLength(255);
 
                 entity.Property(e => e.StartDate).HasColumnType("date");
+
+                entity.Property(e => e.TotalHiringCost).HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(255);
 

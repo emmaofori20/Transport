@@ -10,9 +10,11 @@ using Transport.ViewModels;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Transport.Controllers
 {
+    [Authorize(Policy = "CustomAuthorization")]
     public class RequestController : Controller
     {
         public IRequestService requestService;

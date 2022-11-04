@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using Transport.ViewModels;
 
 namespace Transport.Controllers
 {
+    [Authorize(Policy = "CustomAuthorization")]
     //The Controller Handels all  sparepart and routineActivities
     public class SparePartController : Controller
     {

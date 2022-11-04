@@ -18,12 +18,26 @@ namespace Transport.Repositories
             _context = context;
         }
 
-        public SelectList GetDepartments()
+        public List<DepartmentViewModel> AllDepartments()
         {
+            List<DepartmentViewModel> allDepartments = new List<DepartmentViewModel>();
+            allDepartments = _context.Departments.Select(x => new DepartmentViewModel()
+            {
+                DepartmentId = x.DepartmentId,
+                DepartmentName = x.DepartmentName,
+                CollegeId = x.CollegeId
+            }).ToList();
+
+            return allDepartments;
             
-            return new SelectList(_context.Departments
-                .Select(s => new { Id = s.DepartmentId, Text = $"{s.DepartmentName}" }), "Id", "Text");
-            
+        }
+
+        public SelectList GetAllDepartmentsByCollegeId(int CollegeId)
+        {
+            List<DepartmentViewModel> ListOfDepartmentsByCollege = new List<DepartmentViewModel>();
+            ListOfDepartmentsByCollege = AllDepartments().Where(x => x.CollegeId == CollegeId).ToList();
+            SelectList departmentsByCollege = new SelectList(ListOfDepartmentsByCollege, "DepartmentId", "DepartmentName",0);
+            return departmentsByCollege;
         }
 
     }

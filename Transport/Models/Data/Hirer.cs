@@ -33,8 +33,9 @@ namespace Transport.Models.Data
         public string UpdatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public int VehicleTypeForHireId { get; set; }
-        public decimal DistanceCalculatedFromOrigin { get; set; }
+        public decimal? DistanceCalculatedFromOrigin { get; set; }
         public decimal? DistanceCalaculatedFromOriginCost { get; set; }
+        public decimal? TotalHiringCost { get; set; }
 
         public virtual VehicleTypeForHire VehicleTypeForHire { get; set; }
         public virtual ICollection<HirerHiringStatus> HirerHiringStatuses { get; set; }

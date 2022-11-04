@@ -110,7 +110,7 @@ namespace Transport.Services
                     VehicleTypeForHireType = AllHiringRequest[i].VehicleTypeForHire.VehicleType,
                     VehicleTypeForHireId = AllHiringRequest[i].VehicleTypeForHireId,
                     DistanceCalculatedFromOrginCost = (decimal)AllHiringRequest[i].DistanceCalaculatedFromOriginCost,
-                    DistanceCalculatedFromOrigin = AllHiringRequest[i].DistanceCalculatedFromOrigin,
+                    //DistanceCalculatedFromOrigin = AllHiringRequest[i].DistanceCalculatedFromOrigin,
                     ////////Getting Status Name/////////////////
                     Status = AllHiringRequest[i].HirerHiringStatuses.OrderByDescending(x=>x.CreatedOn)
                                 .FirstOrDefault(x=>x.HirerId == AllHiringRequest[i].HirerId).Status.StatusName,

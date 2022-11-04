@@ -1,17 +1,31 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Transport.Services.IServices;
+using Transport.ViewModels;
 
 namespace Transport.Controllers
 {
+    
+
+    [Authorize(Policy = "CustomAuthorization")]
     public class DashboardController : Controller
     {
+        private readonly IAdminService _adminService;
+
+        public DashboardController(IAdminService adminService)
+        {
+            _adminService = adminService;
+        }
         // GET: DashboardController
         public ActionResult Index()
         {
+          
             return View();
         }
 
