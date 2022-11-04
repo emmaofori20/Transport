@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Transport.Models.Data;
 
 namespace Transport.ViewModels
 {
@@ -13,7 +14,7 @@ namespace Transport.ViewModels
         public string Status { get; set; }
         public DateTime Date { get; set; }
         public int RequestId { get; set; }
-        public int spareParts { get; set; }
+        public List<VehicleMaintenanceRequestItem> spareParts { get; set; }
         public decimal MaintenanceCost { get; set; }
     }
 

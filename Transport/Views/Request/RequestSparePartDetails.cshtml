@@ -74,19 +74,31 @@
                                     <th>Item </th>
                                     <th class="text-right">Quantity</th>
                                     <th class="text-right">Unit Amount</th>
+                                    <th class="text-right">T. Quantity Amount</th>
+                                    <th class="text-right">Service/Tax Name</th>
+                                    <th class="text-right">Calculated value</th>
+                                    <th class="text-right">Percentages(%)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @for (int i = 0; i < @Model.spareParts.Count; i++)
                                 {
-                                    <tr>
-                                        <th scope="row">@(++SerialNum) </th>
-                                        <td>
-                                            <p>@Model.spareParts[i].SparePartName</p>
-                                        </td>
-                                        <td class="text-right">@Model.spareParts[i].Quantity</td>
-                                        <td class="text-right">Ghc @Model.spareParts[i].Amount</td>
-                                    </tr>
+                                <tr>
+                                    <th scope="row">@(++SerialNum) </th>
+                                    <td>
+                                        <p>@Model.spareParts[i].SparePartName</p>
+                                    </td>
+                                    <td class="text-right">@Model.spareParts[i].Quantity</td>
+                                    <td class="text-right">Ghc @Model.spareParts[i].Amount</td>
+                                    @{
+                                        var num = @Model.spareParts[i].Quantity * Model.spareParts[i].Amount;
+                                        var costpercent = ((double)Model.spareParts[i].RequestChargeValue / 100) * num;
+                                    }
+                                    <td>@num</td>
+                                    <td>@Model.spareParts[i].RequestChargeName</td>
+                                    <td> @costpercent.ToString("0.0000")</td>
+                                    <td>@Model.spareParts[i].RequestChargeValue %</td>
+                                </tr>
                                 }
 
 
@@ -97,7 +109,10 @@
                 <div class="row">
 
                     <div class="col-md-5 col-sm-12">
-                        <p class="lead ">Total Amount: <span class=" text-bold-800">Ghc @Model.spareParts.Sum(c => c.Amount * c.Quantity)  </span>  </p>
+                        <p class="lead ">Total Amount: <span class=" text-bold-800">Ghc
+                            @Model.spareParts.Sum(c => (c.Amount * c.Quantity)+ ((double)c.RequestChargeValue/100)* (c.Amount* c.Quantity) ).ToString("0.0000")
+                                </span> 
+                        </p>
                     </div>
                 </div>
             </div>

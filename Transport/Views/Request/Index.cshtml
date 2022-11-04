@@ -109,7 +109,12 @@
                                                         </td>
                                                     }
 
-                                                    <td>Ghc @Model.VehicleMaintenanceRequests[i].MaintenanceCost</td>
+                                                <td>
+                                                    @{ 
+                                                        var sum = Model.VehicleMaintenanceRequests[i].spareParts.Sum(c => (c.Amount * c.Quantity) + ((decimal)c.RequestTypeCharge.ChargeValue / 100) * (c.Amount * c.Quantity));
+                                                    }
+                                                    Gh @sum
+                                                </td>
                                                     <td>
                                                         <span class="dropdown">
                                                             <button id="btnSearchDrop2" type="button" data-toggle="dropdown" aria-haspopup="true"
@@ -324,7 +329,8 @@
     ///////////SWEET ALERT FOR REQUEST MAINTENANCE/////////////
 
     function ConfirmDeleteForRequestMaintenenance(ev) {
-
+        var url = 'Request/DeleteRequestMaintenance';
+        var completeUrl = baseUrl + url;
         swal({
             title: "Are you sure?",
             text: "You will not be able to recover this file!",
@@ -350,7 +356,7 @@
                 if (isConfirm) {
                     console.log('ajax deleted', ev);
                     $.ajax({
-                        url: "/Request/DeleteRequestMaintenance",
+                        url:completeUrl,
                         dataType: 'html',
                         method: 'get',
                         data: { 'RequestId': ev },
@@ -379,7 +385,8 @@
     ///////////SWEET ALERT FOR ROUTINE MAINTENANCE/////////////
 
     function ConfirmDeleteForRoutineMaintenance(ev) {
-
+        var url = 'Routine/DeleteRoutineMaintenance';
+        var completeUrl = baseUrl + url;
         swal({
             title: "Are you sure?",
             text: "You will not be able to recover this file!",
@@ -405,7 +412,7 @@
                 if (isConfirm) {
                     console.log('ajax deleted', ev);
                     $.ajax({
-                        url: "/Routine/DeleteRoutineMaintenance",
+                        url: completeUrl,
                         dataType: 'html',
                         method: 'get',
                         data: { 'RoutineId': ev },

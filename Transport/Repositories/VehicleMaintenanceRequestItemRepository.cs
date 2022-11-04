@@ -5,19 +5,25 @@ using System.Threading.Tasks;
 using Transport.Models.Data;
 using Transport.ViewModels;
 using Transport.Repositories.IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Transport.Repositories
 {
     public class VehicleMaintenanceRequestItemRepository : IVehicleMaintenanceRequestItemRepository
     {
         private readonly TransportDbContext _context;
+        private readonly IRequestTypeRepository requestTypeRepository;
 
-        public VehicleMaintenanceRequestItemRepository(TransportDbContext context)
+        public VehicleMaintenanceRequestItemRepository(TransportDbContext context, IRequestTypeRepository requestTypeRepository)
         {
             _context = context;
-
+            this.requestTypeRepository = requestTypeRepository;
         }
 
+        public RequestTypeCharge GetRequestCharge(int requestId)
+        {
+            return _context.RequestTypeCharges.Where(x => x.RequestTypeId == requestId && x.IsActive == true).FirstOrDefault();
+        }
         public void AddVehicleMaintenanceSparePart(VehicleMaintananceSparepartViewModel sparePart, int ListId)
         {
             VehicleMaintenanceRequestItem vehicleMaintenanceSparepart = new VehicleMaintenanceRequestItem
@@ -26,6 +32,8 @@ namespace Transport.Repositories
                 NameOfPart = sparePart.SparePartName,
                 VehicleMaintenanceRequestId = ListId,
                 Amount = (decimal)sparePart.Amount,
+                RequestTypeId = sparePart.RequestTypeId,
+                RequestTypeChargeId = GetRequestCharge(sparePart.RequestTypeId).RequestTypeChargeId,
                 CreatedBy= "Admin",
                 CreatedOn= DateTime.Now
             };
@@ -49,7 +57,9 @@ namespace Transport.Repositories
 
         public List<VehicleMaintenanceRequestItem> GetList(int Id)
         {
-            var results = _context.VehicleMaintenanceRequestItems.Where(x => x.VehicleMaintenanceRequestId == Id).ToList();
+            var results = _context.VehicleMaintenanceRequestItems.Where(x => x.VehicleMaintenanceRequestId == Id)
+                .Include(x=>x.RequestType)
+                .Include(x=>x.RequestTypeCharge).ToList();
             return results;
         }
     }

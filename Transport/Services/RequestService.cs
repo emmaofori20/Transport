@@ -69,7 +69,10 @@ namespace Transport.Services
                 {
                     Quantity = requestList[i].Quantity,
                     SparePartName = requestList[i].NameOfPart,
-                    Amount = (double)requestList[i].Amount
+                    Amount = (double)requestList[i].Amount,
+                    RequestChargeValue = requestList.Where(x=>x.RequestTypeChargeId == requestList[i].RequestTypeChargeId).FirstOrDefault().RequestTypeCharge.ChargeValue,
+                    RequestChargeName = requestList.Where(x=>x.RequestTypeChargeId == requestList[i].RequestTypeChargeId).FirstOrDefault().RequestTypeCharge.ChargeName,
+                    RequestTypeId = requestList[i].RequestTypeId
                 };
 
                 _spareParts.Add(sparepart);
@@ -118,7 +121,7 @@ namespace Transport.Services
                                             .Status.StatusName,// getting status name
                     spareParts = AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestItems
                                             .Where(x=>x.VehicleMaintenanceRequestId == AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId)
-                                            .Count(),//getting total list of spareprt to display number
+                                            .ToList(),//getting total list of spareprt to display number
                     RequestId = AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId,
                     Date = AllvehicleMaintenanceRequest[i].CreatedOn,
                     MaintainedBy = AllvehicleMaintenanceRequest[i].CreatedBy,
@@ -160,7 +163,7 @@ namespace Transport.Services
             ////////////UPDATE OF THE SPARE PART SECTION////////////
             //Deleting all spareparts with the request ID
             vehicleMaintenanceSparePartRepository.DeleteAllVehicleMaintenanceSparepart(RequestId);
-            //update/ addng new spareprts
+            //update or addng new spareprts
             AddRequestSparePart(model.spareParts, RequestId);
             ////////////UPDATE OF THE SPARE PART SECTION////////////
 
