@@ -567,9 +567,17 @@ namespace Transport.Models.Data
 
                 entity.ToTable("RequestType");
 
+                entity.Property(e => e.CreatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
                 entity.Property(e => e.RequestTypeName)
                     .IsRequired()
                     .HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<RequestTypeCharge>(entity =>

@@ -62,10 +62,11 @@ namespace Transport.Controllers
 
                         return RedirectToAction("ViewRoutineMaintenance", new { RoutineId = results.VehicleRoutineMaintenanceId });
                     }
-                    ViewBag.SparePartError = "Spare parts used is more than spare parts left in the inventory ";
+                    ViewBag.SparePartError = "Spare parts to be used is more than spare parts left in the inventory ";
                     return View(model);
                 }
                 ViewBag.PageError = "Kindly select a vehicle";
+                model = raw;
                 return View(model);
 
             }

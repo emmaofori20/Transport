@@ -72,6 +72,16 @@
                                         <td> <span class="badge badge-default badge-success badge-lg">@Model[i].Status</span> </td>
 
                                     }
+                                    else if (@Model[i].Status == "Completed")
+                                    {
+                                        <td> <span class="badge badge-default bg-light text-dark">@Model[i].Status</span> </td>
+
+                                    } 
+                                    else if (@Model[i].Status == "Invalid")
+                                    {
+                                        <td> <span class="badge badge-default bg-danger text-dark">@Model[i].Status</span> </td>
+
+                                    }
                                     else
                                     {
                                         <td> <span class="badge badge-default badge-primary badge-lg">@Model[i].Status</span></td>

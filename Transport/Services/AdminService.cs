@@ -40,5 +40,9 @@ namespace Transport.Services
         {
             _transportStaffRepository.ToggleStaffActive(StaffId, Issuer);
         }
+        //public List<TransportStaffViewModel> GetAllTransportStaff()
+        //{
+        //    //return transportStaffRepository.GetAll();
+        //}
     }
 }

@@ -157,6 +157,7 @@ namespace Transport
             services.AddTransient<IPermAxleLoadRepository, PermAxleLoadRepository>();
             services.AddTransient<IPhotoSectionRepository, PhotoSectionRepository>();
             services.AddTransient<IVehicleRequestPhotoReceiptRepository, VehicleRequestPhotoReceiptRepository>();
+            services.AddTransient<IRequestTypeRepository, RequestTypeRepository>();
 
 
             services.AddTransient<IBusHiringPricesRepository, BusHiringPricesRepository>();
