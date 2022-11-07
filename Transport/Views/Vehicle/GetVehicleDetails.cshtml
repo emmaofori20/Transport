@@ -33,11 +33,10 @@
 
         </div>
 
-        @*<img class="img-fluid rounded mb-4 full-width" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." />*@
 
         @if (Model.PhotoItems.Count != 0)
         {
-            <div id="carouselExampleIndicators" class="carousel slide" style="text-align:center;" data-ride="carousel">
+            <div id="carouselExampleIndicators" class="carousel slide" style="text-align:center;" data-interval="10000" data-ride="carousel">
                 <ol class="carousel-indicators">
                     @for (var i = 0; i < Model.PhotoItems.Count(); i++)
                     {

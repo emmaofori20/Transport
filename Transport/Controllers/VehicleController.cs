@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,6 +15,7 @@ using Transport.ViewModels;
 
 namespace Transport.Controllers
 {
+    [Authorize(Policy = "CustomAuthorization")]
     public class VehicleController : Controller
     {
         private readonly IVehicleService _vehicleService;
@@ -22,12 +24,12 @@ namespace Transport.Controllers
         public VehicleController(
             IVehicleService vehicleService,
             IWebHostEnvironment webHostEnvironment
-            
+
             )
         {
             _vehicleService = vehicleService;
             _webHostEnvironment = webHostEnvironment;
-            
+
         }
         // GET: VehicleController
         public ViewResult VehicleList()
@@ -47,7 +49,7 @@ namespace Transport.Controllers
 
                 return View("Error", errorViewModel);
             }
-            
+
         }
 
         // GET: VehicleController/Details/5
@@ -78,30 +80,50 @@ namespace Transport.Controllers
             return View(results);
         }
 
+
+        [HttpGet]
+        public IActionResult GetModelsByMake(int MakeId)
+        {
+            var results = _vehicleService.listOfModelsByMake(MakeId);
+
+            return Json(results.Models);
+        }
+
+
+       [HttpGet]
+       public IActionResult GetDepartmentsByCollege(int CollegeId)
+        {
+            var results = _vehicleService.listOfDepartmentsByCollege(CollegeId);
+            return Json(results.Departments);
+        }
+
         // POST: VehicleController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddNewVehicle(AddVehicleViewModel vehicleModel)
-        
+
         {
             //var results = _vehicleService.setAllList();
-            
-                try
+
+
+            try
+            {
+
+                var result = await _vehicleService.AddNewVehicle(vehicleModel);
+
+
+
+                return RedirectToAction(nameof(GetVehicleDetails), new { Id = result });
+            }
+            catch (Exception ex)
+            {
+                var errorViewModel = new ErrorViewModel()
                 {
+                    RequestId = ex.Message
+                };
 
-                    var result = await _vehicleService.AddNewVehicle(vehicleModel);
-
-                    return RedirectToAction(nameof(VehicleList));
-                }
-                catch (Exception ex)
-                {
-                    var errorViewModel = new ErrorViewModel()
-                    {
-                        RequestId = ex.Message
-                    };
-
-                    return View("Error", errorViewModel);
-                }      
+                return View("Error", errorViewModel);
+            }
 
         }
 
@@ -111,14 +133,13 @@ namespace Transport.Controllers
 
             var results = _vehicleService.setAllList();
             ViewBag.Colleges = results.Colleges;
-            ViewBag.Departments= results.Departments;
             ViewBag.Makes = results.Makes;
             ViewBag.Insurances = results.Insurances;
             ViewBag.Statuses = results.Statuses;
             ViewBag.UseOfVehicle = results.VehicleUses;
             ViewBag.TyreSizes = results.TyreSizes;
             ViewBag.Countries = results.Countries;
-            ViewBag.Models = results.Models;
+
             ViewBag.VehicleTypes = results.VehicleTypes;
             ViewBag.FuelTypes = results.FuelTypes;
             ViewBag.Colours = results.Colours;
@@ -126,10 +147,14 @@ namespace Transport.Controllers
             ViewBag.TransmissionTypes = results.TransmissionTypes;
             ViewBag.PermAxleLoads = results.PermAxleLoads;
             ViewBag.PhotoSections = results.PhotoSections;
-            
+
             try
             {
                 var result = await _vehicleService.GetVehicleToUpdate(Id);
+                var models = _vehicleService.listOfModelsByMake(result.MakeId).Models;
+                var departments = _vehicleService.listOfDepartmentsByCollege(result.CollegeId).Departments;
+                ViewBag.Models = models;
+                ViewBag.Departments = departments;
                 return View(result);
             }
 
@@ -143,7 +168,7 @@ namespace Transport.Controllers
                 return View("Error", errorViewModel);
             }
 
-          
+
         }
 
         // POST: VehicleController/Edit/5
@@ -175,7 +200,8 @@ namespace Transport.Controllers
 
                 var resultId = await _vehicleService.UpdateVehicle(UpdateModel);
 
-                return RedirectToAction(nameof(VehicleList));
+
+                return RedirectToAction(nameof(GetVehicleDetails), new { Id = resultId });
             }
             catch (Exception ex)
             {
@@ -186,8 +212,8 @@ namespace Transport.Controllers
 
                 return View("Error", errorViewModel);
             }
-           
-            
+
+
         }
 
         //Delete A Vehicle
@@ -209,7 +235,7 @@ namespace Transport.Controllers
             }
 
         }
-        
-        
+
+
     }
 }

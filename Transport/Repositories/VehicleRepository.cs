@@ -18,10 +18,10 @@ namespace Transport.Repositories
         {
             _context = context;
         }
-        
-        public async Task<(List<VehicleListViewModel>,List<Vehicle>)> GetAllVehicles()
+
+        public async Task<(List<VehicleListViewModel>, List<Vehicle>)> GetAllVehicles()
         {
-            
+
             var vehicles = await _context.Vehicles
                 .Include(x => x.Insurance)
                 .Include(x => x.Department)
@@ -34,8 +34,8 @@ namespace Transport.Repositories
                 .Include(x => x.VehiclePhotos)
                 .ToListAsync();
             List<VehicleListViewModel> allVehicles = new List<VehicleListViewModel>();
-            
-            foreach(var vehicle in vehicles)
+
+            foreach (var vehicle in vehicles)
             {
                 var vehicleListViewModel = new VehicleListViewModel()
                 {
@@ -48,7 +48,7 @@ namespace Transport.Repositories
                     CollegeName = vehicle.College.CollegeName,
                 };
 
-               allVehicles.Add(vehicleListViewModel);
+                allVehicles.Add(vehicleListViewModel);
             }
 
             return (allVehicles, vehicles);
@@ -122,11 +122,11 @@ namespace Transport.Repositories
 
                 throw;
             }
-            
+
         }
         public async Task<int> AddVehicle(AddVehicleViewModel vehicleModel)
         {
-           if(vehicleModel != null)
+            if (vehicleModel != null)
             {
                 var newVehicle = new Vehicle()
                 {
@@ -194,7 +194,7 @@ namespace Transport.Repositories
                     };
 
                     await _context.VehiclePhotos.AddAsync(newPhoto);
-                    
+
                 }
                 await _context.SaveChangesAsync();
 
@@ -202,7 +202,7 @@ namespace Transport.Repositories
             }
 
             return 0;
-                
+
         }
 
         private byte[] ConvertToByte(IFormFile formFile)
@@ -285,7 +285,7 @@ namespace Transport.Repositories
                     {
                         PhotoSectionId = x.PhotoSectionId,
                         PhotoSectionName = x.PhotoSection.PhotoSectionName,
-                        PhotoFile = x.PhotoFile,
+                        PhotoByte = x.PhotoFile,
                     }).ToList()
 
                 };
@@ -298,14 +298,14 @@ namespace Transport.Repositories
 
                 throw;
             }
-            
+
 
         }
 
         public async Task<int> UpdateVehicle(UpdateVehicleViewModel model)
         {
             var vehicle = await _context.Vehicles.FirstOrDefaultAsync(x => x.VehicleId == model.VehicleId);
-            if(vehicle != null)
+            if (vehicle != null)
             {
                 vehicle.VehicleId = model.VehicleId;
                 vehicle.Owner = model.Owner;
@@ -356,18 +356,19 @@ namespace Transport.Repositories
                 _context.Vehicles.Update(vehicle);
                 _context.SaveChanges();
 
+                var vehiclePhotoItems = _context.VehiclePhotos.Where(x => x.VehicleId == vehicle.VehicleId).ToList();
+
                 foreach (var item in model.PhotoItems)
                 {
-                    VehiclePhoto Photo = new VehiclePhoto
-                    {
-                        VehicleId = vehicle.VehicleId,
-                        PhotoSectionId = item.PhotoSectionId,
-                        PhotoFile = item.PhotoFile,
-                        UpdatedBy = "User",
-                        UpdatedOn = DateTime.Now
-                    };
+                    var currentPhoto = vehiclePhotoItems.Where(x => x.PhotoSectionId == item.PhotoSectionId).FirstOrDefault();
 
-                    _context.Vehicles.Update(vehicle);
+                    if (item.PhotoFile != null)
+                    {
+                        currentPhoto.PhotoFile = ConvertToByte(item.PhotoFile);
+                        _context.VehiclePhotos.Update(currentPhoto);
+                    }
+
+
                 };
 
             };
@@ -385,7 +386,7 @@ namespace Transport.Repositories
                 .Include(x => x.VehicleMaintenanceRequests)
                 .Include(x => x.VehiclePhotos)
                 .Where(x => x.VehicleId == Id).FirstOrDefault();
-            if(vehicle != null)
+            if (vehicle != null)
             {
                 vehicle.IsDeleted = true;
                 vehicle.UpdatedBy = "User";
@@ -418,7 +419,7 @@ namespace Transport.Repositories
             _context.SaveChanges();
         }
 
-        
+
 
     }
 }

@@ -1,0 +1,195 @@
+﻿@model AdminAndUserViewModel
+
+
+<link href="~/css/userManagement.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="~/app-assets/css/plugins/forms/switch.css">
+<link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Administrators";
+
+    int num = 1;
+}
+<div class="row">
+    <div class="col-12">
+        <div class="content-header row">
+            <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
+                <h3 class="content-header-title mb-0 d-inline-block font-weight-bold">Administrator - User Management</h3>
+
+            </div>
+            <div class="content-header-right col-md-6 col-12">
+                <div class="dropdown float-md-right">
+                    <a data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-success" style="display:flex"><i class="la la-plus"></i><span class="menu-title" data-i18n="nav.dash.main">Add New User</span></a>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" id="prePopulateForm" asp-controller="Admin" asp-action="AddNewUser">
+                            <!-- 2 column grid layout with text inputs for the first and last names -->
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div class="form-outline">
+                                        <input asp-for="@Model.StaffId" type="text"  class="form-control" />
+                                        <label class="form-label" for="form3Example1">Staff Id</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-outline">
+                                        <button class="btn btn-success" id="VerifyId" type="button">Verify</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Surname input -->
+                            <div class="form-outline mb-4">
+                                <input asp-for="@Model.SurName" type="text"  class="form-control" />
+                                <label class="form-label" for="form3Example3">SurName</label>
+                            </div>
+                            <div class="form-outline mb-4">
+                                <input asp-for="@Model.OtherName" type="text"  class="form-control" />
+                                <label class="form-label" for="form3Example3">OtherName(s)</label>
+                            </div>
+
+                            <!-- TechMail input -->
+                            <div class="form-outline mb-4">
+                                <input asp-for="@Model.UserName" type="text"  class="form-control" />
+                                <label class="form-label" for="form3Example4">Tech Mail</label>
+                            </div>
+
+                            <!-- Submit button -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="Submit" class="btn btn-primary">Add User</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content collapse show">
+
+                @*<div class="card-body">*@
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Staff ID</th>
+                                <th>Name</th>
+                                <th>Date Created</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.AllAdmins.Count != 0)
+                            {
+                                @foreach (var admin in Model.AllAdmins)
+                                {
+                            <tr>
+                                <th scope="row">@(num++)</th>
+                                <td>@admin.StaffId</td>
+                                <td>@admin.OtherNames @admin.SurName</td>
+                                <td>@admin.CreatedOn</td>
+
+                                <td>Admin</td>
+                                @if (admin.IsActive)
+                                {
+                                    <td><span class="status text-success">&bull;</span>Active</td>
+
+                                    <td>
+                                        <a style="cursor:pointer" data-staffId="@admin.StaffId" class="toggle" title="toggle"><i class="bi bi-toggle-on text-success"></i></a>
+                                    </td>
+                                }
+
+                                else
+                                {
+                                    <td><span class="status text-danger">&bull;</span>Inactive</td>
+
+                                    <td>
+                                        <a style="cursor:pointer" data-staffId="@admin.StaffId" class="toggle" title="toggle"><i class="bi bi-toggle-off text-danger"></i></a>
+                                    </td>
+                                }
+
+
+                            </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                @*</div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/lib/jquery/jquery.js"></script>
+<script src="~/app-assets/js/scripts/tables/components/table-components.js"
+        type="text/javascript">
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        //Verifying Staff ID's
+        $('#VerifyId').click(function () {
+            var staffId = document.getElementById('StaffId').value;
+            var form = $("#prePopulateForm");
+
+            if (staffId != null) {
+                $.ajax({
+                    type: 'get',
+                    url: '/Admin/VerifyStaffId',
+                    data: { "StaffId": staffId },
+                    success: function (data) {
+                        if (data.isActive && data.techmail != null) {
+                            console.log(data, form);
+                            document.getElementById('StaffId').value = data.staffId2;
+                            document.getElementById('UserName').value = data.techmail;
+                            document.getElementById('OtherName').value = data.othername;
+                            document.getElementById('SurName').value = data.surname;
+                        } else {
+
+                            alert(`User is not a staff\n `);
+                        }
+
+
+                    }
+                });
+
+            } else {
+
+            }
+
+        })
+
+        //Toggle Staff Active and Not Active
+
+        $('.toggle').click(function () {
+            var staffId = $(this).attr('data-staffId');
+            $.ajax({
+                type: 'get',
+                url: '/Admin/ToggleStaffIsActive',
+                data: { "StaffId": staffId },
+                success: function (data) {
+                    location.reload();
+                }
+            });
+
+        });
+    });
+</script>

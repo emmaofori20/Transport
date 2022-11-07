@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authentication;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,8 +10,12 @@ namespace Transport.Repositories.IRepository
 {
     public interface ITransportStaffRepository
     {
-        //public List<TransportStaffViewModel> GetAll();
+        public void AssignRole(ApplicationUser model);
+        public void AddNewUser(AddUserViewModel model);
+        public AdminAndUserViewModel GetAllUsers();
+        public ApplicationUser GetUser(TicketReceivedContext context);
+        public HrStaffViewModel VerifyStaffId(string StaffId);
 
-        public List<TransportStaff> GetAllTransportStaff();
+        public void ToggleStaffActive(int StaffId, string Issuer);
     }
 }

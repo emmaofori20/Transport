@@ -118,13 +118,14 @@ namespace Transport.ViewModels
         public List<PhotoSection> PhotoSections { get; set; }
 
         public List<PhotoItemForUpdate> PhotoItems { get; set; }
-        
+
     }
     public class PhotoItemForUpdate
     {
         public int PhotoSectionId { get; set; }
         public string PhotoSectionName { get; set; }
-        public byte[] PhotoFile { get; set; }
+        public byte[] PhotoByte { get; set; }
+        public IFormFile PhotoFile { get; set; }
     }
 
 }
