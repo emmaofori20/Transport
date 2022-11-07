@@ -100,6 +100,11 @@ namespace Transport.Repositories
             _context.Update(staff);
             _context.SaveChanges();
         }
-       
+
+        public List<TransportStaff> GetAllTransportStaff()
+        {
+            return _context.TransportStaffs.ToList();
+        }
+
     }
 }

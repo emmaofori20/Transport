@@ -146,6 +146,10 @@ namespace Transport.Services
         {
             vehicleMaintenanceRequestRepository.DeleteVehicleRequestMaintenance(RequestId);
         }
+        public GettingReceiptsViewModel GetReceiptsDocument(string DocumentStreamId)
+        {
+            return vehicleRequestPhotoReceiptRepository.GetReceiptsDocument(DocumentStreamId);
+        }
 
         public void EdiVehicleRequestMaintenance(VehicleMaintenanceRequestDetailsViewModel model, int RequestId)
         {

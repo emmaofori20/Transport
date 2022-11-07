@@ -288,6 +288,14 @@ namespace Transport.Controllers
             
             
          }
+
+        public IActionResult ViewReceipts(string DocumentStreamId)
+        {
+            var result = requestService.GetReceiptsDocument(DocumentStreamId);
+
+            var filedetails = result.FileStream;
+            return File(filedetails, "application/*");
+        }
     }
     
 }

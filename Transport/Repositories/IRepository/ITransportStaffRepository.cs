@@ -17,5 +17,8 @@ namespace Transport.Repositories.IRepository
         public HrStaffViewModel VerifyStaffId(string StaffId);
 
         public void ToggleStaffActive(int StaffId, string Issuer);
+
+        public List<TransportStaff> GetAllTransportStaff();
+        
     }
 }

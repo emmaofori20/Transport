@@ -7,6 +7,30 @@
     int SerialNum = 0;
 
 }
+<style>
+    ul.tags {
+        list-style: none;
+        padding-left: 0;
+        margin: 0 0 3rem 0;
+    }
+
+        ul.tags li {
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+
+            ul.tags li a {
+                background: rgba(0,0,0,.05);
+                color: rgba(0,0,0,.6);
+                border-radius: 3px;
+                padding: 5px 10px;
+            }
+
+                ul.tags li a:hover {
+                    background: rgba(0,0,0,.07);
+                    text-decoration: none;
+                }
+</style>
 
 <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/ui/prism.min.css">
 <link href="~/lib/dropzone/min/dropzone.min.css" rel="stylesheet" />
@@ -125,15 +149,20 @@
             else if (Model.Status == "Completed")
             {
                 <p class="font-weight-bold text-center h3">Photos of Receipts/Spare parts</p>
-                <div style="display: flex; grid-gap: 10px; " >
-                    @*@foreach (var item in Model.ReceiptImages)
-                    {
-                    <div style="height:300px" class="w-21" >
-                        <img style="width:100%; height:100%; object-fit:contain" src="data:image;base64,@Convert.ToBase64String(item.ReceiptPhotoFile)" />
+                <div style="display: flex; grid-gap: 10px; ">
+                    <h4 style="color:black">View Files</h4>
+                    <ul class="tags">
 
-                    </div>
+                        @foreach (var item in Model.ReceiptImages)
+                        {
+                            //var strBase64 = Convert.ToBase64String(item.DocumentFile);
+                            //var FileContent = string.Format("data:application/pdf;base64,{0}", Convert.ToBase64String(item.DocumentFile));
+                            <li style="cursor:pointer">
+                                <a class="DownloadProjectDocument" onclick="DownloadDocument(@item.ReceiptPhotoStreamFileId)" data-docId='@item.ReceiptPhotoStreamFileId'>Download @item.FileName</a>
+                            </li>
 
-                    }*@
+                        }
+                    </ul>
                 </div>
               
  
@@ -186,7 +215,7 @@
             $('#file-input').on("change", previewImages);
             //alert("The text has been changed.");
         });
-       
+
         function previewImages() {
             var $preview = $('#preview').empty();
             if (this.files) $.each(this.files, readAndPreview);
@@ -210,6 +239,13 @@
 
         }
 
+       $('.DownloadProjectDocument').on('click', function () {
+                console.log("Document Clicked!");
+
+            var DocumentStreamId = $(this).attr('data-docId');
+
+            var newwin = window.open("@Url.Action("ViewReceipts", "Request")" + "?DocumentStreamId=" + DocumentStreamId);
+            });
 
     })
 

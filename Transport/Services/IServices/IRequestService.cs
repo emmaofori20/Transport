@@ -23,5 +23,7 @@ namespace Transport.Services.IServices
         public void EdiVehicleRequestMaintenance(VehicleMaintenanceRequestDetailsViewModel model,int RequestId);
 
         public void UploadFiles(List<IFormFile> formFiles, int RequestId);
+        public GettingReceiptsViewModel GetReceiptsDocument(string DocumentStreamId);
+
     }
 }
