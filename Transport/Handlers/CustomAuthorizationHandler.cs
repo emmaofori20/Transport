@@ -27,7 +27,7 @@ namespace Transport.Handlers
                 context.Fail();
                 return;
             }
-            
+
 
             var nameClaim = context.User.Identities
                             .FirstOrDefault()

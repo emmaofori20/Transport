@@ -26,6 +26,7 @@ namespace Transport.Controllers
         
         public IActionResult Index()
         {
+            ViewBag.AllRoles = _adminService.GetAllRoles();
             var result = _adminService.GetAllTransportStaff();     
             return View(result);
         }
@@ -33,6 +34,7 @@ namespace Transport.Controllers
         [HttpPost]
         public IActionResult AddNewUser(AddUserViewModel model)
         {
+            
             try
             {
                 if (ModelState.IsValid)
@@ -41,6 +43,7 @@ namespace Transport.Controllers
                     _adminService.AddNewUser(model);
                     return RedirectToAction("Index");
                 }
+
                 return View(model);
             }
             catch (Exception ex)

@@ -11,8 +11,8 @@ namespace Transport.Repositories.IRepository
     {
         public void AddVehicleMaintenanceSparePart(VehicleMaintananceSparepartViewModel sparePart, int ListId);
 
-        public List<VehicleMaintenanceSparepart> GetList(int Id);
+        //public List<VehicleMaintenanceSparepart> GetList(int Id);
 
-        public void DeleteAllVehicleMaintenanceSparepart( int ListId);
+        //public void DeleteAllVehicleMaintenanceSparepart( int ListId);
     }
 }

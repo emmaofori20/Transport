@@ -126,7 +126,10 @@ namespace Transport
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddSessionStateTempDataProvider();
+
+
             services.AddMemoryCache();
             //Adding the repositories
             services.AddTransient<IVehicleMaintenanceRequestRepository, VehicleMaintenanceRequestRepository>();

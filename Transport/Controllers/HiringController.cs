@@ -73,24 +73,24 @@ namespace Transport.Controllers
            
         }
 
-        public IActionResult ViewHiringDetails(int HirerId)
-        {
-            try
-            {
-                var res = hiringService.GetSingleHireDetails(HirerId);
-                return View(res);
+        //public IActionResult ViewHiringDetails(int HirerId)
+        //{
+        //    try
+        //    {
+        //        var res = hiringService.GetSingleHireDetails(HirerId);
+        //        return View(res);
 
-            }
-            catch (Exception err)
-            {
-                var error = new ErrorViewModel
-                {
-                    RequestId = err.Message,
-                };
-                return View("Error", error);
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        var error = new ErrorViewModel
+        //        {
+        //            RequestId = err.Message,
+        //        };
+        //        return View("Error", error);
 
-            }
-        }
+        //    }
+        //}
 
         [HttpPost]
         public IActionResult ProceedToApproveHire(List<ApproveHireRequest> requests)

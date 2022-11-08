@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,9 +41,13 @@ namespace Transport.Services
         {
             _transportStaffRepository.ToggleStaffActive(StaffId, Issuer);
         }
-        //public List<TransportStaffViewModel> GetAllTransportStaff()
-        //{
-        //    //return transportStaffRepository.GetAll();
-        //}
+
+        public SelectList GetAllRoles()
+        {
+            return new SelectList(_transportStaffRepository.GetAllRoles()
+               .Select(s => new { Id = s.RoleId, Text = $"{s.RoleName}" }), "Id", "Text");
+        }
+
+
     }
 }

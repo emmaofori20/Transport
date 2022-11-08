@@ -76,7 +76,7 @@ namespace Transport.Controllers
         public IActionResult AddNewVehicle()
         {
             var results = _vehicleService.setAllList();
-
+           
             return View(results);
         }
 
@@ -110,7 +110,6 @@ namespace Transport.Controllers
             {
 
                 var result = await _vehicleService.AddNewVehicle(vehicleModel);
-
 
 
                 return RedirectToAction(nameof(GetVehicleDetails), new { Id = result });
@@ -199,7 +198,6 @@ namespace Transport.Controllers
             {
 
                 var resultId = await _vehicleService.UpdateVehicle(UpdateModel);
-
 
                 return RedirectToAction(nameof(GetVehicleDetails), new { Id = resultId });
             }

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Transport.Models.Data;
 
 namespace Transport.ViewModels
 {
@@ -16,5 +18,8 @@ namespace Transport.ViewModels
         [Required]
         public string SurName { get; set; }
         public string CreatedBy { get; set; }
+        public int RoleId { get; set; }
+        public Role Role { get; set; }
+        public SelectList AllRoles { get; set; }
     }
 }

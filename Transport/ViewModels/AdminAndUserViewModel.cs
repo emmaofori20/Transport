@@ -8,6 +8,6 @@ namespace Transport.ViewModels
 {
     public class AdminAndUserViewModel : AddUserViewModel
     {
-        public List<ApplicationUser> AllAdmins { get; set; }
+        public List<ApplicationUser> AllUsers { get; set; }
     }
 }

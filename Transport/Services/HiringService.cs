@@ -134,46 +134,46 @@ namespace Transport.Services
         }
 
         //Getting a single hire details
-        public ApproveHiringRequestViewModel GetSingleHireDetails(int HirerId)
-        {
-            //Get the HIre details
-            var AllHireDetails = GetAllHirers();
-            HireDetailsViewModel singleHireDetails = AllHireDetails.Where(x => x.HirerId == HirerId).FirstOrDefault();
-            var AllHiring = hirerRepository.AllHiring().Where(x => x.HirerId == HirerId).ToList();
-            List<ApproveHireRequest> AllApprovedHireRequests = new List<ApproveHireRequest>();
-            //Getting all approved hiring details
-            for (int i = 0; i < AllHiring.Count; i++)
-            {
-                ApproveHireRequest _approveHireRequest = new ApproveHireRequest()
-                {
+        //public ApproveHiringRequestViewModel GetSingleHireDetails(int HirerId)
+        //{
+        //    //Get the HIre details
+        //    var AllHireDetails = GetAllHirers();
+        //    HireDetailsViewModel singleHireDetails = AllHireDetails.Where(x => x.HirerId == HirerId).FirstOrDefault();
+        //    var AllHiring = hirerRepository.AllHiring().Where(x => x.HirerId == HirerId).ToList();
+        //    List<ApproveHireRequest> AllApprovedHireRequests = new List<ApproveHireRequest>();
+        //    //Getting all approved hiring details
+        //    for (int i = 0; i < AllHiring.Count; i++)
+        //    {
+        //        ApproveHireRequest _approveHireRequest = new ApproveHireRequest()
+        //        {
 
-                    HirerId = singleHireDetails.HirerId,
-                    CalculatedCost = singleHireDetails.TotalHiringCost,
-                    WashingFee = (decimal)AllHiring[i].WashingFee,
-                    DriverFee = (decimal)AllHiring[i].DriverHireFee ,
-                    VehicleId = AllHiring[i].VehicleId,
-                    DriverId = AllHiring[i].TransportStaffId,
-                    RegistrationNumber = AllHiring[i].Vehicle.RegistrationNumber,
-                    DriverName = AllHiring[i].TransportStaff.Othernames + " " + AllHiring[i].TransportStaff.Surname,
-                    DateTimeReturned = (DateTime)AllHiring[i].TimeReturned
-                };
-                AllApprovedHireRequests.Add(_approveHireRequest);
+        //            HirerId = singleHireDetails.HirerId,
+        //            CalculatedCost = singleHireDetails.TotalHiringCost,
+        //            WashingFee = (decimal)AllHiring[i].WashingFee,
+        //            DriverFee = (decimal)AllHiring[i].DriverHireFee,
+        //            VehicleId = AllHiring[i].VehicleId,
+        //            DriverId = AllHiring[i].TransportStaffId,
+        //            RegistrationNumber = AllHiring[i].Vehicle.RegistrationNumber,
+        //            DriverName = AllHiring[i].TransportStaff.Othernames + " " + AllHiring[i].TransportStaff.Surname,
+        //            DateTimeReturned = (DateTime)AllHiring[i].TimeReturned
+        //        };
+        //        AllApprovedHireRequests.Add(_approveHireRequest);
 
-            }
-            ApproveHiringRequestViewModel approveHiringRequestViewModel = new ApproveHiringRequestViewModel
-            {
-                hireDetails = singleHireDetails,
-                approveHireRequest = AllApprovedHireRequests,
-                Vehicles = new SelectList(requestService
-                                        .GetAllVehicleMaintenanceRequest().Item2
-                                        .Select(s => new { VehicleId = s.VehicleId, RegistrationNumber = $"{s.RegistrationNumber}", ChasisNumber = $"{s.ChasisNumber}" }), "VehicleId", "RegistrationNumber", "ChasisNumber"),
-                Drivers = new SelectList(transportStaff
-                                        .GetAllTransportStaff()
-                                        .Select(d => new { TransportStaffId = d.TransportStaffId, FullName = $"{d.Othernames +" "+ d.Surname }", }), "TransportStaffId", "FullName")
-            };
-          
-            return approveHiringRequestViewModel;
-        }
+        //    }
+        //    ApproveHiringRequestViewModel approveHiringRequestViewModel = new ApproveHiringRequestViewModel
+        //    {
+        //        hireDetails = singleHireDetails,
+        //        approveHireRequest = AllApprovedHireRequests,
+        //        Vehicles = new SelectList(requestService
+        //                                .GetAllVehicleMaintenanceRequest().Item2
+        //                                .Select(s => new { VehicleId = s.VehicleId, RegistrationNumber = $"{s.RegistrationNumber}", ChasisNumber = $"{s.ChasisNumber}" }), "VehicleId", "RegistrationNumber", "ChasisNumber"),
+        //        Drivers = new SelectList(transportStaff
+        //                                .GetAllTransportStaff()
+        //                                .Select(d => new { TransportStaffId = d.TransportStaffId, FullName = $"{d.Othernames + " " + d.Surname }", }), "TransportStaffId", "FullName")
+        //    };
+
+        //    return approveHiringRequestViewModel;
+        //}
 
         public void SetHireBus(HireDetailsViewModel model)
         {

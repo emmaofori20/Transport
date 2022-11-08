@@ -10,12 +10,13 @@ namespace Transport.Repositories.IRepository
 {
     public interface ITransportStaffRepository
     {
-        public void AssignRole(ApplicationUser model);
+        public void AssignRole(ApplicationUser model, int RoleId);
         public void AddNewUser(AddUserViewModel model);
         public AdminAndUserViewModel GetAllUsers();
         public ApplicationUser GetUser(TicketReceivedContext context);
         public HrStaffViewModel VerifyStaffId(string StaffId);
 
         public void ToggleStaffActive(int StaffId, string Issuer);
+        public List<Role> GetAllRoles();
     }
 }

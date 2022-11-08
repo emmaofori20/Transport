@@ -30,27 +30,27 @@ namespace Transport.Repositories
                 CreatedOn= DateTime.Now
             };
 
-            _context.VehicleMaintenanceSpareparts.Add(vehicleMaintenanceSparepart);
-            _context.SaveChanges();
+            //_context.VehicleMaintenanceSpareparts.Add(vehicleMaintenanceSparepart);
+            //_context.SaveChanges();
         }
 
-        public void DeleteAllVehicleMaintenanceSparepart(int ListId)
-        {
-            //get all spare parts with that Id
-            var results= GetList(ListId);
+        //public void DeleteAllVehicleMaintenanceSparepart(int ListId)
+        //{
+        //    //get all spare parts with that Id
+        //    var results= GetList(ListId);
 
-            foreach (var item in results)
-            {
-                _context.VehicleMaintenanceSpareparts.Remove(item);
-                _context.SaveChanges();
+        //    foreach (var item in results)
+        //    {
+        //        //_context.VehicleMaintenanceSpareparts.Remove(item);
+        //        //_context.SaveChanges();
 
-            }
-        }
+        //    }
+        //}
 
-        public List<VehicleMaintenanceSparepart> GetList(int Id)
-        {
-            var results = _context.VehicleMaintenanceSpareparts.Where(x => x.VehicleMaintenanceRequestId == Id).ToList();
-            return results;
-        }
+        //public List<VehicleMaintenanceSparepart> GetList(int Id)
+        //{
+        //    //var results = _context.VehicleMaintenanceSpareparts.Where(x => x.VehicleMaintenanceRequestId == Id).ToList();
+        //    //return results;
+        //}
     }
 }
