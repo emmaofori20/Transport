@@ -30,6 +30,8 @@ namespace Transport.Repositories
             return _context.VehicleMaintenanceRequests
                 .Include(x=>x.Vehicle)
                 .Include(x=>x.VehicleMaintenanceRequestItems)
+                .ThenInclude(x=>x.RequestType)
+                .ThenInclude(x=>x.RequestTypeCharges)
                 .Include(x => x.VehicleMaintenanceRequestStatuses)
                 .ThenInclude(x => x.Status)
                 .Where(x=>x.IsDeleted != true)

@@ -7,10 +7,7 @@ using System.Threading.Tasks;
 
 namespace Transport.Utils
 {
-    public static class AppHttpContext
-    {
-        public static string AppBaseUrl(HttpContext Current) => $"{Current.Request.Scheme}://{Current.Request.Host}{Current.Request.PathBase}";
-    }
+   
 
     public static class SessionExtension
     {

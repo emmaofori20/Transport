@@ -14,5 +14,8 @@ namespace Transport.ViewModels
         public string SparePartName { get; set; }
         [Required]
         public double Amount { get; set; }
+        public int RequestTypeId { get; set; }
+        public decimal RequestChargeValue { get; set; }
+        public string RequestChargeName { get; set; }
     }
 }

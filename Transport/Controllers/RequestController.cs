@@ -10,6 +10,7 @@ using Transport.ViewModels;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Transport.Repositories.IRepository;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Transport.Controllers
@@ -20,13 +21,17 @@ namespace Transport.Controllers
         public IRequestService requestService;
         private readonly IVehicleService vehicleService;
         private readonly IRoutineService routineService;
+        private readonly IRequestTypeRepository requestTypeRepository;
 
         //CONSTRUCTOR
-        public RequestController(IRequestService _requestService, IVehicleService vehicleService,IRoutineService routineService)
+        public RequestController(IRequestService _requestService, IVehicleService vehicleService,
+                IRoutineService routineService,
+                IRequestTypeRepository requestTypeRepository)
         {
             requestService = _requestService;
             this.vehicleService = vehicleService;
             this.routineService = routineService;
+            this.requestTypeRepository = requestTypeRepository;
         }
         public IActionResult Index()
         {
@@ -87,9 +92,12 @@ namespace Transport.Controllers
 
         }
 
+
         [HttpGet]
         public IActionResult RequestSparePart(int Id)
         {
+            ViewBag.Requestitem = new SelectList(requestTypeRepository.GetAllRequestType()
+                .Select(s => new { Id = s.RequestTypeId, Text = $"{s.RequestTypeName}" }), "Id", "Text");
             ViewData["RequestSparePartId"] = Id;
             return View();
         }
@@ -166,6 +174,9 @@ namespace Transport.Controllers
             try
             {
                 ViewData["EditRequestListId"] = RequestId;
+                ViewBag.Requestitem = new SelectList(requestTypeRepository.GetAllRequestType()
+                .Select(s => new { Id = s.RequestTypeId, Text = $"{s.RequestTypeName}" }), "Id", "Text");
+
                 var results = requestService.VehicleMaintenanceRequestDetails(RequestId);
                 return View(results);
 
@@ -277,6 +288,14 @@ namespace Transport.Controllers
             
             
          }
+
+        public IActionResult ViewReceipts(string DocumentStreamId)
+        {
+            var result = requestService.GetReceiptsDocument(DocumentStreamId);
+
+            var filedetails = result.FileStream;
+            return File(filedetails, "application/*");
+        }
     }
     
 }
