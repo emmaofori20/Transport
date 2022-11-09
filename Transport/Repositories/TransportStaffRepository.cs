@@ -32,6 +32,11 @@ namespace Transport.Repositories
            
         }
 
+        public int GetUsersTotalNumber()
+        {
+           return _context.ApplicationUsers.Count();
+        }
+
         public void AssignRole(ApplicationUser model, int RoleId)
         {
             _context.ApplicationUserRoles.Add(new ApplicationUserRole

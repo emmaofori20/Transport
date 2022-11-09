@@ -27,8 +27,8 @@ namespace Transport.Controllers
         // GET: DashboardController
         public ActionResult Index()
         {
-          
-            return View();
+            var itemsForDashboard = _adminService.GetItemsForDashboard();
+            return View(itemsForDashboard);
         }
 
         // GET: DashboardController/Details/5

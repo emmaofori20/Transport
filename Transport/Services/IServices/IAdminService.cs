@@ -15,6 +15,7 @@ namespace Transport.Services.IServices
         public HrStaffViewModel VerifyStaffId(string StaffId);
         public void ToggleStaffActive(int StaffId, string Issuer);
         public SelectList GetAllRoles();
+        public DashboardViewModel GetItemsForDashboard();
 
     }
 }

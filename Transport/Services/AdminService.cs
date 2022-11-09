@@ -16,10 +16,22 @@ namespace Transport.Services
     public class AdminService: IAdminService
     {
         private readonly ITransportStaffRepository _transportStaffRepository;
+        private readonly IVehicleRepository _vehicleRepository;
+        private readonly ISparePartQuantityRepository _sparePartQuantityRepository;
+        private readonly IVehicleMaintenanceRequestRepository _vehicleMaintenanceRequestRepository;
 
-        public AdminService(ITransportStaffRepository transportStaffRepository )
+        
+
+        public AdminService(
+            ITransportStaffRepository transportStaffRepository,
+            IVehicleRepository vehicleRepository,
+            ISparePartQuantityRepository sparePartQuantityRepository,
+            IVehicleMaintenanceRequestRepository vehicleMaintenanceRequestRepository)
         {
             _transportStaffRepository = transportStaffRepository;
+            _vehicleRepository = vehicleRepository;
+            _sparePartQuantityRepository = sparePartQuantityRepository;
+            _vehicleMaintenanceRequestRepository = vehicleMaintenanceRequestRepository;
         }
         public AdminAndUserViewModel GetAllTransportStaff()
         {
@@ -46,6 +58,20 @@ namespace Transport.Services
         {
             return new SelectList(_transportStaffRepository.GetAllRoles()
                .Select(s => new { Id = s.RoleId, Text = $"{s.RoleName}" }), "Id", "Text");
+        }
+
+
+        public  DashboardViewModel GetItemsForDashboard()
+        {
+            var dashboardVM = new DashboardViewModel
+            {
+                TotalVehicleNumber = _vehicleRepository.GetTotalVehicleNumber(),
+                TotalUsersNumber = _transportStaffRepository.GetUsersTotalNumber(),
+                TotalSparepartNumber = _sparePartQuantityRepository.GetSparepartCount(),
+                VehicleMaintenanceRequestNumber = _vehicleMaintenanceRequestRepository.GetTotalMaintenanceRequestNumber()
+            };
+
+            return dashboardVM;
         }
 
 

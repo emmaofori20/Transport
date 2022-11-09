@@ -22,6 +22,11 @@ namespace Transport.Repositories
             return _context.SparePartQuantities.Include(x => x.SparePart).Where(x=>x.IsDeleted!=true).ToList();
         }
 
+        public int GetSparepartCount()
+        {
+            return _context.SpareParts.Count();
+        }
+
         public SparePart AddSparePartName(string Name)
         {
             var sparePartName = new SparePart

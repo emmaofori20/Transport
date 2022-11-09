@@ -7,6 +7,9 @@ namespace Transport.ViewModels
 {
     public class DashboardViewModel
     {
-        public AddUserViewModel CurrentUser { get; set; }
+        public int TotalVehicleNumber { get; set; }
+        public int TotalSparepartNumber { get; set; }
+        public int TotalUsersNumber { get; set; }
+        public int VehicleMaintenanceRequestNumber { get; set; }
     }
 }

@@ -10,6 +10,7 @@ namespace Transport.Repositories.IRepository
     public interface ISparePartQuantityRepository
     {
         public List<SparePartQuantity> GetSpareParts();
+        public int GetSparepartCount();
         public void AddSparePart(SparePartViewModel model);
         public void UpdateSpareQuantity(SparePartViewModel model);
         public void DeleteSparePart(int sparePartId);

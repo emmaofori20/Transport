@@ -419,6 +419,11 @@ namespace Transport.Repositories
             _context.SaveChanges();
         }
 
+        public int GetTotalVehicleNumber()
+        {
+            return _context.Vehicles.Count();
+        }
+
 
 
     }

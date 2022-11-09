@@ -38,6 +38,11 @@ namespace Transport.Repositories
                 .ToList();
         }
 
+        public int GetTotalMaintenanceRequestNumber()
+        {
+            return _context.VehicleMaintenanceRequests.Count();
+        }
+
         public VehicleMaintenanceRequest VehicleMaintenanceRequest(RequestMaintenanceViewModel model)
         {
             //Saving/adding Request Maintenance Data into the database
