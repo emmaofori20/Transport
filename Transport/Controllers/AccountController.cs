@@ -58,6 +58,13 @@ namespace Transport.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> SignOut()
+        {
+            HttpContext.Session.Clear();
+            return SignOut("Cookies", "oidc");
+        }
+
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
