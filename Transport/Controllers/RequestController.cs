@@ -221,20 +221,26 @@ namespace Transport.Controllers
         }
 
         //for viewing history of a particular vehicle
-        public IActionResult VehicleRequestMaintanceHistory(int VehicleId)
+        public async Task<IActionResult>  VehicleRequestMaintanceHistory(int VehicleId)
         {
             try
             {
-                ViewBag.VehicleId = VehicleId;
-
+                var res = await vehicleService.GetVehicleById(VehicleId);
+                ViewBag.VehicleRegistrationNumber = res.vehicle.RegistrationNumber;
                 var RequestMaintenanceHistory = requestService.GetAllVehicleMaintenanceRequest()
                                            .Item1.Where(x => x.VehicleId == VehicleId);
                 List<int> Repartitions = new List<int>();
+
+                //select request for the months in the current year
                 var request = RequestMaintenanceHistory.Select(x => x.Date.Month).Distinct().ToList();
-                foreach (var item in request)
+                if (request.Count != 0)
                 {
-                    Repartitions.Add(RequestMaintenanceHistory.Count(x => x.Date.Month == item));
+                    foreach (var item in request)
+                    {
+                        Repartitions.Add(RequestMaintenanceHistory.Count(x => x.Date.Month == item));
+                    }
                 }
+                
 
                 var rep = Repartitions;
                 ViewBag.Request = request;
