@@ -12,15 +12,15 @@ namespace Transport.Services.IServices
     {
         public VehicleMaintenanceRequest MakeRequestMaintenance( RequestMaintenanceViewModel model);
 
-        public void AddRequestSparePart(List<VehicleMaintananceSparepartViewModel> model, int SparePartListId);
+        public void AddRequestSparePart(List<VehicleMaintananceSparepartViewModel> model, int SparePartListId, string Issuer);
 
         public VehicleMaintenanceRequestDetailsViewModel VehicleMaintenanceRequestDetails(int ListId);
 
         public (List<VehicleMaintenanceRequestsViewModel>, List<Vehicle>) GetAllVehicleMaintenanceRequest();
 
-        public void DeleteVehicleRequestMaintenance(int RequestId);
+        public void DeleteVehicleRequestMaintenance(int RequestId, string Issuer);
 
-        public void EdiVehicleRequestMaintenance(VehicleMaintenanceRequestDetailsViewModel model,int RequestId);
+        public void EdiVehicleRequestMaintenance(VehicleMaintenanceRequestDetailsViewModel model,int RequestId, string Issuer);
 
         public void UploadFiles(List<IFormFile> formFiles, int RequestId);
         public GettingReceiptsViewModel GetReceiptsDocument(string DocumentStreamId);

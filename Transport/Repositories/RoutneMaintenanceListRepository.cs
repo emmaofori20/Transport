@@ -19,7 +19,7 @@ namespace Transport.Repositories
             this.sparePartQuantityRepository = sparePartQuantityRepository;
         }
 
-        public void AddRoutineMaintenanceLsit(RoutineActivityCheck Activity, int RoutineMaintenanceId)
+        public void AddRoutineMaintenanceLsit(RoutineActivityCheck Activity, int RoutineMaintenanceId, string Issuer)
         {
             if (Activity.Isokay && Activity.IsRequiredSparePart)
             {
@@ -35,7 +35,7 @@ namespace Transport.Repositories
                     SparePartId= Activity.SparePartId,
                     IsSparePartUsed =true,
                     IsRoutineCheck = true,
-                    CreatedBy= "Admin",
+                    CreatedBy= Issuer,
                     CreatedOn = DateTime.Now
                 };
 
@@ -49,7 +49,7 @@ namespace Transport.Repositories
                     RoutineMaintenanceActivityId = Activity.ActivityId,
                     IsSparePartUsed = false,
                     IsRoutineCheck = true,
-                    CreatedBy = "Admin",
+                    CreatedBy = Issuer,
                     CreatedOn = DateTime.Now
                 };
                 _context.RoutineMaintenanceLists.Add(RoutineActivity);
@@ -63,7 +63,7 @@ namespace Transport.Repositories
                     RoutineMaintenanceActivityId = Activity.ActivityId,
                     IsRoutineCheck =false,
                     IsSparePartUsed =false,
-                    CreatedBy = "Admin",
+                    CreatedBy = Issuer,
                     CreatedOn = DateTime.Now
                 };
                 _context.RoutineMaintenanceLists.Add(RoutineActivity);
@@ -71,7 +71,7 @@ namespace Transport.Repositories
             }
         }
 
-        public void EditRoutineMaintenanceList(RoutineActivityCheck Activity, int RoutineMaintenanceid)
+        public void EditRoutineMaintenanceList(RoutineActivityCheck Activity, int RoutineMaintenanceid, string Issuer)
         {
             var RoutineActivity = _context.RoutineMaintenanceLists
                 .Where(x=>x.VehicleRoutineMaintenanceId == RoutineMaintenanceid && x.RoutineMaintenanceActivityId == Activity.ActivityId).FirstOrDefault();
@@ -81,7 +81,7 @@ namespace Transport.Repositories
                 RoutineActivity.IsSparePartUsed = Activity.IsRequiredSparePart;
                 RoutineActivity.Quantity = (int?)Activity.Quantity;
                 RoutineActivity.SparePartId = Activity.SparePartId == 0 ? null: Activity.SparePartId;
-                RoutineActivity.UpdatedBy = "UpdatedAdmin";
+                RoutineActivity.UpdatedBy = Issuer;
                 RoutineActivity.UpdatedOn = DateTime.Now;
 
                 _context.RoutineMaintenanceLists.Update(RoutineActivity);

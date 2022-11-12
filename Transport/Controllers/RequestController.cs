@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Transport.Repositories.IRepository;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Transport.Utils;
 
 namespace Transport.Controllers
 {
@@ -69,15 +71,16 @@ namespace Transport.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    //Getting issuer's name
+                    var Issuer = GetCurrentUserName().Value;
+                    model.requestMaintenance.CreatedBy = Issuer;
                     //Making a Request Maintnace
                     var result = requestService.MakeRequestMaintenance(model.requestMaintenance);
                     return RedirectToAction("RequestSparePart", new { Id = result.VehicleMaintenanceRequestId });
-
                 }
                 else
                 {
                     return RedirectToAction("Index");
-
                 }
             }
             catch (Exception err)
@@ -88,8 +91,6 @@ namespace Transport.Controllers
                 };
                 return View("Error", error);
             }
-
-
         }
 
 
@@ -110,9 +111,10 @@ namespace Transport.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    //Getting issuer's name
+                    var Issuer = GetCurrentUserName().Value;
                     //returns true after method is completed
-                    requestService.AddRequestSparePart(model, Id);
-                    //return Json(Url.Action("RequestSparePartDetails", "Request"));
+                    requestService.AddRequestSparePart(model, Id, Issuer);
                     return RedirectToAction("RequestSparePartDetails", new { ListId = Id });
                 }
 
@@ -154,7 +156,9 @@ namespace Transport.Controllers
         {
             try
             {
-                requestService.DeleteVehicleRequestMaintenance(RequestId);
+                //Getting issuer's name
+                var Issuer = GetCurrentUserName().Value;
+                requestService.DeleteVehicleRequestMaintenance(RequestId, Issuer);
                 return RedirectToAction("Index");
 
             }
@@ -199,9 +203,9 @@ namespace Transport.Controllers
             {
                 if (ModelState.IsValid)
                 {
-
-                    requestService.EdiVehicleRequestMaintenance(model, RequestId);
-
+                    //Getting issuer's name
+                    var Issuer = GetCurrentUserName().Value;
+                    requestService.EdiVehicleRequestMaintenance(model, RequestId, Issuer);
                     return RedirectToAction("RequestSparePartDetails", new { ListId = RequestId });
                 }
                 //ViewData["EditRequestListId"] = RequestId;
@@ -294,7 +298,13 @@ namespace Transport.Controllers
             
             
          }
-
+        public Claim GetCurrentUserName()
+        {
+            return User.Identities
+                       .FirstOrDefault()
+                       .Claims.Where(x => x.Type == ClaimsEnum.Name.ToString().ToLower())
+                       .FirstOrDefault();
+        }
         public IActionResult ViewReceipts(string DocumentStreamId)
         {
             var result = requestService.GetReceiptsDocument(DocumentStreamId);

@@ -123,7 +123,7 @@ namespace Transport.Repositories
 
             }
         }
-        public void SubtractSparePartQuantityAfterRoutineMaintenanceActivity(RoutineActivityCheck Activity)
+        public void SubtractSparePartQuantityAfterRoutineMaintenanceActivity(RoutineActivityCheck Activity, string Issuer)
         {
             var res = GetSpareParts();
 
@@ -151,7 +151,7 @@ namespace Transport.Repositories
 
             }
         }
-        public void AddSparePartQuantityAfterRoutineMaintenanceActivity(RoutineActivityCheck Activity)
+        public void AddSparePartQuantityAfterRoutineMaintenanceActivity(RoutineActivityCheck Activity, string Issuer)
         {
             var res = GetSpareParts();
 

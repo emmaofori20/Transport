@@ -43,12 +43,12 @@ namespace Transport.Services
             return VehicleMaintenanceRequest;
         }
 
-        public void AddRequestSparePart(List<VehicleMaintananceSparepartViewModel> model, int SparePartListId)
+        public void AddRequestSparePart(List<VehicleMaintananceSparepartViewModel> model, int SparePartListId, string Issuer)
         {
             //Adding List to the table
             for (int i = 0; i < model.Count; i++)
             {
-                vehicleMaintenanceSparePartRepository.AddVehicleMaintenanceSparePart(model[i], SparePartListId);
+                vehicleMaintenanceSparePartRepository.AddVehicleMaintenanceSparePart(model[i], SparePartListId,Issuer);
             }
 
         }
@@ -142,23 +142,23 @@ namespace Transport.Services
             return (AllRequestList,vehicleList);
         }
 
-        public void DeleteVehicleRequestMaintenance(int RequestId)
+        public void DeleteVehicleRequestMaintenance(int RequestId, string Issuer)
         {
-            vehicleMaintenanceRequestRepository.DeleteVehicleRequestMaintenance(RequestId);
+            vehicleMaintenanceRequestRepository.DeleteVehicleRequestMaintenance(RequestId,Issuer);
         }
         public GettingReceiptsViewModel GetReceiptsDocument(string DocumentStreamId)
         {
             return vehicleRequestPhotoReceiptRepository.GetReceiptsDocument(DocumentStreamId);
         }
 
-        public void EdiVehicleRequestMaintenance(VehicleMaintenanceRequestDetailsViewModel model, int RequestId)
+        public void EdiVehicleRequestMaintenance(VehicleMaintenanceRequestDetailsViewModel model, int RequestId, string Issuer)
         {
             //......UPDATE ON THE REQUEST........//
             var RequestMaintenance = new RequestMaintenanceViewModel
             {
                 MaintenanceDescription = model.MaintenanceDescription,
                 RegistrationNumber = model.VehicleId,///change in the futre
-
+                CreatedBy = Issuer
             };
             vehicleMaintenanceRequestRepository.EditVehicleRequestMaintenance(RequestId, RequestMaintenance);
             //......UPDATE ON THE REQUEST........//
@@ -168,7 +168,7 @@ namespace Transport.Services
             //Deleting all spareparts with the request ID
             vehicleMaintenanceSparePartRepository.DeleteAllVehicleMaintenanceSparepart(RequestId);
             //update or addng new spareprts
-            AddRequestSparePart(model.spareParts, RequestId);
+            AddRequestSparePart(model.spareParts, RequestId, Issuer);
             ////////////UPDATE OF THE SPARE PART SECTION////////////
 
         }

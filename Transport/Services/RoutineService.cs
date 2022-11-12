@@ -40,7 +40,7 @@ namespace Transport.Services
                 var RoutineMaintenance = vehicleRoutineMaintenanceRepository.AddRoutineRequest(model);
                 for (int i = 0; i < model.RoutineActivity.Count; i++)
                 {
-                    routneMaintenanceListRepository.AddRoutineMaintenanceLsit(model.RoutineActivity[i], RoutineMaintenance.VehicleRoutineMaintenanceId);
+                    routneMaintenanceListRepository.AddRoutineMaintenanceLsit(model.RoutineActivity[i], RoutineMaintenance.VehicleRoutineMaintenanceId,model.CreatedBy);
                 }
                 return RoutineMaintenance;
 
@@ -187,7 +187,7 @@ namespace Transport.Services
             //continue function when all is true
             for (int i = 0; i < model.RoutineActivity.Count; i++)
             {
-                routneMaintenanceListRepository.EditRoutineMaintenanceList(model.RoutineActivity[i], model.RoutineId);
+                routneMaintenanceListRepository.EditRoutineMaintenanceList(model.RoutineActivity[i], model.RoutineId, model.CreatedBy);
             }
         }
 
@@ -263,7 +263,7 @@ namespace Transport.Services
                             SparePartName = model.RoutineActivity[i].SparePartName,
                             Quantity = model.RoutineActivity[i].Quantity-routinemaintenance.RoutineActivity[i].Quantity 
                         };
-                        sparePartQuantityRepository.SubtractSparePartQuantityAfterRoutineMaintenanceActivity(routineActivityCheck);
+                        sparePartQuantityRepository.SubtractSparePartQuantityAfterRoutineMaintenanceActivity(routineActivityCheck, model.CreatedBy);
 
                     }
                     else if (model.RoutineActivity[i].Quantity < routinemaintenance.RoutineActivity[i].Quantity)
@@ -278,7 +278,7 @@ namespace Transport.Services
                             SparePartName = model.RoutineActivity[i].SparePartName,
                             Quantity = routinemaintenance.RoutineActivity[i].Quantity - model.RoutineActivity[i].Quantity
                         };
-                        sparePartQuantityRepository.AddSparePartQuantityAfterRoutineMaintenanceActivity(routineActivityCheck);
+                        sparePartQuantityRepository.AddSparePartQuantityAfterRoutineMaintenanceActivity(routineActivityCheck, model.CreatedBy);
                     }
                     else
                     {
@@ -298,16 +298,16 @@ namespace Transport.Services
                         SparePartName = model.RoutineActivity[i].SparePartName,
                         Quantity = routinemaintenance.RoutineActivity[i].Quantity 
                     };
-                    sparePartQuantityRepository.AddSparePartQuantityAfterRoutineMaintenanceActivity(routineActivityCheck);
+                    sparePartQuantityRepository.AddSparePartQuantityAfterRoutineMaintenanceActivity(routineActivityCheck, model.CreatedBy);
                 }
                 
 
             }
 
         }
-        public void DeleteRoutineMaintenanceVehicle(int RoutineId)
+        public void DeleteRoutineMaintenanceVehicle(int RoutineId, string Issuer)
         {
-            vehicleRoutineMaintenanceRepository.DeleteRoutineMaintenanceRequest(RoutineId);
+            vehicleRoutineMaintenanceRepository.DeleteRoutineMaintenanceRequest(RoutineId, Issuer);
         }
     }
 }
