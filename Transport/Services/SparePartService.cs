@@ -56,9 +56,9 @@ namespace Transport.Services
             return sparePartQuantity;
         }
 
-        public void DeleteSparePart(int sparePartId)
+        public void DeleteSparePart(int sparePartId, string Issuer)
         {
-            sparePartQuantityRepository.DeleteSparePart(sparePartId);
+            sparePartQuantityRepository.DeleteSparePart(sparePartId, Issuer);
         }
         /// <summary>
         /// ROUTINE ACTIVITY
@@ -69,9 +69,9 @@ namespace Transport.Services
             return sparePartQuantityRepository.GetRoutineMaintenanceActivities();
         }
 
-        public void DeleteRoutineActivity(int RoutineActivityId)
+        public void DeleteRoutineActivity(int RoutineActivityId, string Issuer)
         {
-            sparePartQuantityRepository.DeleteRoutineActivity(RoutineActivityId);
+            sparePartQuantityRepository.DeleteRoutineActivity(RoutineActivityId,Issuer);
         }
 
         public void CreateRoutineActivity(RoutineActivityViewModel model)

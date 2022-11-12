@@ -24,7 +24,7 @@ namespace Transport.Repositories
             if (Activity.Isokay && Activity.IsRequiredSparePart)
             {
                 ////Substract the quantity of spareparts used for the activity and proceed
-                sparePartQuantityRepository.SubtractSparePartQuantityAfterRoutineMaintenanceActivity(Activity);
+                sparePartQuantityRepository.SubtractSparePartQuantityAfterRoutineMaintenanceActivity(Activity,Issuer);
                 ////Substract the quantity of spareparts used for the activity and proceed
 
                 var RoutineActivity = new RoutineMaintenanceList
