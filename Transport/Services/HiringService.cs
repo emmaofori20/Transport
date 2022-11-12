@@ -75,17 +75,17 @@ namespace Transport.Services
             }
         }
         //Approving a hire request
-        public void ApproveHireRequest(List<ApproveHireRequest> model)
+        public void ApproveHireRequest(List<ApproveHireRequest> model, string Issuer)
         {
             //For the number of busses requested for hiring
             for (int i = 0; i < model.Count; i++)
             {
-                hirerRepository.ApprovedHire(model[i]);
+                hirerRepository.ApprovedHire(model[i], Issuer);
             }
 
             //Setting the Hirer's status to Approved 
             //functions also updates the TotalCost for hiring for hirer
-            hirerRepository.SetHirerHiringStatusToApproved(model[0]);
+            hirerRepository.SetHirerHiringStatusToApproved(model[0],  Issuer);
         }
 
         public List<HireDetailsViewModel> GetAllHirers()
@@ -191,14 +191,14 @@ namespace Transport.Services
             return hireBusViewModel;
         }
 
-        public void CompleteHireRequest(CompletedHireRequest model)
+        public void CompleteHireRequest(CompletedHireRequest model, string Issuer)
         {
-            hirerRepository.CompleteHire(model);
+            hirerRepository.CompleteHire(model,Issuer);
         }
 
-        public void InvalidHireRequest(List<ApproveHireRequest> model)
+        public void InvalidHireRequest(List<ApproveHireRequest> model, string Issuer)
         {
-            hirerRepository.InvalidHire(model[0]);
+            hirerRepository.InvalidHire(model[0],Issuer);
         }
     }
 }

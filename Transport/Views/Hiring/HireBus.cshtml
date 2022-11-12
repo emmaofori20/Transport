@@ -325,10 +325,19 @@
                 type: 'GET',
                 dataType: 'json', // added data type
                 success: function (res) {
-                    var calculatedDistance = res.rows[0].elements[0].distance.value / 1000;// convert to kilometers
-                    document.getElementById("DistanceCalculated").value = calculatedDistance;
-                    $("#SubmitHireForm").submit();
+                    if (res.status == "REQUEST_DENIED") {
+                        alert(res.error_message)
 
+                    } else {
+                        var calculatedDistance = res.rows[0].elements[0].distance.value / 1000;// convert to kilometers
+                        document.getElementById("DistanceCalculated").value = calculatedDistance;
+                        $("#SubmitHireForm").submit();
+                    }
+                    
+
+                },
+                Error: function (data) {
+                    alert("An error ocuured")
                 }
             });
 
