@@ -87,6 +87,10 @@ namespace Transport.Repositories
             return user;
         }
 
+        public List<TransportStaff> GetAllTransportStaffDrivers()
+        {
+            return _context.TransportStaffs.ToList();
+        }
         public HrStaffViewModel VerifyStaffId(string StaffId)
         {
             return GetStaffById(StaffId);

@@ -18,22 +18,22 @@ namespace Transport.Repositories
             _context = context;
         }
 
-        public void CreateRequestType(RequestTypesViewModel model)
+        public void CreateRequestType(RequestTypesViewModel model, string Issuer)
         {
             var res = new RequestType
             {
                 RequestTypeName = model.NewReqestTypeNameAndCharge.RequestTypeName,
                 IsDeleted = false,
-                CreatedBy = "Admin",
+                CreatedBy = Issuer,
                 CreatedOn = DateTime.Now
             };
             _context.RequestTypes.Add(res);
             _context.SaveChanges();
             model.NewReqestTypeNameAndCharge.RequestTypeId = res.RequestTypeId;
-            AddRequestTypeCharge(model.NewReqestTypeNameAndCharge);
+            AddRequestTypeCharge(model.NewReqestTypeNameAndCharge,Issuer);
         }
 
-        public void AddRequestTypeCharge(RequestTypeNameAndChargeViewModel model)
+        public void AddRequestTypeCharge(RequestTypeNameAndChargeViewModel model, string Issuer)
         {
             var res = new RequestTypeCharge
             {
@@ -53,7 +53,7 @@ namespace Transport.Repositories
            return _context.RequestTypes.Include(x => x.RequestTypeCharges).Where(x=>x.IsDeleted == false).ToList();
         }
 
-        public void EditRequestType(RequestTypeNameAndChargeViewModel model)
+        public void EditRequestType(RequestTypeNameAndChargeViewModel model, string Issuer)
         {
             var res = _context.RequestTypes.Find(model.RequestTypeId);
 
@@ -71,18 +71,18 @@ namespace Transport.Repositories
                     _context.RequestTypeCharges.Update(requestTypeCharge);
                     _context.SaveChanges();
                     //Add new value
-                    AddRequestTypeCharge(model);
+                    AddRequestTypeCharge(model,Issuer);
                 }
             }
         }
 
-        public void DeleteRequestType(int RequestId)
+        public void DeleteRequestType(int RequestId, string Issuer)
         {
             var res = _context.RequestTypes.Find(RequestId);
             if (res != null)
             {
                 res.IsDeleted = true;
-                res.UpdatedBy = "UpdatedAdmin";
+                res.UpdatedBy = Issuer;
                 res.UpdatedOn = DateTime.Now;
                 _context.RequestTypes.Update(res);
                 _context.SaveChanges();

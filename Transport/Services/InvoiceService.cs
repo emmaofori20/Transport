@@ -22,25 +22,25 @@ namespace Transport.Services
         }
 
         #region InvoiceService
-        public void ApproveInvoice(int RequestId)
+        public void ApproveInvoice(int RequestId, string Issuer)
         {
-            vehicleMaintenanceRequestStatusRepository.ApproveVehicleMaintenance(RequestId);
+            vehicleMaintenanceRequestStatusRepository.ApproveVehicleMaintenance(RequestId, Issuer);
         }
 
-        public void CompleteInvoice(int RequestId)
+        public void CompleteInvoice(int RequestId, string Issuer)
         {
             throw new NotImplementedException();
         }
 
 
-        public void InvalidInvoice(int RequestId)
+        public void InvalidInvoice(int RequestId, string Issuer)
         {
-            vehicleMaintenanceRequestStatusRepository.InvalidVehicleMaintenanceRequest(RequestId);
+            vehicleMaintenanceRequestStatusRepository.InvalidVehicleMaintenanceRequest(RequestId, Issuer);
         }
 
-        public void UnApprovedInvoice(int RequestId)
+        public void UnApprovedInvoice(int RequestId, string Issuer)
         {
-            vehicleMaintenanceRequestStatusRepository.UnApproveVehicleMaintenance(RequestId);
+            vehicleMaintenanceRequestStatusRepository.UnApproveVehicleMaintenance(RequestId, Issuer);
         }
 
         #endregion
@@ -52,9 +52,9 @@ namespace Transport.Services
             return requestTypeRepository.GetAllRequestType();
         }
 
-        public void CreateRequestType(RequestTypesViewModel model)
+        public void CreateRequestType(RequestTypesViewModel model, string Issuer)
         {
-            requestTypeRepository.CreateRequestType(model);
+            requestTypeRepository.CreateRequestType(model, Issuer);
         }
 
         public RequestType GetSingleRequestType(int RequestTypeId)
@@ -62,14 +62,14 @@ namespace Transport.Services
             return GetRequestTypes().Where(x => x.RequestTypeId == RequestTypeId).FirstOrDefault();
         }
 
-        public void EditRequestType(RequestTypeNameAndChargeViewModel model)
+        public void EditRequestType(RequestTypeNameAndChargeViewModel model, string Issuer)
         {
-            requestTypeRepository.EditRequestType(model);
+            requestTypeRepository.EditRequestType(model, Issuer);
         }
 
-        public void DeleteRequestType(int RequestTypeId)
+        public void DeleteRequestType(int RequestTypeId, string Issuer)
         {
-            requestTypeRepository.DeleteRequestType(RequestTypeId);
+            requestTypeRepository.DeleteRequestType(RequestTypeId, Issuer);
         }
         #endregion
     }

@@ -34,7 +34,12 @@
                                 <td>
                                     <span class="badge  badge-primary badge-lg">@Model.VehicleMaintenanceRequests[i].Status</span>
                                 </td>
-                                <td>Ghc @Model.VehicleMaintenanceRequests[i].MaintenanceCost</td>
+                                <td>
+                                    @{
+                                        var sum = Model.VehicleMaintenanceRequests[i].spareParts.Sum(c => (c.Amount * c.Quantity) + ((decimal)c.RequestTypeCharge.ChargeValue / 100) * (c.Amount * c.Quantity));
+                                    }
+                                    Ghc @sum
+                                </td>
                                 <td>
                                     <span class="dropdown">
                                         <button id="btnSearchDrop2" type="button" data-toggle="dropdown" aria-haspopup="true"

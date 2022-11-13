@@ -10,9 +10,9 @@ namespace Transport.Repositories.IRepository
     public interface IRequestTypeRepository
     {
         public List<RequestType> GetAllRequestType();
-        public void CreateRequestType(RequestTypesViewModel model);
+        public void CreateRequestType(RequestTypesViewModel model, string Issuer);
 
-        public void EditRequestType(RequestTypeNameAndChargeViewModel model);
-        public void DeleteRequestType(int RequestId);
+        public void EditRequestType(RequestTypeNameAndChargeViewModel model, string Issuer);
+        public void DeleteRequestType(int RequestId, string Issuer);
     }
 }

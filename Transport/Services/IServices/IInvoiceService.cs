@@ -9,15 +9,15 @@ namespace Transport.Services.IServices
 {
     public interface IInvoiceService
     {
-        public void ApproveInvoice(int RequestId);
-        public void InvalidInvoice(int RequestId);
-        public void CompleteInvoice(int RequestId);
-        public void UnApprovedInvoice(int RequestId);
+        public void ApproveInvoice(int RequestId, string Issuer);
+        public void InvalidInvoice(int RequestId, string Issuer);
+        public void CompleteInvoice(int RequestId, string Issuer);
+        public void UnApprovedInvoice(int RequestId, string Issuer);
 
         public List<RequestType> GetRequestTypes();
-        public void CreateRequestType(RequestTypesViewModel model);
+        public void CreateRequestType(RequestTypesViewModel model, string Issuer);
         public RequestType GetSingleRequestType(int RequestTypeId);
-        public void EditRequestType(RequestTypeNameAndChargeViewModel model);
-        public void DeleteRequestType(int RequestTypeId);
+        public void EditRequestType(RequestTypeNameAndChargeViewModel model, string Issuer);
+        public void DeleteRequestType(int RequestTypeId, string Issuer);
     }
 }

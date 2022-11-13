@@ -22,7 +22,7 @@ namespace Transport.Services.IServices
 
         public void EdiVehicleRequestMaintenance(VehicleMaintenanceRequestDetailsViewModel model,int RequestId, string Issuer);
 
-        public void UploadFiles(List<IFormFile> formFiles, int RequestId);
+        public void UploadFiles(List<IFormFile> formFiles, int RequestId, string Issuer);
         public GettingReceiptsViewModel GetReceiptsDocument(string DocumentStreamId);
 
     }

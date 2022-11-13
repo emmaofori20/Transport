@@ -283,7 +283,7 @@ namespace Transport.Controllers
                 }
                 else
                 {
-                    requestService.UploadFiles(model.ReceiptFiles, model.RequestId);
+                    requestService.UploadFiles(model.ReceiptFiles, model.RequestId, GetCurrentUserName().Value);
                     return RedirectToAction("RequestSparePartDetails", new { ListId = model.RequestId });
                 }
             }

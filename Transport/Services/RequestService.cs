@@ -39,7 +39,7 @@ namespace Transport.Services
             var VehicleMaintenanceRequest=  vehicleMaintenanceRequestRepository
                                                     .VehicleMaintenanceRequest(model);
             //setting the status of the request
-            vehicleMaintenanceRequestStatusRepository.PendingVehicleMaintenanceRequestStatus(VehicleMaintenanceRequest.VehicleMaintenanceRequestId);
+            vehicleMaintenanceRequestStatusRepository.PendingVehicleMaintenanceRequestStatus(VehicleMaintenanceRequest.VehicleMaintenanceRequestId, " ");
             return VehicleMaintenanceRequest;
         }
 
@@ -173,14 +173,14 @@ namespace Transport.Services
 
         }
 
-        public void UploadFiles(List<IFormFile> formFiles, int RequestId)
+        public void UploadFiles(List<IFormFile> formFiles, int RequestId, string Issuer)
         {
             for (int i = 0; i < formFiles.Count; i++)
             {
                 vehicleRequestPhotoReceiptRepository.AddVehicleRequestPhotoReceipt(formFiles[i], RequestId);
             }
 
-            vehicleMaintenanceRequestStatusRepository.CompleteVehicleMaintenanceRequest(RequestId);
+            vehicleMaintenanceRequestStatusRepository.CompleteVehicleMaintenanceRequest(RequestId, Issuer);
         }
 
 
