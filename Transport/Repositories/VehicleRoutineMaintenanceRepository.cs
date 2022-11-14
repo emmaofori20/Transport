@@ -33,14 +33,11 @@ namespace Transport.Repositories
             {
                 VehicleId= model.VehicleId,
                 IsDeleted=false,
-                CreatedBy= "Admin",
+                CreatedBy= model.CreatedBy,
                 CreatedOn=DateTime.Now
-
             };
-
             _context.VehicleRoutineMaintenances.Add(res);
             _context.SaveChanges();
-
             return res;
         }
 
@@ -59,7 +56,7 @@ namespace Transport.Repositories
 
             if (res != null)
             {
-                res.UpdatedBy = "UpdatedAdmin";
+                res.UpdatedBy = model.CreatedBy;
                 res.UpdatedOn = DateTime.Now;
                 res.VehicleId = model.VehicleId;
 
@@ -68,13 +65,13 @@ namespace Transport.Repositories
             }
         }
 
-        public void DeleteRoutineMaintenanceRequest(int RoutineId)
+        public void DeleteRoutineMaintenanceRequest(int RoutineId, string Issuer)
         {
             var res = _context.VehicleRoutineMaintenances.Find(RoutineId);
 
             if (res != null)
             {
-                res.UpdatedBy = "UpdatedAdmin";
+                res.UpdatedBy = Issuer;
                 res.UpdatedOn = DateTime.Now;
                 res.IsDeleted = true;
 

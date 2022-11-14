@@ -24,7 +24,7 @@ namespace Transport.Repositories
         {
             return _context.RequestTypeCharges.Where(x => x.RequestTypeId == requestId && x.IsActive == true).FirstOrDefault();
         }
-        public void AddVehicleMaintenanceSparePart(VehicleMaintananceSparepartViewModel sparePart, int ListId)
+        public void AddVehicleMaintenanceSparePart(VehicleMaintananceSparepartViewModel sparePart, int ListId, string Issuer)
         {
             VehicleMaintenanceRequestItem vehicleMaintenanceSparepart = new VehicleMaintenanceRequestItem
             {
@@ -34,7 +34,7 @@ namespace Transport.Repositories
                 Amount = (decimal)sparePart.Amount,
                 RequestTypeId = sparePart.RequestTypeId,
                 RequestTypeChargeId = GetRequestCharge(sparePart.RequestTypeId).RequestTypeChargeId,
-                CreatedBy= "Admin",
+                CreatedBy= Issuer,
                 CreatedOn= DateTime.Now
             };
 

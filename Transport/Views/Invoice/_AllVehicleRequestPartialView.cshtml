@@ -74,16 +74,21 @@
                                                             {
                                                                 //No button displayed
                                                             }
-                                                            else
+                                                            else if (@Model.VehicleMaintenanceRequests[i].Status == "Completed")
+                                                            {
+
+                                                            }
+                                                            else if (@Model.VehicleMaintenanceRequests[i].Status == "Pending")
                                                             {
                                                                 <a asp-action="EditRequestMaintenance" asp-controller="Request" asp-route-RequestId="@Model.VehicleMaintenanceRequests[i].RequestId" class="dropdown-item">
                                                                     <i class="la la-pencil"></i> Edit Request
                                                                 </a>
+                                                                <button onclick="return ConfirmDelete(this)" type="button" id="confirm-color" class="dropdown-item">
+                                                                    <i class="la la-trash"></i> Delete Request
+                                                                </button>
                                                             }
 
-                                                            <button onclick="return ConfirmDelete(this)" type="button" id="confirm-color" class="dropdown-item">
-                                                                <i class="la la-trash"></i> Delete Request
-                                                            </button>
+
                                                         </span>
                                                     </span>
                                                 </td>

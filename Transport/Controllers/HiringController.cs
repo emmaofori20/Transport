@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Transport.Models;
 using Transport.Services.IServices;
+using Transport.Utils;
 using Transport.ViewModels;
 
 namespace Transport.Controllers
@@ -21,6 +23,15 @@ namespace Transport.Controllers
         {
             return View();
         }
+
+        public Claim GetCurrentUserName()
+        {
+            return User.Identities
+                       .FirstOrDefault()
+                       .Claims.Where(x => x.Type == ClaimsEnum.Name.ToString().ToLower())
+                       .FirstOrDefault();
+        }
+
 
         public IActionResult HireBus()
         {
@@ -73,24 +84,24 @@ namespace Transport.Controllers
            
         }
 
-        //public IActionResult ViewHiringDetails(int HirerId)
-        //{
-        //    try
-        //    {
-        //        var res = hiringService.GetSingleHireDetails(HirerId);
-        //        return View(res);
+        public IActionResult ViewHiringDetails(int HirerId)
+        {
+            try
+            {
+                var res = hiringService.GetSingleHireDetails(HirerId);
+                return View(res);
 
-        //    }
-        //    catch (Exception err)
-        //    {
-        //        var error = new ErrorViewModel
-        //        {
-        //            RequestId = err.Message,
-        //        };
-        //        return View("Error", error);
+            }
+            catch (Exception err)
+            {
+                var error = new ErrorViewModel
+                {
+                    RequestId = err.Message,
+                };
+                return View("Error", error);
 
-        //    }
-        //}
+            }
+        }
 
         [HttpPost]
         public IActionResult ProceedToApproveHire(List<ApproveHireRequest> requests)
@@ -99,7 +110,8 @@ namespace Transport.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    hiringService.ApproveHireRequest(requests);
+                    var issuer = GetCurrentUserName().Value;
+                    hiringService.ApproveHireRequest(requests,issuer);
                     return RedirectToAction("HiringDashboard");
                 }
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
@@ -145,15 +157,16 @@ namespace Transport.Controllers
             
             if (ModelState.IsValid)
             {
-                hiringService.CompleteHireRequest(model);
+                var issuer = GetCurrentUserName().Value;
+                hiringService.CompleteHireRequest(model, issuer);
             }
             return RedirectToAction("HiringDashboard");
         }
 
         public IActionResult InvalidHireRequest(List<ApproveHireRequest> requests)
         {
-            hiringService.InvalidHireRequest(requests);
-
+            var issuer = GetCurrentUserName().Value;
+            hiringService.InvalidHireRequest(requests,issuer);
             return RedirectToAction("HiringDashboard");
         }
     }

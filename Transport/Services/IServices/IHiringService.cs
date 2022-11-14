@@ -12,12 +12,12 @@ namespace Transport.Services.IServices
         public HireDetailsViewModel SetVehiclesForHire();
         public void SetHireBus( HireDetailsViewModel model);
         public List<HireDetailsViewModel> GetAllHirers();
-        //public ApproveHiringRequestViewModel GetSingleHireDetails(int HirerId);
-        public void ApproveHireRequest(List<ApproveHireRequest> model);
-        public void InvalidHireRequest(List<ApproveHireRequest> model);
+        public ApproveHiringRequestViewModel GetSingleHireDetails(int HirerId);
+        public void ApproveHireRequest(List<ApproveHireRequest> model, string Issuer);
+        public void InvalidHireRequest(List<ApproveHireRequest> model, string Issuer);
         public HiringTableMatrixViewModel GetHiringTableMatrix();
         public void SaveHiringPricesDetails(HiringTableMatrixViewModel model);
-        public void CompleteHireRequest(CompletedHireRequest model);
+        public void CompleteHireRequest(CompletedHireRequest model, string Issuer);
 
 
     }

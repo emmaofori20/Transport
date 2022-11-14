@@ -38,7 +38,17 @@
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="mdi mdi-menu"></span>
-            </button><!--end button-->
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse" style="grid-gap:10px; align-items:flex-end">
+                <ul class="navbar-nav mx-auto">
+                </ul><!--end navbar nav-->
+                <div>
+                    @*<a asp-controller="Hiring" asp-action="HireBus" class="login-button mouse-down ml-3">Hire a Bus</a>*@
+                </div>
+                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-white mb-2">Login</a>
+                <!--end login button-->
+            </div>
+            <!--end button-->
         </div><!--end container-->
     </nav><!--end navbar-->
     <!-- Navbar End -->
@@ -51,11 +61,11 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-10 text-center">
                             <div class="title-heading">
-                                <h1 class="heading text-white mb-3"><span class="element" data-elements=" The Transport Unit Knust, Expert Auto Repairs, Hire Busses"></span></h1>
+                                <h1 class="heading text-white mb-3"><span class="element" data-elements=" The Transport Unit-Knust, Expert Auto Repairs, Hire Busses"></span></h1>
                                 <p class="para-desc mx-auto text-white-50">Great content details the repair process for potential clients, helping them to feel confident that they know exactly what they are paying for.</p>
                                 <div class="mt-4 pt-2">
-                                    @*<a href="javascript:void(0)" class="btn btn-custom mb-2 mr-2">Hire a Bus</a>*@
-                                    <a class="btn btn-outline-white mb-2" asp-controller="Account" asp-action="Login"><i class="ft-power"></i> Login</a>
+                                    <a asp-controller="Hiring" asp-action="HireBus" class="btn btn-custom mb-2 mr-2">Hire a Bus</a>
+                                    @*<a class="btn btn-outline-white mb-2" asp-controller="Account" asp-action="Login"><i class="ft-power"></i> Login</a>*@
                                 </div>
                             </div>
                         </div><!--end col-->

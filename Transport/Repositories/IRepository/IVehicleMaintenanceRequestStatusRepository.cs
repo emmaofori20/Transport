@@ -8,16 +8,16 @@ namespace Transport.Repositories.IRepository
 {
     public interface IVehicleMaintenanceRequestStatusRepository
     {
-        public void PendingVehicleMaintenanceRequestStatus(int  vehicleMaintenanceRequestId );
+        public void PendingVehicleMaintenanceRequestStatus(int  vehicleMaintenanceRequestId, string Issuer );
 
         public VehicleMaintenanceRequestStatus GetVehicleMaintenanceRequestStatus(int RequestId);
 
         //Just adding a new insertion
-        public void ApproveVehicleMaintenance(int RequestId);
+        public void ApproveVehicleMaintenance(int RequestId, string Issuer);
 
         //Removing/Unapproing a RequestMaintenance
-        public void UnApproveVehicleMaintenance(int RequestId);
-        public void InvalidVehicleMaintenanceRequest(int RequestId);
-        public void CompleteVehicleMaintenanceRequest(int RequestId);
+        public void UnApproveVehicleMaintenance(int RequestId, string Issuer);
+        public void InvalidVehicleMaintenanceRequest(int RequestI, string Issuerd);
+        public void CompleteVehicleMaintenanceRequest(int RequestId, string Issuer);
     }
 }

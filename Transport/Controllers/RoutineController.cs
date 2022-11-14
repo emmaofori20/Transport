@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Transport.Models;
 using Transport.Services.IServices;
+using Transport.Utils;
 using Transport.ViewModels;
 
 namespace Transport.Controllers
@@ -29,6 +31,7 @@ namespace Transport.Controllers
             try
             {
                 var results = routineService.routineMaintenanceVehicle();
+                results.CreatedBy = GetCurrentUserName().Value;
                 return View(results);
             }
             catch (Exception err)
@@ -51,6 +54,7 @@ namespace Transport.Controllers
                 var raw = routineService.routineMaintenanceVehicle();
                 model.AllVehicles = raw.AllVehicles;
                 model.SparePartsUsed = raw.SparePartsUsed;
+                model.CreatedBy = GetCurrentUserName().Value; // Getting Issuer Name
 
                 if (check)
                 {
@@ -59,7 +63,6 @@ namespace Transport.Controllers
                     if (!isChecked)
                     {
                         var results = routineService.AddRoutineMaintenanceVehicle(model);
-
                         return RedirectToAction("ViewRoutineMaintenance", new { RoutineId = results.VehicleRoutineMaintenanceId });
                     }
                     ViewBag.SparePartError = "Spare parts to be used is more than spare parts left in the inventory ";
@@ -98,7 +101,13 @@ namespace Transport.Controllers
             }
            
         }
-
+        public Claim GetCurrentUserName()
+        {
+            return User.Identities
+                       .FirstOrDefault()
+                       .Claims.Where(x => x.Type == ClaimsEnum.Name.ToString().ToLower())
+                       .FirstOrDefault();
+        }
         public IActionResult EditRoutineMaintenance(int RoutineId)
         {
             try
@@ -121,7 +130,8 @@ namespace Transport.Controllers
         {
             try
             {
-                bool check = model.VehicleId != 0 ? true : false; /// check if VehicleId is not zero
+                model.CreatedBy = GetCurrentUserName().Value;// Getting Issuers name
+                bool check = model.VehicleId != 0 ? true : false; // check if VehicleId is not zero
                 if (check)
                 {
                     //second check to monito sparepart quantities
@@ -151,7 +161,8 @@ namespace Transport.Controllers
         {
             try
             {
-                routineService.DeleteRoutineMaintenanceVehicle(RoutineId);
+                var issuer = GetCurrentUserName().Value;
+                routineService.DeleteRoutineMaintenanceVehicle(RoutineId, issuer);
                 return RedirectToAction("Index","Request");
             }
             catch (Exception err)

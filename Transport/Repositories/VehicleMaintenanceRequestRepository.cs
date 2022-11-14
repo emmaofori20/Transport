@@ -54,7 +54,7 @@ namespace Transport.Repositories
             {
                 VehicleId = model.RegistrationNumber,
                 MaintenanceDescription = model.MaintenanceDescription,
-                CreatedBy = "AdminTest",
+                CreatedBy = model.CreatedBy,
                 CreatedOn = DateTime.Now
             };
             _context.Add(vehicleMaintenanceRequest);
@@ -62,7 +62,7 @@ namespace Transport.Repositories
             return vehicleMaintenanceRequest;
         }
 
-        public void DeleteVehicleRequestMaintenance(int RequestId)
+        public void DeleteVehicleRequestMaintenance(int RequestId, string Issuer)
         {
             var VehicleMaintenanceRepuest = _context.VehicleMaintenanceRequests
                                         .Where(x=>x.VehicleMaintenanceRequestId == RequestId)
@@ -72,7 +72,7 @@ namespace Transport.Repositories
             if (VehicleMaintenanceRepuest != null)
             {
                 VehicleMaintenanceRepuest.IsDeleted = true;
-                VehicleMaintenanceRepuest.UpdatedBy = "DeletedAdmin";
+                VehicleMaintenanceRepuest.UpdatedBy = Issuer;
                 VehicleMaintenanceRepuest.UpdatedOn = DateTime.Now;
             }
 
@@ -85,7 +85,7 @@ namespace Transport.Repositories
             VehicleMaintenanceRequest vehicleMaintenance= GetMaintenanceRequest(RequestId);
             vehicleMaintenance.MaintenanceDescription = model.MaintenanceDescription;
             vehicleMaintenance.VehicleId = model.RegistrationNumber;
-            vehicleMaintenance.UpdatedBy = "UpdatedAdmin";
+            vehicleMaintenance.UpdatedBy = model.CreatedBy;
             vehicleMaintenance.UpdatedOn = DateTime.Now;
 
             _context.VehicleMaintenanceRequests.Update(vehicleMaintenance);

@@ -228,7 +228,7 @@
 
                             <h1 style="display:flex">
                                 <em>TOTAL GRAND PRICE:</em>
-                                <strong>GHC @Model.approveHireRequest[0].CalculatedCost</strong>
+                                <strong>GHC @String.Format("{0:n}", @Model.approveHireRequest[0].CalculatedCost) </strong>
                             </h1>
                             <hr />
                             <div class="row" style="grid-gap:10px; align-items:center">
@@ -353,37 +353,38 @@
         $('.CalculatePriceFromInput').on("change.add", calculateSum);
 
         //Approve function
-        $('#ApproveButton').click(function () {
+        //$('#ApproveButton').click(function (e) {
+        //    e.stopPropagation();
+        //    var tt = $('#List').serialize();
+        //    console.log(tt);
+        //    var TotalCalculatedHiringCost = document.getElementById('TotalCalculatedPrice').value;
+        //    var url = 'Hiring/ProceedToApproveHire';
+        //    var completeUrl = baseUrl + url;
+        //    debugger;
+        //    $.ajax({
+        //        type: "POST",
+        //        dataType: "json",
+        //        beforeSend: function () {
+        //            toastr.info('Approving data', 'Approving', { "hideDuration": 3000 });
 
-            var tt = $('#List').serialize();
-            console.log(tt);
-            var TotalCalculatedHiringCost = document.getElementById('TotalCalculatedPrice').value;
-            var url = 'Hiring/ProceedToApproveHire';
-            var completeUrl = baseUrl + url;
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                beforeSend: function () {
-                    toastr.info('Approving data', 'Approving', { "hideDuration": 3000 });
+        //        },
+        //        url: completeUrl,
+        //        data: tt,
+        //        headers: {
+        //        },
+        //        success: function (response) {
+        //            debugger;
+        //            toastr.success('Hiring Approved', 'Success', { "hideDuration": 3000 });
+        //            window.location.href = baseUrl+"Hiring/HiringDashboard";
 
-                },
-                url: completeUrl,
-                data: tt,
-                headers: {
-                },
-                success: function (response) {
+        //        },
+        //        error: function (xhr) {
+        //            toastr.error('We could not acesses the server\n Something went wrong', 'Error', { "hideDuration": 3000 });
 
-                    toastr.success('Hiring Approved', 'Success', { "hideDuration": 3000 });
-                    window.location.href = "/Hiring/HiringDashboard";
+        //        }
+        //    });
 
-                },
-                error: function (xhr) {
-                    toastr.error('We could not acesses the server\n Something went wrong', 'Error', { "hideDuration": 3000 });
-
-                }
-            });
-
-        });
+        //});
 
         //Invvalid function
         $('#InvalidButton').click(function () {

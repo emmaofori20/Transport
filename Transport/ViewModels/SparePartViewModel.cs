@@ -15,12 +15,15 @@ namespace Transport.ViewModels
         public string SparePartName { get; set; }
         [Required]
         public int SparePartQuantity { get; set; }
+        public string CreatedBy { get; set; }
     }
 
     public class RoutineActivityViewModel
     {
         [Required]
         public string RoutineActivityName { get; set; }
+
+        public string CreatedBy { get; set; }
     }
 
     public class SparePartRoutineActiviesViewModel

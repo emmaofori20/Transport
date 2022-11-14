@@ -17,15 +17,15 @@ namespace Transport.Repositories.IRepository
         }
 
         //Approving a request 
-        public void ApproveVehicleMaintenance(int RequestId)
+        public void ApproveVehicleMaintenance(int RequestId, string Issuer)
         {
             VehicleMaintenanceRequestStatus ApproveVehicleMaintenanceRequest = new VehicleMaintenanceRequestStatus
             {
                 VehicleMaintenanceRequestId = RequestId,
                 StatusId = 2005,
-                CreatedBy = "AdminTest",
+                CreatedBy = Issuer,
                 CreatedOn = DateTime.Now,
-                UpdatedBy = "ApprovedAdmin",
+                UpdatedBy = Issuer,
                 UpdatedOn = DateTime.Now
             };
 
@@ -41,14 +41,14 @@ namespace Transport.Repositories.IRepository
            return result;
         }
         // setting a request to invalid
-        public void InvalidVehicleMaintenanceRequest(int RequestId)
+        public void InvalidVehicleMaintenanceRequest(int RequestId, string Issuer)
         {
             var results = _context.VehicleMaintenanceRequestStatuses.Where(x => x.VehicleMaintenanceRequestId == RequestId)
                          .OrderByDescending(x => x.CreatedOn).First();
 
             if (results != null)
             {
-                results.UpdatedBy = "Invalid Engineer";
+                results.UpdatedBy = Issuer;
                 results.UpdatedOn = DateTime.Now;
                 results.StatusId = 2007;
             }
@@ -57,12 +57,12 @@ namespace Transport.Repositories.IRepository
         }
 
         //Setting a request to pending
-        public void PendingVehicleMaintenanceRequestStatus( int vehicleMaintenanceRequestId)
+        public void PendingVehicleMaintenanceRequestStatus( int vehicleMaintenanceRequestId, string Issuer)
         {
             VehicleMaintenanceRequestStatus vehicleMaintenanceRequestStatus = new VehicleMaintenanceRequestStatus
             {
                 VehicleMaintenanceRequestId = vehicleMaintenanceRequestId,
-                CreatedBy="AdminTest",
+                CreatedBy=Issuer,
                 CreatedOn=DateTime.Now,
                 StatusId = 2003
                 
@@ -73,14 +73,14 @@ namespace Transport.Repositories.IRepository
         }
 
         //Unapproving a request
-        public void UnApproveVehicleMaintenance(int RequestId)
+        public void UnApproveVehicleMaintenance(int RequestId, string Issuer)
         {
            var results= _context.VehicleMaintenanceRequestStatuses.Where(x=>x.VehicleMaintenanceRequestId == RequestId)
                 .OrderByDescending(x => x.CreatedOn).First();
 
             if (results != null)
             {
-                results.UpdatedBy = "UNApproved Engineer";
+                results.UpdatedBy = Issuer;
                 results.UpdatedOn = DateTime.Now;
                 results.StatusId = 2003;
             }
@@ -89,15 +89,15 @@ namespace Transport.Repositories.IRepository
         }
 
         //Completing a request
-        public void CompleteVehicleMaintenanceRequest (int RequestId)
+        public void CompleteVehicleMaintenanceRequest (int RequestId, string Issuer)
         {
             VehicleMaintenanceRequestStatus ApproveVehicleMaintenanceRequest = new VehicleMaintenanceRequestStatus
             {
                 VehicleMaintenanceRequestId = RequestId,
                 StatusId = 2006,
-                CreatedBy = "AdminTest",
+                CreatedBy = Issuer,
                 CreatedOn = DateTime.Now,
-                UpdatedBy = "ApprovedAdmin",
+                UpdatedBy = Issuer,
                 UpdatedOn = DateTime.Now
             };
 

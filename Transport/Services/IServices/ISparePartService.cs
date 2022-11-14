@@ -17,10 +17,10 @@ namespace Transport.Services.IServices
 
         public void EditSparePart(SparePartViewModel model);
 
-        public void DeleteSparePart(int sparePartId);
+        public void DeleteSparePart(int sparePartId, string Issuer);
         public List<RoutineMaintenanceActivity> GetRoutineMaintenanceActivities();
 
-        public void DeleteRoutineActivity(int RoutineActivityId);
+        public void DeleteRoutineActivity(int RoutineActivityId, string Issuer);
 
         public void CreateRoutineActivity(RoutineActivityViewModel model);
 

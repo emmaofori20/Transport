@@ -110,7 +110,7 @@ namespace Transport.Repositories
             decimal HirePrice = (decimal)(BusHiringPrice == null? 0: BusHiringPrice.Price);
             return HirePrice;
         }
-        public void ApprovedHire(ApproveHireRequest model)
+        public void ApprovedHire(ApproveHireRequest model, string Issuer)
         {
             //We set each vehicle in the hirings table
             var hiring = new Hiring()
@@ -121,7 +121,7 @@ namespace Transport.Repositories
                 //HireCostFee = model.HireCostFee,
                 WashingFee = model.WashingFee,
                 DriverHireFee = model.DriverFee,
-                CreatedBy ="Admin",
+                CreatedBy = Issuer,
                 CreatedOn = DateTime.Now,
                 VehicleId = model.VehicleId,
                 TransportStaffId = model.DriverId,
@@ -133,13 +133,13 @@ namespace Transport.Repositories
 
         }
 
-        public void SetHirerHiringStatusToApproved (ApproveHireRequest hirer)
+        public void SetHirerHiringStatusToApproved (ApproveHireRequest hirer, string Issuer)
         {
             var hirerHiringStatus = new HirerHiringStatus()
             {
                 HirerId = hirer.HirerId,
                 StatusId = 2005,
-                CreatedBy = "AdminHire",
+                CreatedBy = Issuer,
                 CreatedOn = DateTime.Now,
 
             };
@@ -159,7 +159,7 @@ namespace Transport.Repositories
             }
         }
 
-        public void CompleteHire(CompletedHireRequest model)
+        public void CompleteHire(CompletedHireRequest model, string Issuer)
         {
             var res = _context.Hirings.Where(x => x.HirerId == model.HirerId).ToList();
             if(res!= null)
@@ -167,7 +167,7 @@ namespace Transport.Repositories
                 foreach (var item in res)
                 {
                     item.TimeReturned = model.DateTimeReturned;
-                    item.UpdatedBy = "Admni";
+                    item.UpdatedBy = Issuer;
                     item.UpdatedOn = DateTime.Now;
                     _context.Update(item);
                     _context.SaveChanges();
@@ -178,20 +178,20 @@ namespace Transport.Repositories
                 {
                     HirerId = model.HirerId,
                     StatusId = 2006,
-                    CreatedBy = "AdminHire",
+                    CreatedBy = Issuer,
                     CreatedOn = DateTime.Now,
                 });
                 _context.SaveChanges();
             }
         }
 
-        public void InvalidHire(ApproveHireRequest model)
+        public void InvalidHire(ApproveHireRequest model, string Issuer)
         {
             var hirerHiringStatus = new HirerHiringStatus()
             {
                 HirerId = model.HirerId,
                 StatusId = 2007,
-                CreatedBy = "AdminHire",
+                CreatedBy = Issuer,
                 CreatedOn = DateTime.Now,
 
             };
