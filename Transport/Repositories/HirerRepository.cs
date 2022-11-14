@@ -40,6 +40,14 @@ namespace Transport.Repositories
             return _context.HirerHiringStatuses.ToList();
         }
 
+        public int GetNewHiringRequestCount()
+        {
+            return _context.HirerHiringStatuses
+                .Include(x => x.Status)
+                .Where(x => x.Status.StatusName == "Pending")
+                .Count();
+        }
+
         public void SetHirerDetails(HireDetailsViewModel model)
         {
             decimal Hireprice= CalculateBusHiringPrices(model.VehicleTypeForHireId, (double)model.DistanceCalculatedFromOrigin);

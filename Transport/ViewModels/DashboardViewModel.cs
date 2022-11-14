@@ -8,8 +8,9 @@ namespace Transport.ViewModels
     public class DashboardViewModel
     {
         public int TotalVehicleNumber { get; set; }
-        public int TotalSparepartNumber { get; set; }
         public int TotalUsersNumber { get; set; }
-        public int VehicleMaintenanceRequestNumber { get; set; }
+        public int TotalNumberOfNewMaintenanceRequests { get; set; }
+        public int TotalNumberOfNewHiringRequests { get; set; }
+
     }
 }

@@ -17,7 +17,7 @@ namespace Transport.Services
     {
         private readonly ITransportStaffRepository _transportStaffRepository;
         private readonly IVehicleRepository _vehicleRepository;
-        private readonly ISparePartQuantityRepository _sparePartQuantityRepository;
+        private readonly IHirerRepository _hirerRepository;
         private readonly IVehicleMaintenanceRequestRepository _vehicleMaintenanceRequestRepository;
 
         
@@ -25,12 +25,12 @@ namespace Transport.Services
         public AdminService(
             ITransportStaffRepository transportStaffRepository,
             IVehicleRepository vehicleRepository,
-            ISparePartQuantityRepository sparePartQuantityRepository,
+            IHirerRepository hirerRepository,
             IVehicleMaintenanceRequestRepository vehicleMaintenanceRequestRepository)
         {
             _transportStaffRepository = transportStaffRepository;
             _vehicleRepository = vehicleRepository;
-            _sparePartQuantityRepository = sparePartQuantityRepository;
+            _hirerRepository = hirerRepository;
             _vehicleMaintenanceRequestRepository = vehicleMaintenanceRequestRepository;
         }
         public AdminAndUserViewModel GetAllTransportStaff()
@@ -67,8 +67,9 @@ namespace Transport.Services
             {
                 TotalVehicleNumber = _vehicleRepository.GetTotalVehicleNumber(),
                 TotalUsersNumber = _transportStaffRepository.GetUsersTotalNumber(),
-                TotalSparepartNumber = _sparePartQuantityRepository.GetSparepartCount(),
-                VehicleMaintenanceRequestNumber = _vehicleMaintenanceRequestRepository.GetTotalMaintenanceRequestNumber()
+                TotalNumberOfNewHiringRequests = _hirerRepository.GetNewHiringRequestCount(),
+                TotalNumberOfNewMaintenanceRequests = _vehicleMaintenanceRequestRepository.GetNewMaintenanceRequestCount(),
+
             };
 
             return dashboardVM;

@@ -38,9 +38,13 @@ namespace Transport.Repositories
                 .ToList();
         }
 
-        public int GetTotalMaintenanceRequestNumber()
+        public int GetNewMaintenanceRequestCount()
         {
-            return _context.VehicleMaintenanceRequests.Count();
+            return _context.VehicleMaintenanceRequestStatuses
+                .Include(x => x.VehicleMaintenanceRequest)
+                .Include(x => x.Status)
+                .Where(x => x.Status.StatusName == "Pending")
+                .Count();
         }
 
         public VehicleMaintenanceRequest VehicleMaintenanceRequest(RequestMaintenanceViewModel model)
