@@ -309,5 +309,39 @@ namespace Transport.Services
         {
             vehicleRoutineMaintenanceRepository.DeleteRoutineMaintenanceRequest(RoutineId, Issuer);
         }
+
+        public List<int> GetRoutineMaintenanceCountPerMonth()
+        {
+            List<int> routineCountPerMonth = new();
+
+            var routineMaintenances = vehicleRoutineMaintenanceRepository.GetAllRoutineMaintenances();
+
+            if (routineMaintenances.Count > 0)
+            {
+                for (int i = 1; i <= 12; i++)
+                {
+                    List<VehicleRoutineMaintenance> accForAMonth = new();
+
+                    foreach (var item in routineMaintenances)
+                    {
+                        if (item.CreatedOn.Month == i)
+                        {
+                            accForAMonth.Add(item);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    routineCountPerMonth.Add(accForAMonth.Count());
+                }
+
+                return routineCountPerMonth;
+            }
+
+            else return null;
+
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace Transport.ViewModels
         public int TotalUsersNumber { get; set; }
         public int TotalNumberOfNewMaintenanceRequests { get; set; }
         public int TotalNumberOfNewHiringRequests { get; set; }
-
+        public List<int> RequestCountPerMonth { get; set; }
+        public List<int> RoutineCountPerMonth { get; set; }
     }
 }

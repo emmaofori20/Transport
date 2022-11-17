@@ -18,5 +18,6 @@ namespace Transport.Services.IServices
         public bool CheckRoutineMaintenanceVehicleSpareParts(RoutineMaintenanceVehicleViewModel model);
         public bool CheckSparePartQuanityBeforeEdit(RoutineMaintenanceVehicleViewModel model);
         public void SubstractAndAddSparePartQuantity(RoutineMaintenanceVehicleViewModel model);
+        public List<int> GetRoutineMaintenanceCountPerMonth();
     }
 }

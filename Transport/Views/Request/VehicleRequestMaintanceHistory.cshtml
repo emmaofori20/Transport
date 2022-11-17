@@ -22,7 +22,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Simple Bar Chart</h4>
+                    <h4 class="card-title">Graph of Vehicle Request Maintenance History</h4>
                     <div class="heading-elements">
                         <ul class="nav nav-pills nav-pills-rounded chart-action float-right btn-group" role="group">
                             <li class="nav-item"><a class="active nav-link" data-toggle="tab" href="#scoreLineToDay">@DateTime.Now.Year </a></li>
@@ -189,7 +189,7 @@
     var repArray = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.Rep))');
     var request = JSON.parse('@Html.Raw(Json.Serialize(ViewBag.Request))');
 
-    console.log(repArray, request);
+    //console.log(repArray, request);
 
     var ctx = $("#myChart");
     var lineChart = new Chart(ctx, {

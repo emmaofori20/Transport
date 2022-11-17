@@ -19,15 +19,25 @@ namespace Transport.Controllers
     public class DashboardController : Controller
     {
         private readonly IAdminService _adminService;
+        private readonly IRequestService _requestService;
+        private readonly IRoutineService _routineService;
 
-        public DashboardController(IAdminService adminService)
+        public DashboardController(
+            IAdminService adminService,
+            IRequestService requestService,
+            IRoutineService routineService
+            )
         {
             _adminService = adminService;
+            _requestService = requestService;
+            _routineService = routineService;
         }
         // GET: DashboardController
         public ActionResult Index()
         {
             var itemsForDashboard = _adminService.GetItemsForDashboard();
+            itemsForDashboard.RequestCountPerMonth = _requestService.GetRequestMaintenanceCountPerMonth();
+            itemsForDashboard.RoutineCountPerMonth = _routineService.GetRoutineMaintenanceCountPerMonth();
             return View(itemsForDashboard);
         }
 

@@ -24,6 +24,7 @@ namespace Transport.Services.IServices
 
         public void UploadFiles(List<IFormFile> formFiles, int RequestId, string Issuer);
         public GettingReceiptsViewModel GetReceiptsDocument(string DocumentStreamId);
+        public List<int> GetRequestMaintenanceCountPerMonth();
 
     }
 }

@@ -12,7 +12,7 @@ using Transport.ViewModels;
 
 namespace Transport.Services
 {
-    public class RequestService:IRequestService
+    public class RequestService : IRequestService
     {
         private readonly IVehicleMaintenanceRequestRepository vehicleMaintenanceRequestRepository;
         private readonly IVehicleMaintenanceRequestStatusRepository vehicleMaintenanceRequestStatusRepository;
@@ -20,7 +20,7 @@ namespace Transport.Services
         private readonly IVehicleRepository vehicleRepository;
         private readonly IVehicleRequestPhotoReceiptRepository vehicleRequestPhotoReceiptRepository;
 
-        public RequestService(IVehicleMaintenanceRequestRepository vehicleMaintenanceRequestRepository, 
+        public RequestService(IVehicleMaintenanceRequestRepository vehicleMaintenanceRequestRepository,
                                IVehicleMaintenanceRequestStatusRepository vehicleMaintenanceRequestStatusRepository,
                                 IVehicleMaintenanceRequestItemRepository vehicleMaintenanceSparePartRepository,
                                 IVehicleRepository vehicleRepository,
@@ -36,7 +36,7 @@ namespace Transport.Services
         public VehicleMaintenanceRequest MakeRequestMaintenance(RequestMaintenanceViewModel model)
         {
             //Register the vehicle into the VehicleRequestMaintenance
-            var VehicleMaintenanceRequest=  vehicleMaintenanceRequestRepository
+            var VehicleMaintenanceRequest = vehicleMaintenanceRequestRepository
                                                     .VehicleMaintenanceRequest(model);
             //setting the status of the request
             vehicleMaintenanceRequestStatusRepository.PendingVehicleMaintenanceRequestStatus(VehicleMaintenanceRequest.VehicleMaintenanceRequestId, " ");
@@ -48,7 +48,7 @@ namespace Transport.Services
             //Adding List to the table
             for (int i = 0; i < model.Count; i++)
             {
-                vehicleMaintenanceSparePartRepository.AddVehicleMaintenanceSparePart(model[i], SparePartListId,Issuer);
+                vehicleMaintenanceSparePartRepository.AddVehicleMaintenanceSparePart(model[i], SparePartListId, Issuer);
             }
 
         }
@@ -60,7 +60,7 @@ namespace Transport.Services
             var requestList = vehicleMaintenanceSparePartRepository.GetList(ListId);
             var requestMaintenance = vehicleMaintenanceRequestRepository.GetMaintenanceRequest(ListId);
 
-            List<VehicleMaintananceSparepartViewModel> _spareParts= new List<VehicleMaintananceSparepartViewModel>(); ;
+            List<VehicleMaintananceSparepartViewModel> _spareParts = new List<VehicleMaintananceSparepartViewModel>(); ;
 
             //For loop to get Spare part and Quantity from the total list
             for (int i = 0; i < requestList.Count; i++)
@@ -70,8 +70,8 @@ namespace Transport.Services
                     Quantity = requestList[i].Quantity,
                     SparePartName = requestList[i].NameOfPart,
                     Amount = (double)requestList[i].Amount,
-                    RequestChargeValue = requestList.Where(x=>x.RequestTypeChargeId == requestList[i].RequestTypeChargeId).FirstOrDefault().RequestTypeCharge.ChargeValue,
-                    RequestChargeName = requestList.Where(x=>x.RequestTypeChargeId == requestList[i].RequestTypeChargeId).FirstOrDefault().RequestTypeCharge.ChargeName,
+                    RequestChargeValue = requestList.Where(x => x.RequestTypeChargeId == requestList[i].RequestTypeChargeId).FirstOrDefault().RequestTypeCharge.ChargeValue,
+                    RequestChargeName = requestList.Where(x => x.RequestTypeChargeId == requestList[i].RequestTypeChargeId).FirstOrDefault().RequestTypeCharge.ChargeName,
                     RequestTypeId = requestList[i].RequestTypeId
                 };
 
@@ -85,11 +85,11 @@ namespace Transport.Services
                 RegistrationNumber = requestMaintenance.Vehicle.RegistrationNumber,//later change to string
                 Status = requestStatus.Status.StatusName,
                 Date = requestMaintenance.CreatedOn,
-                RequestId= requestMaintenance.VehicleMaintenanceRequestId,
+                RequestId = requestMaintenance.VehicleMaintenanceRequestId,
                 spareParts = _spareParts,
                 MaintainedBy = requestMaintenance.CreatedBy,
                 VehicleId = requestMaintenance.VehicleId,
-                ReceiptImages = requestMaintenance.VehicleRequestPhotoReceipts.Where(x=>x.VehicleMaintenanceRequestId == ListId).ToList(),
+                ReceiptImages = requestMaintenance.VehicleRequestPhotoReceipts.Where(x => x.VehicleMaintenanceRequestId == ListId).ToList(),
                 ///////////THIIS VARIABLE IS FOR THE EDITING OF  REQUEST MAINTENANCE SPARE PARTS////////
                 AllVehicles = new SelectList(GetAllVehicleMaintenanceRequest().Item2
                                                     .Select(s => new { VehicleId = s.VehicleId, RegistrationNumber = $"{s.RegistrationNumber}", ChasisNumber = $"{s.ChasisNumber}" }), "VehicleId", "RegistrationNumber", "ChasisNumber")
@@ -100,7 +100,7 @@ namespace Transport.Services
             return Details;
         }
 
-        public (List<VehicleMaintenanceRequestsViewModel>, List<Vehicle> ) GetAllVehicleMaintenanceRequest()
+        public (List<VehicleMaintenanceRequestsViewModel>, List<Vehicle>) GetAllVehicleMaintenanceRequest()
         {
             //get all request and store in list
             var AllvehicleMaintenanceRequest = vehicleMaintenanceRequestRepository.GetAllMaintenanceRequest();
@@ -114,37 +114,37 @@ namespace Transport.Services
                 var singleRequestDetals = new VehicleMaintenanceRequestsViewModel
                 {
                     RegistrationNumber = AllvehicleMaintenanceRequest[i].Vehicle.RegistrationNumber,
-                    VehicleId = AllvehicleMaintenanceRequest[i].VehicleId,                 
+                    VehicleId = AllvehicleMaintenanceRequest[i].VehicleId,
                     Status = AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestStatuses
                                             .OrderByDescending(x => x.CreatedOn)
                                             .FirstOrDefault(x => x.VehicleMaintenanceRequestId == AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId)
                                             .Status.StatusName,// getting status name
                     spareParts = AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestItems
-                                            .Where(x=>x.VehicleMaintenanceRequestId == AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId)
+                                            .Where(x => x.VehicleMaintenanceRequestId == AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId)
                                             .ToList(),//getting total list of spareprt to display number
                     RequestId = AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId,
                     Date = AllvehicleMaintenanceRequest[i].CreatedOn,
                     MaintainedBy = AllvehicleMaintenanceRequest[i].CreatedBy,
                     MaintenanceCost = AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestItems
                     .Where(x => x.VehicleMaintenanceRequestId == AllvehicleMaintenanceRequest[i].VehicleMaintenanceRequestId)
-                    .Sum(c=>c.Amount*c.Quantity)
+                    .Sum(c => c.Amount * c.Quantity)
                 };
 
                 AllRequestList.Add(singleRequestDetals);
 
-                
+
 
             }
             //////GETTING ALL THE LIST OF THE VEHICLE TO SET INCASE A USER MAKES A REQUEST MAINTENANCE
             var vehicleList = vehicleRepository.GetAllVehicles().Result.Item2;
             //////GETTING ALL THE LIST OF THE VEHICLE TO SET INCASE A USER MAKES A REQUEST MAINTENANCE
 
-            return (AllRequestList,vehicleList);
+            return (AllRequestList, vehicleList);
         }
 
         public void DeleteVehicleRequestMaintenance(int RequestId, string Issuer)
         {
-            vehicleMaintenanceRequestRepository.DeleteVehicleRequestMaintenance(RequestId,Issuer);
+            vehicleMaintenanceRequestRepository.DeleteVehicleRequestMaintenance(RequestId, Issuer);
         }
         public GettingReceiptsViewModel GetReceiptsDocument(string DocumentStreamId)
         {
@@ -181,6 +181,41 @@ namespace Transport.Services
             }
 
             vehicleMaintenanceRequestStatusRepository.CompleteVehicleMaintenanceRequest(RequestId, Issuer);
+        }
+
+
+        public List<int> GetRequestMaintenanceCountPerMonth()
+        {
+            List<int> requestCountPerMonth = new();
+
+            var requestMaintenances = GetAllVehicleMaintenanceRequest().Item1;
+
+            if (requestMaintenances.Count > 0)
+            {
+                for (int i = 1; i <= 12; i++)
+                {
+                    List<VehicleMaintenanceRequestsViewModel> accForAMonth = new();
+
+                    foreach (var item in requestMaintenances)
+                    {
+                        if (item.Date.Month == i)
+                        {
+                            accForAMonth.Add(item);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    requestCountPerMonth.Add(accForAMonth.Count());
+                }
+
+                return requestCountPerMonth;
+            }
+
+            else return null;
+
         }
 
 

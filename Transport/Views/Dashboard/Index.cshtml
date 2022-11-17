@@ -7,127 +7,123 @@
 <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/menu/menu-types/vertical-menu-modern.css">
 <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/colors/palette-gradient.css">
 <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css">
-<link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/charts/morris.css">
 <link rel="stylesheet" type="text/css" href="~/app-assets/fonts/simple-line-icons/style.css">
 <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/colors/palette-gradient.css">
+<link href="~/app-assets/css/plugins/charts/c3-chart.css" rel="stylesheet" />
+<link href="~/css/site.css" rel="stylesheet" />
 <!-- END Page Level CSS-->
 <div class="content-header row">
-
-    <div class="content-body">
-        <!-- tranpsort statistic -->
-        <div class="row">
-            <div class="col-xl-3 col-lg-6 col-12">
-                <div class="card pull-up">
-                    <div class="card-content">
-                        <div class="card-body">
-                            <div class="media d-flex">
-                                <div class="media-body text-left">
-                                    <h3 class="info">@Model.TotalVehicleNumber</h3>
-                                    <h6>Total Number of Vehicles</h6>
-                                </div>
-                                <div>
-                                    <i class="la la-bus info font-large-2 float-right"></i>
-                                </div>
+    <h2 class="h2 dashboard-title">Dashboard</h2>
+</div>
+<div class="content-body">
+    <!-- tranpsort statistic -->
+    <div class="row">
+        <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card pull-up">
+                <div class="card-content">
+                    <div class="card-body">
+                        <div class="media d-flex">
+                            <div class="media-body text-left">
+                                <h3 class="info">@Model.TotalVehicleNumber</h3>
+                                <h6>Total Number of Vehicles</h6>
                             </div>
-                            <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                                <div class="progress-bar bg-gradient-x-info" role="progressbar" style="width: 80%"
-                                     aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div>
+                                <i class="la la-bus info font-large-2 float-right"></i>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-12">
-                <div class="card pull-up">
-                    <div class="card-content">
-                        <div class="card-body">
-                            <div class="media d-flex">
-                                <div class="media-body text-left">
-                                    <h3 class="success">@Model.TotalUsersNumber</h3>
-                                    <h6>Total Number of Users</h6>
-                                </div>
-                                <div>
-                                    <i class="icon-user-follow success font-large-2 float-right"></i>
-                                </div>
-                            </div>
-                            <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                                <div class="progress-bar bg-gradient-x-success" role="progressbar" style="width: 75%"
-                                     aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-12">
-                <div class="card pull-up">
-                    <div class="card-content">
-                        <div class="card-body">
-                            <div class="media d-flex">
-                                <div class="media-body text-left">
-                                    <h3 class="warning">@Model.TotalNumberOfNewMaintenanceRequests</h3>
-                                    <h6>New Maintenance Requests</h6>
-                                </div>
-                                <div>
-                                    <i class="icon-wrench danger font-large-2 float-right"></i>
-                                </div>
-                            </div>
-                            <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                                <div class="progress-bar bg-gradient-x-warning" role="progressbar" style="width: 65%"
-                                     aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-12">
-                <div class="card pull-up">
-                    <div class="card-content">
-                        <div class="card-body">
-                            <div class="media d-flex">
-                                <div class="media-body text-left">
-                                    <h3 class="danger">@Model.TotalNumberOfNewHiringRequests</h3>
-                                    <h6>New Hiring Requests</h6>
-                                </div>
-                                <div>
-                                    <i class="icon-pie-chart warning font-large-2 float-right"></i>
-                                </div>
-                            </div>
-                            <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                                <div class="progress-bar bg-gradient-x-danger" role="progressbar" style="width: 85%"
-                                     aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                        <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
+                            <div class="progress-bar bg-gradient-x-info" role="progressbar" style="width: 80%"
+                                 aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--/ transport statistic -->
-        <!-- Revenue, Hit Rate & Deals -->
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Revenue</h4>
-                <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
-                <div class="heading-elements">
-                    <ul class="list-inline mb-0">
-                        <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card-content collapse show">
-                <div class="card-body pt-0">
-                    <div class="row mb-1">
-                        <div class="col-6 col-md-4">
-                            <h5>Current week</h5>
-                            <h2 class="danger">$82,124</h2>
+        <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card pull-up">
+                <div class="card-content">
+                    <div class="card-body">
+                        <div class="media d-flex">
+                            <div class="media-body text-left">
+                                <h3 class="success">@Model.TotalUsersNumber</h3>
+                                <h6>Total Number of Users</h6>
+                            </div>
+                            <div>
+                                <i class="icon-user-follow success font-large-2 float-right"></i>
+                            </div>
                         </div>
-                        <div class="col-6 col-md-4">
-                            <h5>Previous week</h5>
-                            <h2 class="text-muted">$52,502</h2>
+                        <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
+                            <div class="progress-bar bg-gradient-x-success" role="progressbar" style="width: 75%"
+                                 aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
-                    <div class="chartjs">
-                        <canvas id="thisYearRevenue" width="400" style="position: absolute;"></canvas>
-                        <canvas id="lastYearRevenue" width="400"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card pull-up">
+                <div class="card-content">
+                    <div class="card-body">
+                        <div class="media d-flex">
+                            <div class="media-body text-left">
+                                <h3 class="warning">@Model.TotalNumberOfNewMaintenanceRequests</h3>
+                                <h6>New Maintenance Requests</h6>
+                            </div>
+                            <div>
+                                <i class="icon-wrench danger font-large-2 float-right"></i>
+                            </div>
+                        </div>
+                        <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
+                            <div class="progress-bar bg-gradient-x-warning" role="progressbar" style="width: 65%"
+                                 aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card pull-up">
+                <div class="card-content">
+                    <div class="card-body">
+                        <div class="media d-flex">
+                            <div class="media-body text-left">
+                                <h3 class="danger">@Model.TotalNumberOfNewHiringRequests</h3>
+                                <h6>New Hiring Requests</h6>
+                            </div>
+                            <div>
+                                <i class="icon-pie-chart warning font-large-2 float-right"></i>
+                            </div>
+                        </div>
+                        <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
+                            <div class="progress-bar bg-gradient-x-danger" role="progressbar" style="width: 85%"
+                                 aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ transport statistic -->
+    <!-- Graph of Routine Maintenance & Maintenance Request -->
+    <!-- Line Chart -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Graph of Routine Maintenance & Maintenance Request</h4>
+                    <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                    <div class="heading-elements">
+                        <ul class="list-inline mb-0">
+                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-content collapse show">
+                    <div class="card-body chartjs">
+                        <canvas id="line-chart" height="700"></canvas>
                     </div>
                 </div>
             </div>
@@ -169,7 +165,7 @@
                                     <td class="text-truncate"><a href="#">INV-001001</a></td>
                                     <td class="text-truncate">
                                         <span class="avatar avatar-xs">
-                                            <img class="box-shadow-2" src="../../../app-assets/images/portrait/small/avatar-s-4.png"
+                                            <img class="box-shadow-2" src="~/app-assets/images/portrait/small/avatar-s-4.png"
                                                  alt="avatar">
                                         </span>
                                         <span>Elizabeth W.</span>
@@ -179,19 +175,19 @@
                                             <li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="Kimberly Simmons"
                                                 class="avatar avatar-sm pull-up">
                                                 <img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius"
-                                                     src="../../../app-assets/images/portfolio/portfolio-1.jpg"
+                                                     src="~/app-assets/images/portfolio/portfolio-1.jpg"
                                                      alt="Avatar">
                                             </li>
                                             <li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="Willie Torres"
                                                 class="avatar avatar-sm pull-up">
                                                 <img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius"
-                                                     src="../../../app-assets/images/portfolio/portfolio-2.jpg"
+                                                     src="~/app-assets/images/portfolio/portfolio-2.jpg"
                                                      alt="Avatar">
                                             </li>
                                             <li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="Rebecca Jones"
                                                 class="avatar avatar-sm pull-up">
                                                 <img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius"
-                                                     src="../../../app-assets/images/portfolio/portfolio-4.jpg"
+                                                     src="~/app-assets/images/portfolio/portfolio-4.jpg"
                                                      alt="Avatar">
                                             </li>
                                             <li class="avatar avatar-sm">
@@ -215,7 +211,7 @@
                                     <td class="text-truncate"><a href="#">INV-001002</a></td>
                                     <td class="text-truncate">
                                         <span class="avatar avatar-xs">
-                                            <img class="box-shadow-2" src="../../../app-assets/images/portrait/small/avatar-s-5.png"
+                                            <img class="box-shadow-2" src="~/app-assets/images/portrait/small/avatar-s-5.png"
                                                  alt="avatar">
                                         </span>
                                         <span>Doris R.</span>
@@ -225,13 +221,13 @@
                                             <li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="Kimberly Simmons"
                                                 class="avatar avatar-sm pull-up">
                                                 <img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius"
-                                                     src="../../../app-assets/images/portfolio/portfolio-5.jpg"
+                                                     src="~/app-assets/images/portfolio/portfolio-5.jpg"
                                                      alt="Avatar">
                                             </li>
                                             <li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="Willie Torres"
                                                 class="avatar avatar-sm pull-up">
                                                 <img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius"
-                                                     src="../../../app-assets/images/portfolio/portfolio-6.jpg"
+                                                     src="~/app-assets/images/portfolio/portfolio-6.jpg"
                                                      alt="Avatar">
                                             </li>
                                             <li class="avatar avatar-sm">
@@ -255,7 +251,7 @@
                                     <td class="text-truncate"><a href="#">INV-001003</a></td>
                                     <td class="text-truncate">
                                         <span class="avatar avatar-xs">
-                                            <img class="box-shadow-2" src="../../../app-assets/images/portrait/small/avatar-s-6.png"
+                                            <img class="box-shadow-2" src="~/app-assets/images/portrait/small/avatar-s-6.png"
                                                  alt="avatar">
                                         </span>
                                         <span>Megan S.</span>
@@ -265,13 +261,13 @@
                                             <li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="Kimberly Simmons"
                                                 class="avatar avatar-sm pull-up">
                                                 <img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius"
-                                                     src="../../../app-assets/images/portfolio/portfolio-2.jpg"
+                                                     src="~/app-assets/images/portfolio/portfolio-2.jpg"
                                                      alt="Avatar">
                                             </li>
                                             <li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="Willie Torres"
                                                 class="avatar avatar-sm pull-up">
                                                 <img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius"
-                                                     src="../../../app-assets/images/portfolio/portfolio-5.jpg"
+                                                     src="~/app-assets/images/portfolio/portfolio-5.jpg"
                                                      alt="Avatar">
                                             </li>
                                         </ul>
@@ -292,7 +288,7 @@
                                     <td class="text-truncate"><a href="#">INV-001004</a></td>
                                     <td class="text-truncate">
                                         <span class="avatar avatar-xs">
-                                            <img class="box-shadow-2" src="../../../app-assets/images/portrait/small/avatar-s-7.png"
+                                            <img class="box-shadow-2" src="~/app-assets/images/portrait/small/avatar-s-7.png"
                                                  alt="avatar">
                                         </span>
                                         <span>Andrew D.</span>
@@ -302,13 +298,13 @@
                                             <li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="Kimberly Simmons"
                                                 class="avatar avatar-sm pull-up">
                                                 <img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius"
-                                                     src="../../../app-assets/images/portfolio/portfolio-6.jpg"
+                                                     src="~/app-assets/images/portfolio/portfolio-6.jpg"
                                                      alt="Avatar">
                                             </li>
                                             <li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="Willie Torres"
                                                 class="avatar avatar-sm pull-up">
                                                 <img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius"
-                                                     src="../../../app-assets/images/portfolio/portfolio-1.jpg"
+                                                     src="~/app-assets/images/portfolio/portfolio-1.jpg"
                                                      alt="Avatar">
                                             </li>
                                             <li class="avatar avatar-sm">
@@ -332,7 +328,7 @@
                                     <td class="text-truncate"><a href="#">INV-001005</a></td>
                                     <td class="text-truncate">
                                         <span class="avatar avatar-xs">
-                                            <img class="box-shadow-2" src="../../../app-assets/images/portrait/small/avatar-s-9.png"
+                                            <img class="box-shadow-2" src="~/app-assets/images/portrait/small/avatar-s-9.png"
                                                  alt="avatar">
                                         </span>
                                         <span>Walter R.</span>
@@ -342,13 +338,13 @@
                                             <li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="Kimberly Simmons"
                                                 class="avatar avatar-sm pull-up">
                                                 <img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius"
-                                                     src="../../../app-assets/images/portfolio/portfolio-5.jpg"
+                                                     src="~/app-assets/images/portfolio/portfolio-5.jpg"
                                                      alt="Avatar">
                                             </li>
                                             <li data-toggle="tooltip" data-popup="tooltip-custom" data-original-title="Willie Torres"
                                                 class="avatar avatar-sm pull-up">
                                                 <img class="media-object rounded-circle no-border-top-radius no-border-bottom-radius"
-                                                     src="../../../app-assets/images/portfolio/portfolio-3.jpg"
+                                                     src="~/app-assets/images/portfolio/portfolio-3.jpg"
                                                      alt="Avatar">
                                             </li>
                                         </ul>
@@ -373,15 +369,116 @@
     </div>
 </div>
 
+
 <!-- BEGIN PAGE VENDOR JS-->
 <script src="~/app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
-
 <script src="~/app-assets/vendors/js/charts/chart.min.js" type="text/javascript"></script>
-<script src="~/app-assets/vendors/js/charts/raphael-min.js" type="text/javascript"></script>
-<script src="~/app-assets/vendors/js/charts/morris.min.js" type="text/javascript"></script>
-<script src="~/app-assets/vendors/js/charts/jvector/jquery-jvectormap-2.0.3.min.js"
-        type="text/javascript"></script>
-<script src="~/app-assets/vendors/js/charts/jvector/jquery-jvectormap-world-mill.js"
-        type="text/javascript"></script>
 <script src="~/app-assets/data/jvector/visitor-data.js" type="text/javascript"></script>
 <!-- END PAGE VENDOR JS-->
+<script>
+    // Line chart
+    // ------------------------------
+    $(window).on("load", function () {
+
+
+        var requestCount = JSON.parse('@Html.Raw(Json.Serialize(@Model.RequestCountPerMonth))');
+        var routineCount = JSON.parse('@Html.Raw(Json.Serialize(@Model.RoutineCountPerMonth))');
+
+        //Get the context of the Chart canvas element we want to select
+        var ctx = $("#line-chart");
+
+        // Chart Options
+        var chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                position: 'bottom',
+            },
+            hover: {
+                mode: 'label'
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    gridLines: {
+                        color: "#f3f3f3",
+                        drawTicks: false,
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Month'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    gridLines: {
+                        color: "#f3f3f3",
+                        drawTicks: false,
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Maintenance Frequency'
+                    }
+                }]
+            },
+            title: {
+                display: true,
+                text: 'Routine - Request Maintenance Chart'
+            },
+            transitions: {
+                duration: 2000,
+                show: {
+                    animations: {
+                        x: {
+                            from: 0
+                        },
+                        y: {
+                            from: 0
+                        }
+                    }
+                },
+                hide: {
+                    animations: {
+                        x: {
+                            to: 0
+                        },
+                        y: {
+                            to: 0
+                        }
+                    }
+                }
+            },
+        };
+
+        // Chart Data
+        var chartData = {
+            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            datasets: [{
+                label: "Routine Maintenance",
+                data: [45,67,89,34,73,34,72,32,40,79,53,21],
+                fill: false,
+                borderColor: "rgba(22, 78, 106, 0.5)",
+                backgroundColor: "rgba(22, 78, 106, 0.5)",
+            }, {
+                label: "Request Maintenance",
+                data: [86,43,78,56,85,74,67,70,95,65,40,34],
+                fill: false,
+                borderColor: "rgba(89, 58, 18, 0.5)",
+                backgroundColor: "rgba(89, 58, 18, 0.5)",
+            }]
+        };
+
+        var config = {
+            type: 'bar',
+
+            // Chart Options
+            options: chartOptions,
+
+            data: chartData
+        };
+
+        // Create the chart
+        var lineChart = new Chart(ctx, config);
+    });
+
+</script>

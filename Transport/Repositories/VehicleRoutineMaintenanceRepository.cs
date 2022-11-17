@@ -15,7 +15,7 @@ namespace Transport.Repositories
 
         public VehicleRoutineMaintenanceRepository(TransportDbContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
         public List<VehicleRoutineMaintenance> GetAllRoutineMaintenances()
