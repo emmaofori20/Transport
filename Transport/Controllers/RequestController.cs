@@ -18,6 +18,7 @@ using Transport.Utils;
 namespace Transport.Controllers
 {
     [Authorize(Policy = "CustomAuthorization")]
+    [SessionExist]
     public class RequestController : Controller
     {
         public IRequestService requestService;

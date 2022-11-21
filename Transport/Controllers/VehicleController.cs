@@ -11,11 +11,13 @@ using System.Threading.Tasks;
 using Transport.Models;
 using Transport.Models.Data;
 using Transport.Services.IServices;
+using Transport.Utils;
 using Transport.ViewModels;
 
 namespace Transport.Controllers
 {
     [Authorize(Policy = "CustomAuthorization")]
+    [SessionExist]
     public class VehicleController : Controller
     {
         private readonly IVehicleService _vehicleService;
