@@ -15,6 +15,7 @@ using Transport.ViewModels;
 namespace Transport.Controllers
 {
     [Authorize(Policy = "CustomAuthorization")]
+    [SessionExist]
     //The Controller Handels all  sparepart and routineActivities
     public class SparePartController : Controller
     {

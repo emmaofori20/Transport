@@ -13,6 +13,7 @@ using Transport.ViewModels;
 namespace Transport.Controllers
 {
     [Authorize(Policy = "CustomAuthorization")]
+    [SessionExist]
     public class RoutineController : Controller
     {
         private readonly IRoutineService routineService;

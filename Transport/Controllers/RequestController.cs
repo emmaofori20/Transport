@@ -19,6 +19,7 @@ using System.Globalization;
 namespace Transport.Controllers
 {
     [Authorize(Policy = "CustomAuthorization")]
+    [SessionExist]
     public class RequestController : Controller
     {
         public IRequestService requestService;

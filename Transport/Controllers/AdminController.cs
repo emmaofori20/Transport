@@ -14,6 +14,7 @@ using Transport.ViewModels;
 namespace Transport.Controllers
 {
     [Authorize(Policy = "CustomAuthorization")]
+    [SessionExist]
     public class AdminController : Controller
     {
         private readonly IAdminService _adminService;

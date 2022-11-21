@@ -15,6 +15,7 @@ using Transport.ViewModels;
 namespace Transport.Controllers
 {
     [Authorize(Policy = "CustomAuthorization")]
+    [SessionExist]
     public class InvoiceController : Controller
     {
         public IRequestService requestService;
