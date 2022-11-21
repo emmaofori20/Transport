@@ -14,6 +14,7 @@ using Transport.Repositories.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Transport.Utils;
+using System.Globalization;
 
 namespace Transport.Controllers
 {
@@ -224,6 +225,14 @@ namespace Transport.Controllers
             }
         }
 
+
+        private string GetMonth(int month)
+        {
+            return CultureInfo.CurrentCulture.
+           DateTimeFormat.GetMonthName(month);
+           
+        }
+
         //for viewing history of a particular vehicle
         public async Task<IActionResult>  VehicleRequestMaintanceHistory(int VehicleId)
 
@@ -237,12 +246,15 @@ namespace Transport.Controllers
                 List<int> Repartitions = new List<int>();
 
                 //select request for the months in the current year
-                var request = RequestMaintenanceHistory.Select(x => x.Date.Month).Distinct().ToList();
+                var request = RequestMaintenanceHistory
+                    .Select(x => GetMonth(x.Date.Month)).Distinct()
+                    .ToList();
+
                 if (request.Count != 0)
                 {
                     foreach (var item in request)
                     {
-                        Repartitions.Add(RequestMaintenanceHistory.Count(x => x.Date.Month == item));
+                        Repartitions.Add(RequestMaintenanceHistory.Count(x => GetMonth(x.Date.Month) == item));
                     }
                 }
                 
