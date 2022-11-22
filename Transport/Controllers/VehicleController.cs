@@ -11,11 +11,13 @@ using System.Threading.Tasks;
 using Transport.Models;
 using Transport.Models.Data;
 using Transport.Services.IServices;
+using Transport.Utils;
 using Transport.ViewModels;
 
 namespace Transport.Controllers
 {
     [Authorize(Policy = "CustomAuthorization")]
+    [SessionExist]
     public class VehicleController : Controller
     {
         private readonly IVehicleService _vehicleService;
@@ -76,7 +78,7 @@ namespace Transport.Controllers
         public IActionResult AddNewVehicle()
         {
             var results = _vehicleService.setAllList();
-
+           
             return View(results);
         }
 
@@ -110,7 +112,6 @@ namespace Transport.Controllers
             {
 
                 var result = await _vehicleService.AddNewVehicle(vehicleModel);
-
 
 
                 return RedirectToAction(nameof(GetVehicleDetails), new { Id = result });
@@ -199,7 +200,6 @@ namespace Transport.Controllers
             {
 
                 var resultId = await _vehicleService.UpdateVehicle(UpdateModel);
-
 
                 return RedirectToAction(nameof(GetVehicleDetails), new { Id = resultId });
             }

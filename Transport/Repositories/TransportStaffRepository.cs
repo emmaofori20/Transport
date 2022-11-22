@@ -7,6 +7,7 @@ using Transport.Models.Data;
 using Transport.Repositories.IRepository;
 using Transport.ViewModels;
 using Transport.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace Transport.Repositories
 {
@@ -22,23 +23,26 @@ namespace Transport.Repositories
 
         public AdminAndUserViewModel GetAllUsers()
         {
-            List<ApplicationUser> applicationUsers = _context.ApplicationUsers.ToList();
+            List<ApplicationUser> applicationUsers = _context.ApplicationUsers.Include(x => x.ApplicationUserRoles).ToList();
 
             AdminAndUserViewModel adminAndUserVM = new();
-
-            adminAndUserVM.AllAdmins = applicationUsers;
+            adminAndUserVM.AllUsers = applicationUsers;
 
             return adminAndUserVM;
            
         }
 
-        public void AssignRole(ApplicationUser model)
+        public int GetUsersTotalNumber()
+        {
+           return _context.ApplicationUsers.Count();
+        }
+
+        public void AssignRole(ApplicationUser model, int RoleId)
         {
             _context.ApplicationUserRoles.Add(new ApplicationUserRole
             {
-                //Add condition for different roles later
                 ApplicationUserId = model.ApplicationUserId,
-                RoleId = 1 
+                RoleId = RoleId 
             });
 
             _context.SaveChanges();
@@ -55,12 +59,13 @@ namespace Transport.Repositories
                 IsActive = true,
                 CreatedOn = DateTime.Now,
                 StaffId = model.StaffId,
-                CreatedBy = model.CreatedBy
+                CreatedBy = model.CreatedBy,
             };
+
             _context.ApplicationUsers.Add(newUser);
             _context.SaveChanges();
 
-            AssignRole(newUser);
+            AssignRole(newUser,model.RoleId);
         }
 
         public HrStaffViewModel GetStaffById(string staffId)
@@ -82,6 +87,10 @@ namespace Transport.Repositories
             return user;
         }
 
+        public List<TransportStaff> GetAllTransportStaffDrivers()
+        {
+            return _context.TransportStaffs.ToList();
+        }
         public HrStaffViewModel VerifyStaffId(string StaffId)
         {
             return GetStaffById(StaffId);
@@ -100,6 +109,11 @@ namespace Transport.Repositories
             _context.Update(staff);
             _context.SaveChanges();
         }
-       
+
+        public List<Role> GetAllRoles()
+        {
+           return _context.Roles.ToList();
+        }
+
     }
 }

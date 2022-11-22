@@ -10,23 +10,32 @@ using Transport.ViewModels;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Transport.Repositories.IRepository;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Transport.Utils;
+using System.Globalization;
 
 namespace Transport.Controllers
 {
     [Authorize(Policy = "CustomAuthorization")]
+    [SessionExist]
     public class RequestController : Controller
     {
         public IRequestService requestService;
         private readonly IVehicleService vehicleService;
         private readonly IRoutineService routineService;
+        private readonly IRequestTypeRepository requestTypeRepository;
 
         //CONSTRUCTOR
-        public RequestController(IRequestService _requestService, IVehicleService vehicleService,IRoutineService routineService)
+        public RequestController(IRequestService _requestService, IVehicleService vehicleService,
+                IRoutineService routineService,
+                IRequestTypeRepository requestTypeRepository)
         {
             requestService = _requestService;
             this.vehicleService = vehicleService;
             this.routineService = routineService;
+            this.requestTypeRepository = requestTypeRepository;
         }
         public IActionResult Index()
         {
@@ -64,15 +73,16 @@ namespace Transport.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    //Getting issuer's name
+                    var Issuer = GetCurrentUserName().Value;
+                    model.requestMaintenance.CreatedBy = Issuer;
                     //Making a Request Maintnace
                     var result = requestService.MakeRequestMaintenance(model.requestMaintenance);
                     return RedirectToAction("RequestSparePart", new { Id = result.VehicleMaintenanceRequestId });
-
                 }
                 else
                 {
                     return RedirectToAction("Index");
-
                 }
             }
             catch (Exception err)
@@ -83,13 +93,14 @@ namespace Transport.Controllers
                 };
                 return View("Error", error);
             }
-
-
         }
+
 
         [HttpGet]
         public IActionResult RequestSparePart(int Id)
         {
+            ViewBag.Requestitem = new SelectList(requestTypeRepository.GetAllRequestType()
+                .Select(s => new { Id = s.RequestTypeId, Text = $"{s.RequestTypeName}" }), "Id", "Text");
             ViewData["RequestSparePartId"] = Id;
             return View();
         }
@@ -102,9 +113,10 @@ namespace Transport.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    //Getting issuer's name
+                    var Issuer = GetCurrentUserName().Value;
                     //returns true after method is completed
-                    requestService.AddRequestSparePart(model, Id);
-                    //return Json(Url.Action("RequestSparePartDetails", "Request"));
+                    requestService.AddRequestSparePart(model, Id, Issuer);
                     return RedirectToAction("RequestSparePartDetails", new { ListId = Id });
                 }
 
@@ -146,7 +158,9 @@ namespace Transport.Controllers
         {
             try
             {
-                requestService.DeleteVehicleRequestMaintenance(RequestId);
+                //Getting issuer's name
+                var Issuer = GetCurrentUserName().Value;
+                requestService.DeleteVehicleRequestMaintenance(RequestId, Issuer);
                 return RedirectToAction("Index");
 
             }
@@ -166,6 +180,9 @@ namespace Transport.Controllers
             try
             {
                 ViewData["EditRequestListId"] = RequestId;
+                ViewBag.Requestitem = new SelectList(requestTypeRepository.GetAllRequestType()
+                .Select(s => new { Id = s.RequestTypeId, Text = $"{s.RequestTypeName}" }), "Id", "Text");
+
                 var results = requestService.VehicleMaintenanceRequestDetails(RequestId);
                 return View(results);
 
@@ -188,9 +205,9 @@ namespace Transport.Controllers
             {
                 if (ModelState.IsValid)
                 {
-
-                    requestService.EdiVehicleRequestMaintenance(model, RequestId);
-
+                    //Getting issuer's name
+                    var Issuer = GetCurrentUserName().Value;
+                    requestService.EdiVehicleRequestMaintenance(model, RequestId, Issuer);
                     return RedirectToAction("RequestSparePartDetails", new { ListId = RequestId });
                 }
                 //ViewData["EditRequestListId"] = RequestId;
@@ -209,21 +226,39 @@ namespace Transport.Controllers
             }
         }
 
+
+        private string GetMonth(int month)
+        {
+            return CultureInfo.CurrentCulture.
+           DateTimeFormat.GetMonthName(month);
+           
+        }
+
         //for viewing history of a particular vehicle
-        public IActionResult VehicleRequestMaintanceHistory(int VehicleId)
+        public async Task<IActionResult>  VehicleRequestMaintanceHistory(int VehicleId)
+
         {
             try
             {
-                ViewBag.VehicleId = VehicleId;
-
+                var res = await vehicleService.GetVehicleById(VehicleId);
+                ViewBag.VehicleRegistrationNumber = res.vehicle.RegistrationNumber;
                 var RequestMaintenanceHistory = requestService.GetAllVehicleMaintenanceRequest()
                                            .Item1.Where(x => x.VehicleId == VehicleId);
                 List<int> Repartitions = new List<int>();
-                var request = RequestMaintenanceHistory.Select(x => x.Date.Month).Distinct().ToList();
-                foreach (var item in request)
+
+                //select request for the months in the current year
+                var request = RequestMaintenanceHistory
+                    .Select(x => GetMonth(x.Date.Month)).Distinct()
+                    .ToList();
+
+                if (request.Count != 0)
                 {
-                    Repartitions.Add(RequestMaintenanceHistory.Count(x => x.Date.Month == item));
+                    foreach (var item in request)
+                    {
+                        Repartitions.Add(RequestMaintenanceHistory.Count(x => GetMonth(x.Date.Month) == item));
+                    }
                 }
+                
 
                 var rep = Repartitions;
                 ViewBag.Request = request;
@@ -262,7 +297,7 @@ namespace Transport.Controllers
                 }
                 else
                 {
-                    requestService.UploadFiles(model.ReceiptFiles, model.RequestId);
+                    requestService.UploadFiles(model.ReceiptFiles, model.RequestId, GetCurrentUserName().Value);
                     return RedirectToAction("RequestSparePartDetails", new { ListId = model.RequestId });
                 }
             }
@@ -277,6 +312,20 @@ namespace Transport.Controllers
             
             
          }
+        public Claim GetCurrentUserName()
+        {
+            return User.Identities
+                       .FirstOrDefault()
+                       .Claims.Where(x => x.Type == ClaimsEnum.Name.ToString().ToLower())
+                       .FirstOrDefault();
+        }
+        public IActionResult ViewReceipts(string DocumentStreamId)
+        {
+            var result = requestService.GetReceiptsDocument(DocumentStreamId);
+
+            var filedetails = result.FileStream;
+            return File(filedetails, "application/*");
+        }
     }
     
 }

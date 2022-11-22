@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Transport.Services.IServices;
+using Transport.Utils;
 using Transport.ViewModels;
 
 namespace Transport.Controllers
@@ -14,19 +15,30 @@ namespace Transport.Controllers
     
 
     [Authorize(Policy = "CustomAuthorization")]
+    [SessionExist]
     public class DashboardController : Controller
     {
         private readonly IAdminService _adminService;
+        private readonly IRequestService _requestService;
+        private readonly IRoutineService _routineService;
 
-        public DashboardController(IAdminService adminService)
+        public DashboardController(
+            IAdminService adminService,
+            IRequestService requestService,
+            IRoutineService routineService
+            )
         {
             _adminService = adminService;
+            _requestService = requestService;
+            _routineService = routineService;
         }
         // GET: DashboardController
         public ActionResult Index()
         {
-          
-            return View();
+            var itemsForDashboard = _adminService.GetItemsForDashboard();
+            itemsForDashboard.RequestCountPerMonth = _requestService.GetRequestMaintenanceCountPerMonth();
+            itemsForDashboard.RoutineCountPerMonth = _routineService.GetRoutineMaintenanceCountPerMonth();
+            return View(itemsForDashboard);
         }
 
         // GET: DashboardController/Details/5

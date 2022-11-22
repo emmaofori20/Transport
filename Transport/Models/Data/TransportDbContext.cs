@@ -60,11 +60,11 @@ namespace Transport.Models.Data
         public virtual DbSet<VehicleTypeForHire> VehicleTypeForHires { get; set; }
         public virtual DbSet<VehicleUse> VehicleUses { get; set; }
 
+        // Unable to generate entity type for table 'dbo.TRANSPORTDOCSTORE' since its primary key could not be scaffolded. Please see the warning messages.
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-            }
+           
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -567,9 +567,17 @@ namespace Transport.Models.Data
 
                 entity.ToTable("RequestType");
 
+                entity.Property(e => e.CreatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
                 entity.Property(e => e.RequestTypeName)
                     .IsRequired()
                     .HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<RequestTypeCharge>(entity =>
@@ -643,7 +651,7 @@ namespace Transport.Models.Data
 
                 entity.Property(e => e.CreatedBy)
                     .IsRequired()
-                    .HasMaxLength(10);
+                    .HasMaxLength(255);
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 

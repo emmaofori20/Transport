@@ -7,6 +7,11 @@ namespace Transport.ViewModels
 {
     public class DashboardViewModel
     {
-        public AddUserViewModel CurrentUser { get; set; }
+        public int TotalVehicleNumber { get; set; }
+        public int TotalUsersNumber { get; set; }
+        public int TotalNumberOfNewMaintenanceRequests { get; set; }
+        public int TotalNumberOfNewHiringRequests { get; set; }
+        public List<int> RequestCountPerMonth { get; set; }
+        public List<int> RoutineCountPerMonth { get; set; }
     }
 }

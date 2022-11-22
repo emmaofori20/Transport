@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,22 @@ namespace Transport.Services
     public class AdminService: IAdminService
     {
         private readonly ITransportStaffRepository _transportStaffRepository;
+        private readonly IVehicleRepository _vehicleRepository;
+        private readonly IHirerRepository _hirerRepository;
+        private readonly IVehicleMaintenanceRequestRepository _vehicleMaintenanceRequestRepository;
 
-        public AdminService(ITransportStaffRepository transportStaffRepository )
+        
+
+        public AdminService(
+            ITransportStaffRepository transportStaffRepository,
+            IVehicleRepository vehicleRepository,
+            IHirerRepository hirerRepository,
+            IVehicleMaintenanceRequestRepository vehicleMaintenanceRequestRepository)
         {
             _transportStaffRepository = transportStaffRepository;
+            _vehicleRepository = vehicleRepository;
+            _hirerRepository = hirerRepository;
+            _vehicleMaintenanceRequestRepository = vehicleMaintenanceRequestRepository;
         }
         public AdminAndUserViewModel GetAllTransportStaff()
         {
@@ -40,5 +53,28 @@ namespace Transport.Services
         {
             _transportStaffRepository.ToggleStaffActive(StaffId, Issuer);
         }
+
+        public SelectList GetAllRoles()
+        {
+            return new SelectList(_transportStaffRepository.GetAllRoles()
+               .Select(s => new { Id = s.RoleId, Text = $"{s.RoleName}" }), "Id", "Text");
+        }
+
+
+        public  DashboardViewModel GetItemsForDashboard()
+        {
+            var dashboardVM = new DashboardViewModel
+            {
+                TotalVehicleNumber = _vehicleRepository.GetTotalVehicleNumber(),
+                TotalUsersNumber = _transportStaffRepository.GetUsersTotalNumber(),
+                TotalNumberOfNewHiringRequests = _hirerRepository.GetNewHiringRequestCount(),
+                TotalNumberOfNewMaintenanceRequests = _vehicleMaintenanceRequestRepository.GetNewMaintenanceRequestCount(),
+
+            };
+
+            return dashboardVM;
+        }
+
+
     }
 }

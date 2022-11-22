@@ -14,9 +14,10 @@ namespace Transport.Services.IServices
         public List<VehicleRoutineMaintenance> GetVehicleRoutineMaintenances();
         public RoutineMaintenanceVehicleViewModel ViewRoutineVehicleMaintenance(int RoutineId);
         public void EditRoutineMaintenanceVehicle(RoutineMaintenanceVehicleViewModel model);
-        public void DeleteRoutineMaintenanceVehicle(int RoutineId);
+        public void DeleteRoutineMaintenanceVehicle(int RoutineId, string Issuer);
         public bool CheckRoutineMaintenanceVehicleSpareParts(RoutineMaintenanceVehicleViewModel model);
         public bool CheckSparePartQuanityBeforeEdit(RoutineMaintenanceVehicleViewModel model);
         public void SubstractAndAddSparePartQuantity(RoutineMaintenanceVehicleViewModel model);
+        public List<int> GetRoutineMaintenanceCountPerMonth();
     }
 }

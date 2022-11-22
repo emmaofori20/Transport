@@ -10,7 +10,9 @@
 
 // Line chart
 // ------------------------------
-$(window).on("load", function(){
+$(window).on("load", function () {
+
+     
 
     //Get the context of the Chart canvas element we want to select
     var ctx = $("#line-chart");
@@ -51,18 +53,17 @@ $(window).on("load", function(){
         },
         title: {
             display: true,
-            text: 'Chart.js Line Chart - Legend'
+            text: 'Routine - Request Maintenance Chart'
         }
     };
 
     // Chart Data
     var chartData = {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        labels: ["January", "February", "March", "April", "May", "June", "July","August","September","October","November","December"],
         datasets: [{
-            label: "My First dataset",
-            data: [65, 59, 80, 81, 56, 55, 40],
+            label: "Routine Maintenance",
+            data: [65, 59, 80, 81, 56, 55, 40, 34, 54, 47, 89, 40],
             fill: false,
-            borderDash: [5, 5],
             borderColor: "#9C27B0",
             pointBorderColor: "#9C27B0",
             pointBackgroundColor: "#FFF",
@@ -70,23 +71,11 @@ $(window).on("load", function(){
             pointHoverBorderWidth: 2,
             pointRadius: 4,
         }, {
-            label: "My Second dataset",
-            data: [28, 48, 40, 19, 86, 27, 90],
+            label: "Request Maintenance",
+            data: [28, 48, 40, 19, 86, 27, 90, 46, 67, 76, 65, 56],
             fill: false,
-            borderDash: [5, 5],
             borderColor: "#00A5A8",
             pointBorderColor: "#00A5A8",
-            pointBackgroundColor: "#FFF",
-            pointBorderWidth: 2,
-            pointHoverBorderWidth: 2,
-            pointRadius: 4,
-        }, {
-            label: "My Third dataset - No bezier",
-            data: [45, 25, 16, 36, 67, 18, 76],
-            lineTension: 0,
-            fill: false,
-            borderColor: "#FF7D4D",
-            pointBorderColor: "#FF7D4D",
             pointBackgroundColor: "#FFF",
             pointBorderWidth: 2,
             pointHoverBorderWidth: 2,

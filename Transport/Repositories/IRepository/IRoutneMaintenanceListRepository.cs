@@ -8,7 +8,7 @@ namespace Transport.Repositories.IRepository
 {
     public interface IRoutneMaintenanceListRepository
     {
-        public void AddRoutineMaintenanceLsit(RoutineActivityCheck Activty, int RoutineMaintenanceId);
-        public void EditRoutineMaintenanceList(RoutineActivityCheck Activity, int RoutineMaintenanceid);
+        public void AddRoutineMaintenanceLsit(RoutineActivityCheck Activty, int RoutineMaintenanceId, string Issuer);
+        public void EditRoutineMaintenanceList(RoutineActivityCheck Activity, int RoutineMaintenanceid, string Issuer);
     }
 }

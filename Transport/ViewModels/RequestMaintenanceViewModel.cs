@@ -13,6 +13,7 @@ namespace Transport.ViewModels
         public int RegistrationNumber { get; set; }
         [Required]
         public string MaintenanceDescription { get; set; }
+        public string CreatedBy { get; set; }
         public double MaintenanceCost { get; set; }
         public string MaintainedBy { get; set; }
         public SelectList Vehicles { get; set; }

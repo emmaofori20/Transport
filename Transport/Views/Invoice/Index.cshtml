@@ -13,7 +13,12 @@
 <div>
     <div class="content-wrapper">
         <div class="content-header row">
-
+            <a class=" btn btn-primary btn-glow float-right" style=" margin: -2% 2% 2%; " asp-action="ViewRequestType" asp-controller="Invoice">
+                <i class="la la-taxi"></i>
+                <span class="menu-title" data-i18n="nav.dash.main">
+                    View Request Type
+                </span>
+            </a>
         </div>
         <div class="content-detached content-right">
             <div class="content-body">
@@ -106,7 +111,32 @@
 <script src="~/app-assets/js/scripts/extensions/sweet-alerts.js" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
-        $('#users-contacts').DataTable();
+       
+        $('#MainPanel1').removeClass('active');
+        $('#MainPanel3').removeClass('active');
+        $('#MainPanel2').addClass('active');
+        $(".card-title").html("All Request Maintenance");
+
+        var url = 'Invoice/AllRequestMaintenance';
+        var completeUrl = baseUrl + url;
+
+        $.ajax({
+            type: "get",
+            cache: false,
+            url: completeUrl,
+            success: function (data) {
+                $("#divContent").html(data);
+                toastr.success('All request Maintenance List', 'Success', { "hideDuration": 3000 });
+
+            },
+            error: function (err) {
+                $("#divContent").html("An error occured...");
+                toastr.error(' An error occured... Please again later ', 'Error Occured', { "hideDuration": 3000 });
+
+            }
+
+        });
+
 
         ////to get all Request List being
         //$('#MainPanel1').on('click', function () {
@@ -139,10 +169,13 @@
             $('#MainPanel2').addClass('active');
             $(".card-title").html("All Request Maintenance");
 
+            var url = 'Invoice/AllRequestMaintenance';
+            var completeUrl = baseUrl + url;
+
             $.ajax({
                 type: "get",
                 cache: false,
-                url: "/Invoice/AllRequestMaintenance",
+                url: completeUrl,
                 success: function (data) {
                     $("#divContent").html(data);
                     toastr.success('All request Maintenance List', 'Success', { "hideDuration": 3000 });
@@ -166,10 +199,13 @@
             $('#MainPanel3').addClass('active');
             $(".card-title").html("All Routine Maintenance");
 
+            var url = 'Invoice/AllRoutineMaintenance';
+            var completeUrl = baseUrl + url;
+
             $.ajax({
                 type: "get",
                 cache: false,
-                url: "/Invoice/AllRoutineMaintenance",
+                url: completeUrl,
                 success: function (data) {
                     $("#divContent").html(data);
                     toastr.success('All Routine Maintenance List', 'Success', { "hideDuration": 3000 });
@@ -189,13 +225,15 @@
             $('#MainPanel2').removeClass('active');
             $('#MainPanel3').removeClass('active');
             $('#MainPanel1').removeClass('active');
-
             $(".card-title").html("All Pending Requests");
+
+            var url = 'Invoice/PendingVehicleRequest';
+            var completeUrl = baseUrl + url;
 
             $.ajax({
                 type: "get",
                 cache: false,
-                url: "/Invoice/PendingVehicleRequest",
+                url: completeUrl,
                 success: function (data) {
                     $("#divContent").html(data);
                     toastr.success('All Pending Request Maintenance List', 'Success', { "hideDuration": 3000 });
@@ -212,13 +250,15 @@
             $('#MainPanel2').removeClass('active');
             $('#MainPanel3').removeClass('active');
             $('#MainPanel1').removeClass('active');
-
             $(".card-title").html("All Approved Requests");
+
+            var url = 'Invoice/GetApproveRequestMaintenance';
+            var completeUrl = baseUrl + url;
 
             $.ajax({
                 type: "get",
                 cache: false,
-                url: "/Invoice/GetApproveRequestMaintenance",
+                url: completeUrl,
                 success: function (data) {
                     $("#divContent").html(data);
                     toastr.success('All Approved Request Maintenance List', 'Success', { "hideDuration": 3000 });
@@ -239,10 +279,13 @@
 
             $(".card-title").html("All Completed Requests");
 
+            var url = 'Invoice/GetCompletedRequestMaintenance';
+            var completeUrl = baseUrl + url;
+
             $.ajax({
                 type: "get",
                 cache: false,
-                url: "/Invoice/GetCompletedRequestMaintenance",
+                url: completeUrl,
                 success: function (data) {
                     $("#divContent").html(data);
                     toastr.success('All Approved Request Maintenance List', 'Success', { "hideDuration": 3000 });

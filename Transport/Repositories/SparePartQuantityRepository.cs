@@ -22,15 +22,20 @@ namespace Transport.Repositories
             return _context.SparePartQuantities.Include(x => x.SparePart).Where(x=>x.IsDeleted!=true).ToList();
         }
 
-        public SparePart AddSparePartName(string Name)
+        public int GetSparepartCount()
+        {
+            return _context.SpareParts.Count();
+        }
+
+        public SparePart AddSparePartName(string Name, string Issuer)
         {
             var sparePartName = new SparePart
             {
                 SparePartName = Name,
-                CreatedBy = "AdminSparePare",
+                CreatedBy = Issuer,
                 CreatedOn = DateTime.Now,
                 UpdatedOn = DateTime.Now,
-                UpdatedBy = "AdminUpdated"
+                UpdatedBy = Issuer
             };
             _context.SpareParts.Add(sparePartName);
             _context.SaveChanges();
@@ -40,7 +45,7 @@ namespace Transport.Repositories
 
         public void AddSparePart(SparePartViewModel model)
         {
-            var SparePartName = AddSparePartName(model.SparePartName);
+            var SparePartName = AddSparePartName(model.SparePartName, model.CreatedBy);
 
             var SparePartQuanity = new SparePartQuantity
             {
@@ -86,7 +91,7 @@ namespace Transport.Repositories
                     SparePartId = model.SparePartId,
                     Quantity = (int)(model.SparePartQuantity + sparePartQuantity.QuantityLeft),
                     QuantityLeft = model.SparePartQuantity + sparePartQuantity.QuantityLeft,
-                    CreatedBy = "Admin",
+                    CreatedBy = model.CreatedBy,
                     CreatedOn = DateTime.Now,
                  
 
@@ -97,7 +102,7 @@ namespace Transport.Repositories
 
             }
         }
-        public void DeleteSparePart(int sparePartId)
+        public void DeleteSparePart(int sparePartId, string Issuer)
         {
             var sparePartQuantity = _context.SparePartQuantities.Where(x => x.SparePartId == sparePartId).ToList();
             if (sparePartQuantity.Count>0)
@@ -105,7 +110,7 @@ namespace Transport.Repositories
                 for (int i = 0; i < sparePartQuantity.Count; i++)
                 {
 
-                    sparePartQuantity[i].UpdatedBy = "DeleteAdmin";
+                    sparePartQuantity[i].UpdatedBy = Issuer;
                     sparePartQuantity[i].IsDeleted = true;
                     sparePartQuantity[i].UpdatedOn = DateTime.Now;
                   
@@ -118,7 +123,7 @@ namespace Transport.Repositories
 
             }
         }
-        public void SubtractSparePartQuantityAfterRoutineMaintenanceActivity(RoutineActivityCheck Activity)
+        public void SubtractSparePartQuantityAfterRoutineMaintenanceActivity(RoutineActivityCheck Activity, string Issuer)
         {
             var res = GetSpareParts();
 
@@ -146,7 +151,7 @@ namespace Transport.Repositories
 
             }
         }
-        public void AddSparePartQuantityAfterRoutineMaintenanceActivity(RoutineActivityCheck Activity)
+        public void AddSparePartQuantityAfterRoutineMaintenanceActivity(RoutineActivityCheck Activity, string Issuer)
         {
             var res = GetSpareParts();
 
@@ -188,12 +193,12 @@ namespace Transport.Repositories
             return _context.RoutineMaintenanceActivities.Where(x => x.IsDeleted != true).ToList();
         }
 
-        public void DeleteRoutineActivity(int RoutineActivityId)
+        public void DeleteRoutineActivity(int RoutineActivityId, string Issuer)
         {
           var results=  _context.RoutineMaintenanceActivities.Where(x => x.RoutineMaintenanceActivityId == RoutineActivityId).FirstOrDefault();
 
             results.IsDeleted = true;
-            results.UpdatedBy = "UpdatedAdmin";
+            results.UpdatedBy = Issuer;
             results.UpdatedOn = DateTime.Now;
             _context.RoutineMaintenanceActivities.Update(results);
             _context.SaveChanges();
@@ -206,7 +211,7 @@ namespace Transport.Repositories
             if(results!= null)
             {
                 results.ActivityName = routineActivity.ActivityName;
-                results.UpdatedBy = "UpdatedAdmin";
+                results.UpdatedBy = routineActivity.CreatedBy;
                 results.UpdatedOn = DateTime.Now;
 
                 _context.RoutineMaintenanceActivities.Update(results);
@@ -219,7 +224,7 @@ namespace Transport.Repositories
             var routineActivity = new RoutineMaintenanceActivity()
             {
                 ActivityName = model.RoutineActivityName,
-                CreatedBy = "RoutineAdmin",
+                CreatedBy = model.CreatedBy,
                 CreatedOn = DateTime.Now,
                 IsDeleted = false,
             };

@@ -9,7 +9,7 @@ namespace Transport.Repositories.IRepository
 {
     public interface IVehicleMaintenanceRequestItemRepository
     {
-        public void AddVehicleMaintenanceSparePart(VehicleMaintananceSparepartViewModel sparePart, int ListId);
+        public void AddVehicleMaintenanceSparePart(VehicleMaintananceSparepartViewModel sparePart, int ListId, string Issuer);
 
         public List<VehicleMaintenanceRequestItem> GetList(int Id);
 

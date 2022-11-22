@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Transport.Models.Data;
 
 namespace Transport.ViewModels
 {
-    public class AdminAndUserViewModel : AddUserViewModel
+    public class InsertingDocumentViewModel
     {
-        public List<ApplicationUser> AllUsers { get; set; }
+        public int ResultCode { get; set; }
+        public string ResultMessage { get; set; }
     }
 }

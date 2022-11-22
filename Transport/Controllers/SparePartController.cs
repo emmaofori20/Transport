@@ -4,15 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Transport.Models;
 using Transport.Models.Data;
 using Transport.Services.IServices;
+using Transport.Utils;
 using Transport.ViewModels;
 
 namespace Transport.Controllers
 {
     [Authorize(Policy = "CustomAuthorization")]
+    [SessionExist]
     //The Controller Handels all  sparepart and routineActivities
     public class SparePartController : Controller
     {
@@ -22,6 +25,14 @@ namespace Transport.Controllers
         {
             this.sparePartService = sparePartService;
         }
+        public Claim GetCurrentUserName()
+        {
+            return User.Identities
+                       .FirstOrDefault()
+                       .Claims.Where(x => x.Type == ClaimsEnum.Name.ToString().ToLower())
+                       .FirstOrDefault();
+        }
+
 
         #region SparePartMethods
         // GET: SparePartController
@@ -95,6 +106,7 @@ namespace Transport.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    model.CreatedBy = GetCurrentUserName().Value;
                     sparePartService.AddSparePart(model);
                    return RedirectToAction("Index");
                 }
@@ -144,6 +156,7 @@ namespace Transport.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    model.CreatedBy = GetCurrentUserName().Value;
                     sparePartService.EditSparePart(model);
                     return RedirectToAction("Index");
 
@@ -165,7 +178,8 @@ namespace Transport.Controllers
         {
             try
             {
-                sparePartService.DeleteSparePart(SpartPartid);
+                var issuer = GetCurrentUserName().Value;
+                sparePartService.DeleteSparePart(SpartPartid,issuer);
                 return RedirectToAction("Index");
             }
             catch (Exception err)
@@ -195,8 +209,8 @@ namespace Transport.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    model.CreatedBy = GetCurrentUserName().Value;
                     sparePartService.CreateRoutineActivity(model);
-
                     return RedirectToAction("Index");
                 }
                 return View();
@@ -216,7 +230,8 @@ namespace Transport.Controllers
         {
             try
             {
-                sparePartService.DeleteRoutineActivity(RoutineActivityId);
+                var issuer = GetCurrentUserName().Value;
+                sparePartService.DeleteRoutineActivity(RoutineActivityId,issuer);
                 return RedirectToAction("Index");
 
             }
@@ -256,6 +271,7 @@ namespace Transport.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    model.CreatedBy = GetCurrentUserName().Value;
                     sparePartService.EditRoutineActivity(model);
                     return RedirectToAction("Index");
                 }

@@ -14,8 +14,9 @@ namespace Transport.Repositories.IRepository
         public VehicleMaintenanceRequest GetMaintenanceRequest(int RequestId);
 
         public List<VehicleMaintenanceRequest> GetAllMaintenanceRequest();
+        public int GetNewMaintenanceRequestCount();
 
-        public void DeleteVehicleRequestMaintenance(int RequestId);
+        public void DeleteVehicleRequestMaintenance(int RequestId, string Issuer);
 
         public void EditVehicleRequestMaintenance(int RequestId, RequestMaintenanceViewModel model);
     }

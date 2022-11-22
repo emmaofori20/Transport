@@ -126,7 +126,10 @@ namespace Transport
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddSessionStateTempDataProvider();
+
+
             services.AddMemoryCache();
             //Adding the repositories
             services.AddTransient<IVehicleMaintenanceRequestRepository, VehicleMaintenanceRequestRepository>();
@@ -157,6 +160,7 @@ namespace Transport
             services.AddTransient<IPermAxleLoadRepository, PermAxleLoadRepository>();
             services.AddTransient<IPhotoSectionRepository, PhotoSectionRepository>();
             services.AddTransient<IVehicleRequestPhotoReceiptRepository, VehicleRequestPhotoReceiptRepository>();
+            services.AddTransient<IRequestTypeRepository, RequestTypeRepository>();
 
 
             services.AddTransient<IBusHiringPricesRepository, BusHiringPricesRepository>();

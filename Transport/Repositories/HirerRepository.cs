@@ -27,12 +27,25 @@ namespace Transport.Repositories
 
         public List<Hiring> AllHiring()
         {
-            return _context.Hirings.ToList();
+            return _context
+                .Hirings
+                .Include(x=>x.Vehicle)
+                .Include(x=>x.TransportStaff)
+                .Include(x=>x.Hirer)
+                .ToList();
         }
 
         public List<HirerHiringStatus> GetAllHireHiringStatus()
         {
             return _context.HirerHiringStatuses.ToList();
+        }
+
+        public int GetNewHiringRequestCount()
+        {
+            return _context.HirerHiringStatuses
+                .Include(x => x.Status)
+                .Where(x => x.Status.StatusName == "Pending")
+                .Count();
         }
 
         public void SetHirerDetails(HireDetailsViewModel model)
@@ -58,7 +71,8 @@ namespace Transport.Repositories
                 CreatedOn = DateTime.Now,
                 CreatedBy = model.ContactName,
                 DistanceCalculatedFromOrigin = model.DistanceCalculatedFromOrigin,
-                DistanceCalaculatedFromOriginCost = Hireprice
+                DistanceCalaculatedFromOriginCost = Hireprice,
+                TotalHiringCost = 0
 
             };
 
@@ -91,25 +105,27 @@ namespace Transport.Repositories
             //get BusHiringPrices Id
             var BusHiringPrice = _context.BusHiringPrices
                 .Where(x => x.BusHiringDistanceId == BusHiringDistanceId && x.VehicleTypeForHireId == VehicleTypeForHireId)
-                .FirstOrDefault().Price;
+                .FirstOrDefault();
             //get Hire price
-            decimal HirePrice = (decimal)BusHiringPrice;
+            decimal HirePrice = (decimal)(BusHiringPrice == null? 0: BusHiringPrice.Price);
             return HirePrice;
         }
-        public void ApprovedHire(ApproveHireRequest model)
+        public void ApprovedHire(ApproveHireRequest model, string Issuer)
         {
             //We set each vehicle in the hirings table
             var hiring = new Hiring()
             {
                 HirerId = model.HirerId,
                 TimeHired = DateTime.Now,
-                TotalHirePrice = model.HireCostFee + model.WashingFee + model.DriverFee,
-                HireCostFee = model.HireCostFee,
+                //TotalHirePrice = model.HireCostFee + model.WashingFee + model.DriverFee,
+                //HireCostFee = model.HireCostFee,
                 WashingFee = model.WashingFee,
                 DriverHireFee = model.DriverFee,
-                CreatedBy ="Admin",
+                CreatedBy = Issuer,
                 CreatedOn = DateTime.Now,
-                VehicleId = model.VehicleId
+                VehicleId = model.VehicleId,
+                TransportStaffId = model.DriverId,
+                TimeReturned = DateTime.Now
             };
 
             _context.Hirings.Add(hiring);
@@ -117,13 +133,65 @@ namespace Transport.Repositories
 
         }
 
-        public void SetHirerHiringStatusToApproved (int hirerId)
+        public void SetHirerHiringStatusToApproved (ApproveHireRequest hirer, string Issuer)
         {
             var hirerHiringStatus = new HirerHiringStatus()
             {
-                HirerId = hirerId,
+                HirerId = hirer.HirerId,
                 StatusId = 2005,
-                CreatedBy = "AdminHire",
+                CreatedBy = Issuer,
+                CreatedOn = DateTime.Now,
+
+            };
+            UpdateHirerTotalCost(hirer.HirerId, hirer.CalculatedCost);
+            _context.HirerHiringStatuses.Add(hirerHiringStatus);
+            _context.SaveChanges();
+        }
+
+        public void UpdateHirerTotalCost(int hirerId, decimal cost)
+        {
+            var res = _context.Hirers.Find(hirerId);
+            if (res != null)
+            {
+                res.TotalHiringCost = cost;
+                _context.Hirers.Update(res);
+                _context.SaveChanges();
+            }
+        }
+
+        public void CompleteHire(CompletedHireRequest model, string Issuer)
+        {
+            var res = _context.Hirings.Where(x => x.HirerId == model.HirerId).ToList();
+            if(res!= null)
+            {
+                foreach (var item in res)
+                {
+                    item.TimeReturned = model.DateTimeReturned;
+                    item.UpdatedBy = Issuer;
+                    item.UpdatedOn = DateTime.Now;
+                    _context.Update(item);
+                    _context.SaveChanges();
+                };
+
+                //set status to completed
+                _context.HirerHiringStatuses.Add(new HirerHiringStatus
+                {
+                    HirerId = model.HirerId,
+                    StatusId = 2006,
+                    CreatedBy = Issuer,
+                    CreatedOn = DateTime.Now,
+                });
+                _context.SaveChanges();
+            }
+        }
+
+        public void InvalidHire(ApproveHireRequest model, string Issuer)
+        {
+            var hirerHiringStatus = new HirerHiringStatus()
+            {
+                HirerId = model.HirerId,
+                StatusId = 2007,
+                CreatedBy = Issuer,
                 CreatedOn = DateTime.Now,
 
             };

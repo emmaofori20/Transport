@@ -82,27 +82,29 @@ $(".mysteps").steps(
             var SparePartList = [];// for holding spare parts
             var FinalList = {}
 
-            var allSpareParts = $('#List input');
-            debugger;
+            var allSpareParts = $('#List .form-control');
 
             for (var i = 0; i < allSpareParts.length; i++) {
                 let obj = {};
                 let sparename;
                 let quantity;
                 let amount;
+                let requestTypeId;
                 console.log(allSpareParts[i])
 
-                if (allSpareParts[i].getAttribute("id") == `spareParts_${i / 3}__SparePartName` || allSpareParts[i].getAttribute("id") == "spareParts_0__SparePartName") {
+                if (allSpareParts[i].getAttribute("id") == `spareParts_${i / 4}__SparePartName` || allSpareParts[i].getAttribute("id") == "spareParts_0__SparePartName") {
                     sparename = allSpareParts[i].value;
                     quantity = allSpareParts[i + 1].value;
                     amount = allSpareParts[i + 2].value;
-                    i = i + 2;
+                    requestTypeId = allSpareParts[i + 3].value;
+                    i = i + 3;
                 } else {
 
                 }
 
-                obj = { "SparePartName": sparename, "Quantity": quantity, "Amount": amount };
+                obj = { "SparePartName": sparename, "Quantity": quantity, "Amount": amount,"RequestTypeId": requestTypeId };
                 SparePartList.push(obj);
+                console.log(obj)
             }
 
             ////////////PREPARING FINAL LIST////////////////////
@@ -116,8 +118,10 @@ $(".mysteps").steps(
 
             console.log("the final list", FinalList);
             ///////////////Passing final data to the controller using ajax////////
+            var url = 'Request/EditRequestMaintenance';
+            var completeUrl = baseUrl + url;
             $.ajax({
-                url: '/Request/EditRequestMaintenance',
+                url: completeUrl,
                 dataType: 'html',
                 method: 'post',
                 data: { 'model': FinalList, 'RequestId': RequestId },

@@ -15,6 +15,7 @@ namespace Transport.Repositories.IRepository
         public Task<UpdateVehicleViewModel> GetVehicleForUpdate(int Id);
         public Task<int> UpdateVehicle(UpdateVehicleViewModel model);
         public void DeleteVehicle(int Id);
+        public int GetTotalVehicleNumber();
 
     }
 }
