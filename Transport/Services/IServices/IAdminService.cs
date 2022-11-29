@@ -16,6 +16,8 @@ namespace Transport.Services.IServices
         public void ToggleStaffActive(int StaffId, string Issuer);
         public SelectList GetAllRoles();
         public DashboardViewModel GetItemsForDashboard();
+        public void UpdateTransportStaffTable();
+        public List<TransportStaffViewModel> GetTransportStaff();
 
     }
 }

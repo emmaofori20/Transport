@@ -75,7 +75,7 @@ namespace Transport.Repositories
                .ExecuteStoredProc<HrStaffViewModel>().Single();
 
             return result;
-        }
+        }      
 
         public ApplicationUser GetUser(TicketReceivedContext context)
         {
@@ -89,8 +89,66 @@ namespace Transport.Repositories
 
         public List<TransportStaff> GetAllTransportStaffDrivers()
         {
-            return _context.TransportStaffs.ToList();
+            return _context.TransportStaffs.Where(x => x.Rank.Contains("Driver")).ToList();
         }
+        
+        public List<TransportStaffViewModel> GetAllTransportStaff()
+        {
+            var result = _context.LoadStoredProc("sp_GetAllTransportStaff")
+               .ExecuteStoredProc<TransportStaffViewModel>().ToList();
+
+            return result;
+        }
+        public void UpdateTransportStaffTable()
+        {
+            var updatedTransportStaffList = GetAllTransportStaff();
+            var oldTransportStaffList = _context.TransportStaffs.ToList();
+            foreach (var item in updatedTransportStaffList)
+            {
+                var existingRecord = oldTransportStaffList.Where(x => x.StaffId == item.StaffID).FirstOrDefault();
+                bool recordExists = existingRecord == null;
+                if (!recordExists)
+                {
+                    var OldStaffDetails = oldTransportStaffList.Where(x => x.StaffId == item.StaffID).FirstOrDefault();
+                    var NewStaffDetails = item;
+                    UpdateTransportStaffTableWithNewDetails(OldStaffDetails, NewStaffDetails);
+                }
+                else
+                {
+                    AddNewTransportStaff(item);
+                }
+            }
+        }
+
+        public void AddNewTransportStaff(TransportStaffViewModel transportStaff)
+        {
+            _context.TransportStaffs.Add(new TransportStaff()
+            {
+                StaffId = transportStaff.StaffID,
+                StaffId2 = transportStaff.StaffID2,
+                Rank = transportStaff.RANK,
+                DateOfBirth = transportStaff.DATEOFBIRTH,
+                Surname = transportStaff.SURNAME,
+                Othernames = transportStaff.OTHERNAME,
+                TechMail = transportStaff.TECHMAIL,
+                CreatedBy = "Admin",
+                CreatedOn = DateTime.Now,
+            }) ;
+            _context.SaveChanges();
+        }
+
+        public void UpdateTransportStaffTableWithNewDetails(TransportStaff oldStaffDetails, TransportStaffViewModel newstaffDetails)
+        {
+            oldStaffDetails.Othernames = newstaffDetails.OTHERNAME;
+            oldStaffDetails.Surname = newstaffDetails.SURNAME;
+            oldStaffDetails.TechMail = newstaffDetails.TECHMAIL;
+            oldStaffDetails.Rank = newstaffDetails.RANK;
+            oldStaffDetails.DateOfBirth = newstaffDetails.DATEOFBIRTH;
+            
+            _context.TransportStaffs.Update(oldStaffDetails);
+            _context.SaveChanges();
+        }
+
         public HrStaffViewModel VerifyStaffId(string StaffId)
         {
             return GetStaffById(StaffId);

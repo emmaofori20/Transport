@@ -16,12 +16,15 @@ namespace Transport.Models.Data
         public int TransportStaffId { get; set; }
         public string Surname { get; set; }
         public string Othernames { get; set; }
-        public string StaffType { get; set; }
+        public string Rank { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime CreatedOn { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public string UpdatedBy { get; set; }
+        public int StaffId { get; set; }
+        public string StaffId2 { get; set; }
+        public string TechMail { get; set; }
 
         public virtual ICollection<Hiring> Hirings { get; set; }
         public virtual ICollection<VehicleTransportStaff> VehicleTransportStaffs { get; set; }

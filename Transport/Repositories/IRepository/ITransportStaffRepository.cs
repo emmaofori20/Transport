@@ -17,8 +17,10 @@ namespace Transport.Repositories.IRepository
         public ApplicationUser GetUser(TicketReceivedContext context);
         public HrStaffViewModel VerifyStaffId(string StaffId);
         public List<TransportStaff> GetAllTransportStaffDrivers();
-
+        public List<TransportStaffViewModel> GetAllTransportStaff();
         public void ToggleStaffActive(int StaffId, string Issuer);
         public List<Role> GetAllRoles();
+        public void UpdateTransportStaffTable();
+
     }
 }

@@ -76,5 +76,20 @@ namespace Transport.Controllers
         {
             _adminService.ToggleStaffActive(StaffId, GetCurrentUserName().ToString());
         }
+        public IActionResult TransportStaff()
+        {
+            var res = _adminService.GetTransportStaff();
+            return View(res);
+        }
+
+        public void UpdateTransportStaffTable()
+        {
+            _adminService.UpdateTransportStaffTable();
+        }
+
+        public IActionResult TransportStaffDetail(string StaffId)
+        {
+            return View();
+        }
     }
 }
