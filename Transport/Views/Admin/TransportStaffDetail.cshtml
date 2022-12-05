@@ -1,5 +1,85 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<TransportStaffDetailViewModel>
 @{
+    ViewBag.Title = "Details";
 }
+<div style=" background-color: white; padding: 2%;">
+    <div class="row">
+        <div class="col-md-2">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAACNCAMAAAC9gAmXAAAAMFBMVEXk5ueutLfn6eqyuLqrsbTb3t+nrrHDx8nW2du3vL/P09THy83h4+TS1de+w8W7wMKHaAzIAAADRElEQVR4nO2ayZKjMAxAsbzgDfj/vx0bZtKZDmBLIJOD36Gr+pRXsrwgaRg6nU6n0+l0Op1Op9PpFAF42mAlWURtvfeTjfFhKRim0QljjFLpj3DBPuYDg12UUuKN9N+oH/EB6/5X+Ssk5tjcB6IznyqbjwlDWx/wYicuLx/ZdLlgPHFZfXxDnaUgk3TGVjrgijJCmNBIR1bItNKBuUqmTe5AqJRJOuw7C/TRMbODjMw2Q00Gv4LDvLEQ65QxmtcGsU6ZhVWmdAb/RllGm4hzSTi+zAGPDE3e5Xw2Eh0bFdhsNDo06czhkkFu7w2+TV57Q73Dd1vhXRIzkw3mivqBK3EsyUbwJA4piflssNfCBtPlADMpNGrisVm6zaHNd63Ud9l8157Cv25WmK5N4s3A9BkTSbFhe4s6ggzfNxUljY1lsoGJ8tpi+/rFf8AIxfd9V10sebNhLJtY/FKxuQz4XaU4C1z4PGat4MAXhWbAZo5iLrWhLnI1sdch6ysDDSrYUF8acNwuWcfXPizYK6IYnUZ9mKqPTv7S9UtnKkVHtYrMqqPPOx/p5m7aLovzSXgMX7HvyMfKfR+llvZt1rQUXn42fZVwz7SgBwA7CqPeomJkeMhl9UkfWWF2UgoppRt9k/Pu3AhgiHEdonh2imL10PYfWj+jlH9R222N1oRR20BFWq4lTEmq3XEDoKewCGP2D0CVh01GrxtECSDaUYq9cY5fh44S8xRZQ5S29LxzxhwaicVzBSgtUDhYnBMjs1iGAMGg3dlYyUmEpL/ZB2A6HLcpY0S48+aCqW504jhA4rYBIdALPS4vH3lLeQDieN0lY24YWErPmGuL9ENaros6EO4JzIZxV7IZ4m2B2VCCXgUEfavKCnliiVo7P0fRuq48MrlW8EUySQdfXeeTISwWEKqfCB1kYYcyv4HRQe0swmgLUgdxSxBq5ljqu1ak7gaS+kwGfpnc7qzTIXZTsVTOntAahmhMVTG5QQpvVAWH0BKjUdW6Ik7ZEKi4r5BdliuUx91Q88MXKd8Pjbb3RrkRQenAkyktVbMdlSkOw7C+az5sSonD+OTbYTm3oc70USnYjLny24yCTa6wtuRcptPpdDqdr+IP1Hsl7Nej6y8AAAAASUVORK5CYII=" alt="" class="img-rounded img-responsive" />
+        </div>
+        <div class="col-md-8">
+            <h4>
+                @Model[0].SURNAME @Model[0].OTHERNAME
+            </h4>
+            <h5>
+                @Model[0].RANK
+            </h5>
+            <p>
+                <small>Staff ID:</small> @Model[0].StaffID2
+            <br />
+                @{ var email = " ";
+                    if (@Model[0].TECHMAIL == null)
+                    {
+
+                    }
+                    else
+                    {
+                        email = Model[0].TECHMAIL + "@knust.edu.gh";
+                    } }
+                <i class="glyphicon glyphicon-envelope"></i> <small>Email: </small> @email
+                <br />
+                <i class="glyphicon glyphicon-gift"></i> <small>DOB: </small>@Model[0].DATEOFBIRTH.Date.ToLongDateString()
+            </p>
+            <!-- Split button -->
+        </div>
+    </div>
+
+    <h2 class="text-body mt-1">Ranks</h2>
+    <div class="table-responsive">
+        <table id="invoices-list" class=" table table-striped table-bordered zero-configuration ">
+            <thead>
+                <tr>
+                    <th>Start Date</th>
+                    <th>Rank </th>
+                    <th>End Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    if (item.ENDDATE.ToString() == "1/1/0001 12:00:00 AM")
+                    {
+    <tr>
+        <td>@item.STARTDATE.ToLongDateString()</td>
+        <td>
+            @item.RANK
+        </td>
+        <td>
+            Still at Rank
+        </td>
+    </tr>
+ }
+else
+{
+<tr>
+    <td>@item.STARTDATE.ToLongDateString().</td>
+    <td>
+        @item.RANK
+    </td>
+    <td>
+        @item.ENDDATE.ToLongDateString()
+    </td>
+</tr>
+}
+}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Start Date</th>
+                    <th>Rank </th>
+                    <th>End Date</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

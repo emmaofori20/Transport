@@ -21,6 +21,8 @@ namespace Transport.Repositories.IRepository
         public void ToggleStaffActive(int StaffId, string Issuer);
         public List<Role> GetAllRoles();
         public void UpdateTransportStaffTable();
+        public List<TransportStaffDetailViewModel> GetTransportStaffDetail(string staffId);
+
 
     }
 }

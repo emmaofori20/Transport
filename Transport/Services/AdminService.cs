@@ -70,7 +70,6 @@ namespace Transport.Services
                .Select(s => new { Id = s.RoleId, Text = $"{s.RoleName}" }), "Id", "Text");
         }
 
-
         public  DashboardViewModel GetItemsForDashboard()
         {
             var dashboardVM = new DashboardViewModel
@@ -85,6 +84,9 @@ namespace Transport.Services
             return dashboardVM;
         }
 
-
+        public List<TransportStaffDetailViewModel> GetTransportStaffDetail(string staffId)
+        {
+            return _transportStaffRepository.GetTransportStaffDetail(staffId);
+        }
     }
 }

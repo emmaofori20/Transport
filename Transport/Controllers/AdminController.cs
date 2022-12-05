@@ -89,7 +89,8 @@ namespace Transport.Controllers
 
         public IActionResult TransportStaffDetail(string StaffId)
         {
-            return View();
+            var results = _adminService.GetTransportStaffDetail(StaffId).OrderByDescending(x=>x.STARTDATE).ToList();
+            return View(results);
         }
     }
 }

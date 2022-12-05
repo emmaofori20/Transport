@@ -14,5 +14,18 @@ namespace Transport.ViewModels
         public string OTHERNAME { get; set; }
         public string TECHMAIL { get; set; }
         public string RANK { get; set; }
+    } 
+    
+    public class TransportStaffDetailViewModel
+    {
+        public int StaffID { get; set; }
+        public string StaffID2 { get; set; }
+        public string SURNAME { get; set; }
+        public DateTime DATEOFBIRTH { get; set; }
+        public DateTime ENDDATE { get; set; }
+        public DateTime STARTDATE { get; set; }
+        public string OTHERNAME { get; set; }
+        public string TECHMAIL { get; set; }
+        public string RANK { get; set; }
     }
 }

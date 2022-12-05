@@ -99,6 +99,15 @@ namespace Transport.Repositories
 
             return result;
         }
+        
+        public List<TransportStaffDetailViewModel> GetTransportStaffDetail(string staffId)
+        {
+            var result = _context.LoadStoredProc("sp_GetTransportStaffDetail")
+             .WithSqlParam("StaffId", staffId)
+             .ExecuteStoredProc<TransportStaffDetailViewModel>().ToList();
+
+            return result;
+        }
         public void UpdateTransportStaffTable()
         {
             var updatedTransportStaffList = GetAllTransportStaff();

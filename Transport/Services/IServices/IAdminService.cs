@@ -18,6 +18,7 @@ namespace Transport.Services.IServices
         public DashboardViewModel GetItemsForDashboard();
         public void UpdateTransportStaffTable();
         public List<TransportStaffViewModel> GetTransportStaff();
+        public List<TransportStaffDetailViewModel> GetTransportStaffDetail(string staffId);
 
     }
 }
