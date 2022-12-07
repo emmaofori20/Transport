@@ -195,8 +195,8 @@ $(".steps-validation").steps({
     },
     onFinished: function (event, currentIndex)
     {
-        localStorage.setItem("success", "successValue");
-        $("#my_Form").submit();
+
+        $('#my_Form').submit();
         
     }
 });

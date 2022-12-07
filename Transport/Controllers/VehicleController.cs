@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,16 +23,18 @@ namespace Transport.Controllers
     {
         private readonly IVehicleService _vehicleService;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly INotyfService _notyf;
 
         public VehicleController(
             IVehicleService vehicleService,
-            IWebHostEnvironment webHostEnvironment
+            IWebHostEnvironment webHostEnvironment,
+            INotyfService notyf
 
             )
         {
             _vehicleService = vehicleService;
             _webHostEnvironment = webHostEnvironment;
-
+            _notyf = notyf;
         }
         // GET: VehicleController
         public ViewResult VehicleList()
@@ -105,15 +108,13 @@ namespace Transport.Controllers
         public async Task<IActionResult> AddNewVehicle(AddVehicleViewModel vehicleModel)
 
         {
-            //var results = _vehicleService.setAllList();
 
 
             try
-            {
-
+            { 
                 var result = await _vehicleService.AddNewVehicle(vehicleModel);
 
-
+                _notyf.Success("Vehicle Added Successfully!", 5);
                 return RedirectToAction(nameof(GetVehicleDetails), new { Id = result });
             }
             catch (Exception ex)
@@ -198,9 +199,8 @@ namespace Transport.Controllers
 
             try
             {
-
                 var resultId = await _vehicleService.UpdateVehicle(UpdateModel);
-
+                _notyf.Success("Vehicle Records Updated Successfully!", 5);
                 return RedirectToAction(nameof(GetVehicleDetails), new { Id = resultId });
             }
             catch (Exception ex)

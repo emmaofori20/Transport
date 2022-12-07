@@ -24,6 +24,7 @@ using Transport.Services;
 using Transport.Services.IServices;
 using Transport.Handlers;
 using Transport.Utils;
+using AspNetCoreHero.ToastNotification;
 
 namespace Transport
 {
@@ -128,6 +129,9 @@ namespace Transport
 
             services.AddControllersWithViews()
                 .AddSessionStateTempDataProvider();
+
+            //To add toast notifications to project
+            services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 
 
             services.AddMemoryCache();
