@@ -177,7 +177,8 @@
                             <div class="card-content collapse show">
                                 <div class="card-body">
                                     <p class="card-text" style="text-align:center; font-size:23px">
-                                        Upload receipts or pictures of the spare parts
+                                        Upload receipts of the spare parts
+                                        <strong class="text-danger"> All Files should be PDf </strong>
                                     </p>
 
                                     <form asp-action="UploadReceipts" asp-controller="Request" method="post" enctype="multipart/form-data" style=" height: 200px; border: 1px dashed black; position: relative; cursor: pointer;" class="myCustomDropZone">
@@ -223,17 +224,20 @@
             function readAndPreview(i, file) {
                console.log("picture testing")
 
-                if (!/\.(jpe?g|png|gif)$/i.test(file.name)) {
-                    return alert(file.name + " is not an image");
+                if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+                    $('#file-input').val('');
+                    return alert(file.name + " is an image\n Upload a pdf");
                 } // else...
+                else {
+                    var reader = new FileReader();
 
-                var reader = new FileReader();
+                    $(reader).on("load", function () {
+                        $preview.append($("<img/>", { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/640px-PDF_file_icon.svg.png", height: 100 }));
+                    });
 
-                $(reader).on("load", function () {
-                    $preview.append($("<img/>", { src: this.result, height: 100 }));
-                });
-
-                reader.readAsDataURL(file);
+                    reader.readAsDataURL(file);
+                }
+                
 
             }
 

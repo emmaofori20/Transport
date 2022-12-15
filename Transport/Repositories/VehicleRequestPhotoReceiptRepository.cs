@@ -70,5 +70,9 @@ namespace Transport.Repositories
             return fileBytes;
         }
 
+        public VehicleRequestPhotoReceipt ImageExtension(string Id)
+        {
+            return _context.VehicleRequestPhotoReceipts.Where(x => x.ReceiptPhotoStreamFileId == Id).FirstOrDefault();
+        }
     }
 }

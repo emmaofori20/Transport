@@ -322,9 +322,10 @@ namespace Transport.Controllers
         public IActionResult ViewReceipts(string DocumentStreamId)
         {
             var result = requestService.GetReceiptsDocument(DocumentStreamId);
+            var FileExtension = requestService.GetImageExtension(DocumentStreamId).FileName;
 
             var filedetails = result.FileStream;
-            return File(filedetails, "application/*");
+            return File(filedetails, "application/pdf");
         }
     }
     
