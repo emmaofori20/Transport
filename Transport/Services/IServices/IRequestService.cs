@@ -26,5 +26,6 @@ namespace Transport.Services.IServices
         public GettingReceiptsViewModel GetReceiptsDocument(string DocumentStreamId);
         public List<int> GetRequestMaintenanceCountPerMonth();
 
+        public VehicleRequestPhotoReceipt GetImageExtension(string id);
     }
 }

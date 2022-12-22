@@ -218,6 +218,9 @@ namespace Transport.Services
 
         }
 
-
+        public VehicleRequestPhotoReceipt GetImageExtension(string id)
+        {
+            return vehicleRequestPhotoReceiptRepository.ImageExtension(id);
+        }
     }
 }
