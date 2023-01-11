@@ -121,7 +121,7 @@ namespace Transport.Services
                      singleHireDetails.Status = AllHiringRequest[i].HirerHiringStatuses.OrderByDescending(x => x.CreatedOn)
                                 .Where(x => x.HirerId == AllHiringRequest[i].HirerId).FirstOrDefault().Status.StatusName;
                     ////////Getting Status Name/////////////////
-                     singleHireDetails.CreatedOn = DateTime.Now;
+                     singleHireDetails.CreatedOn = AllHiringRequest[i].CreatedOn;
                      singleHireDetails.CreatedBy = AllHiringRequest[i].ContactName;
                      singleHireDetails.TotalHiringCost = (decimal)AllHiringRequest[i].TotalHiringCost ;
 
